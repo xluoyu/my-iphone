@@ -22,8 +22,8 @@ export default defineComponent({
   right: 0;
   margin: auto;
   width: 100%;
-  height: 60px;
-  min-height: 60PX;
+  height: 80px;
+  // min-height: 60PX;
   background: rgba(0, 0, 0, .2);
   color: #fff;
 }

@@ -2,10 +2,10 @@
   <div class="container" :style="`background-position-x: ${containerBgX}%;transition: background ${containerBgDuration}s;`">
     <div class="swiper-container my-swipe">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" ref="swiperSlideRef" v-for="(item, index) in appsList" :key="index">
-          <!-- <Weather ref="weatherRef" v-if="index == 0" />
-          <App :app="app" /> -->
-          <component :is="app.key" :app="app" v-for="app in item.child" :key="app.id" />
+        <div class="swiper-slide" v-for="(item, index) in appsList" :key="index">
+          <div class="grid-box">
+            <component :is="app.component" :app="app" v-for="app in item" :key="app.id" :style="app.style" />
+          </div>
         </div>
       </div>
       <div class="swiper-pagination"></div>
@@ -15,154 +15,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, DefineComponent } from 'vue'
-import Weather from '@/components/Weather/index.vue'
+import { defineComponent } from 'vue'
 import Dock from '@/components/Dock/index.vue'
-import App from '@/components/App/index.vue'
-import Swiper, { Pagination } from 'swiper'
-import 'swiper/swiper-bundle.min.css'
-import 'swiper/swiper.less'
-import { IApp, IItemKey } from '#/index'
-import { px } from '@/utils/index'
-import component from '../../shims-vue'
-Swiper.use([Pagination])
+import useAppList from './hooks/useAppList'
+import useSwiper from './hooks/useSwiper'
 
 export default defineComponent({
   components: {
-    Weather,
-    Dock,
-    App
+    Dock
   },
   setup() {
-    const containerBgX = ref<number>(0)
-    const containerBgDuration = ref<number>(0)
-    onMounted(() => {
-      new Swiper('.my-swipe', {
-        pagination: {
-          el: '.swiper-pagination'
-        },
-        loop: false,
-        watchSlidesProgress: true,
-        on: {
-          progress: (swiper, progress) => {
-            let newValue = Number((progress * 50).toFixed(2))
-            if (Math.abs(newValue - containerBgX.value) > 20) {
-              containerBgDuration.value = 0.3
-            } else {
-              containerBgDuration.value = 0
-            }
-            containerBgX.value = newValue
-          }
-        }
-      })
-    })
+    const { appsList } = useAppList()
+    const { containerBgX, containerBgDuration } = useSwiper()
 
-    const list = ref<IApp[]>([
-      {
-        id: 26544561,
-        key: IItemKey.Weather
-      },
-      {
-        id: 16543213,
-        key: IItemKey.App,
-        photo: 'https://imgsrc.baidu.com/forum/pic/item/203fb80e7bec54e78571908cb7389b504ec26a87.jpg',
-        name: '支付宝'
-      },
-      {
-        id: 16543213,
-        key: IItemKey.App,
-        photo: 'https://imgsrc.baidu.com/forum/pic/item/203fb80e7bec54e78571908cb7389b504ec26a87.jpg',
-        name: '支付宝'
-      },
-      {
-        id: 16543213,
-        key: IItemKey.App,
-        photo: 'https://imgsrc.baidu.com/forum/pic/item/203fb80e7bec54e78571908cb7389b504ec26a87.jpg',
-        name: '支付宝'
-      },
-      {
-        id: 16543213,
-        key: IItemKey.App,
-        photo: 'https://imgsrc.baidu.com/forum/pic/item/203fb80e7bec54e78571908cb7389b504ec26a87.jpg',
-        name: '支付宝'
-      },
-      {
-        id: 16543213,
-        key: IItemKey.App,
-        photo: 'https://imgsrc.baidu.com/forum/pic/item/203fb80e7bec54e78571908cb7389b504ec26a87.jpg',
-        name: '支付宝'
-      },
-      {
-        id: 16543213,
-        key: IItemKey.App,
-        photo: 'https://imgsrc.baidu.com/forum/pic/item/203fb80e7bec54e78571908cb7389b504ec26a87.jpg',
-        name: '支付宝'
-      },
-      {
-        id: 16543213,
-        key: IItemKey.App,
-        photo: 'https://imgsrc.baidu.com/forum/pic/item/203fb80e7bec54e78571908cb7389b504ec26a87.jpg',
-        name: '支付宝'
-      },
-      {
-        id: 16543213,
-        key: IItemKey.App,
-        photo: 'https://imgsrc.baidu.com/forum/pic/item/203fb80e7bec54e78571908cb7389b504ec26a87.jpg',
-        name: '支付宝'
-      },
-      {
-        id: 16543213,
-        key: IItemKey.App,
-        photo: 'https://imgsrc.baidu.com/forum/pic/item/203fb80e7bec54e78571908cb7389b504ec26a87.jpg',
-        name: '支付宝'
-      },
-      {
-        id: 16543213,
-        key: IItemKey.App,
-        photo: 'https://imgsrc.baidu.com/forum/pic/item/203fb80e7bec54e78571908cb7389b504ec26a87.jpg',
-        name: '支付宝'
-      }
-    ])
-    const appsList = ref<IApp[][]>([[]])
-
-    const weatherRef = ref<DefineComponent | null>(null)
-
-    onMounted(() => {
-      const swiperSlideEl = document.querySelector('.swiper-slide')
-      if (!swiperSlideEl) return
-      const clientHeight = swiperSlideEl.clientHeight
-      const paginationHeight = px(24)
-      const appsHeight = clientHeight - paginationHeight
-      let lines = Math.floor(appsHeight / px(84 + 27)) // 最多有几行
-      const columns = 4
-      console.log(lines * columns)
-      let index = 0
-      let curItemNumber = 0
-      list.value.forEach(item => {
-        console.log(curItemNumber)
-        if (curItemNumber >= lines * columns) {
-          curItemNumber = 0
-          appsList.value.push([])
-          index += 1
-        }
-        switch (item.key) {
-          case IItemKey.App:
-            curItemNumber += 1
-            break
-          case IItemKey.Weather:
-            curItemNumber += 8
-            break
-          default:
-            curItemNumber += 1
-            break
-        }
-        appsList.value[index].push(item)
-      })
-      console.log(appsList.value)
-    })
     return {
       appsList,
-      weatherRef,
       containerBgX,
       containerBgDuration
     }
@@ -185,13 +52,19 @@ export default defineComponent({
   overflow: auto;
 }
 .my-swipe{
-  height: calc(100% - 60px);
+  height: calc(100% - 80px);
   .swiper-slide{
     box-sizing: border-box;
-    padding: 27px 27px 0;
-    display: grid;
-    grid-gap: 27px;
-    grid-template-columns: repeat(4, 60px);
+    padding: 19px 19px 24px;
+    .grid-box{
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-gap: 8px 19px;
+      grid-template-columns: repeat(4, 70px);
+      grid-template-rows: repeat(auto-fill, 84px);
+      grid-auto-flow: dense;
+    }
   }
 }
 ::v-deep(.swiper-pagination-bullet){

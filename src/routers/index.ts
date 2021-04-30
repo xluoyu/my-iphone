@@ -13,7 +13,7 @@ export const constantRoutes = [
         path: 'home',
         component: () => import('@/views/home/index.vue'),
         name: 'Home',
-        meta: { title: '首页', icon: 's-marketing'},
+        meta: { title: '首页', icon: 's-marketing' },
         index: 1
       },
       {
@@ -28,7 +28,7 @@ export const constantRoutes = [
   {
     path: '/:pathMatch(.*)*',
     component: () => import('@/views/404.vue'),
-    meta: { title: '404'},
+    meta: { title: '404' },
     hidden: true
   }
 ]

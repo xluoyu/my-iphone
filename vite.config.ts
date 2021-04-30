@@ -14,6 +14,11 @@ export default defineConfig({
     }
   },
   css: {
+    preprocessorOptions: {
+      less: {
+        additionalData: `@import (reference) "${path.resolve('src/styles/variables.less')}";`
+      }
+    },
     postcss: {
       plugins: [
         autoprefixer(),

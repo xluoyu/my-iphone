@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <img :src="app.photo" alt="">
-    <p>{{ app.name }}</p>
+    <p>{{ name }}</p>
   </div>
 </template>
 
@@ -17,6 +17,11 @@ export default defineComponent({
   },
   setup() {
     return {}
+  },
+  computed: {
+    name() {
+      return this.app.name?.substring(0, 5)
+    }
   }
 })
 </script>
@@ -26,14 +31,18 @@ export default defineComponent({
   font-size: 14px;
   color: #fff;
   text-align: center;
-  line-height: 20px;
+  height: 84px;
   img{
-    width: 60px;
-    height: 60px;
+    width: @appPhotoHeight;
+    height: @appPhotoHeight;
+    display: block;
+    margin: 0 auto;
     border-radius: 14px;
   }
   p{
     margin: 0;
+    white-space: nowrap;
+    line-height: 24px;
   }
 }
 </style>
