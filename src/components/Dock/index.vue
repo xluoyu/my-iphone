@@ -1,15 +1,25 @@
 <template>
   <div class="dock">
-    程序坞
+    <App v-for="item in appList" :key="item.id" :app="item" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import App from '../App/index.vue'
+import appStore from '@/api/app-store'
+import { IApp } from '#/index'
 
 export default defineComponent({
+  components: {
+    App
+  },
   setup() {
-    return {}
+    const defalutList = ['phone', 'messages', 'safari', 'settings']
+    const appList = defalutList.map(e => appStore.find(a => a.key == e) as IApp)
+    return {
+      appList
+    }
   }
 })
 </script>
@@ -23,8 +33,15 @@ export default defineComponent({
   margin: auto;
   width: 100%;
   height: 80px;
-  // min-height: 60PX;
   background: rgba(0, 0, 0, .2);
   color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 19px;
+  ::v-deep(.app p) {
+    display: none;
+  }
 }
 </style>

@@ -29,7 +29,7 @@ const useAppList = ():IUseAppList => {
     let curItemNumber = 0
 
     list.value.forEach((item, i) => {
-      switch (item.key) {
+      switch (item.type) {
         case IItemKey.App:
           curItemNumber += 1
           item.component = markRaw(App)

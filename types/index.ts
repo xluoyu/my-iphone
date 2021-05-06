@@ -3,10 +3,10 @@ import { DefineComponent } from 'vue'
 
 /* eslint-disable no-unused-vars */
 interface IApp {
-  id: number,
+  key: string,
   photo?: string,
   name?: string,
-  key: IItemKey,
+  type: IItemKey,
   component?: DefineComponent<{}, {}, any> | any,
   style?: string
 }
@@ -16,7 +16,13 @@ enum IItemKey {
   Weather='Weather'
 }
 
+enum IColorType {
+  white='#fff',
+  black='#515151'
+}
+
 export {
   IApp,
-  IItemKey
+  IItemKey,
+  IColorType
 }

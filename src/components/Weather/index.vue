@@ -1,5 +1,5 @@
 <template>
-  <div class="weather" @click="navTo">
+  <div class="weather">
     <div id="he-plugin-standard"></div>
     <p>天气</p>
   </div>
@@ -10,23 +10,20 @@ import { defineComponent, nextTick, onMounted } from 'vue'
 import { addScript } from '@/utils'
 import { px } from '@/utils/index'
 import variables from '@/styles/variables.less'
+import { GetVar } from '@/utils/index'
 declare global {
   interface Window { WIDGET: {CONFIG: {[propName: string]: string}} }
 }
-function getVar(key: string):number {
-  let reg = new RegExp(`${key}: [^;]+`, 'g')
-  let regResult: string | null = (variables.match(reg) as RegExpMatchArray).toString()
-  let result = regResult.split(': ')
-  return Number(result[1])
-}
+
 export default defineComponent({
   setup() {
+    let getVariables = GetVar(variables)
     onMounted(() => {
       window.WIDGET = {
         CONFIG: {
           'layout': '1',
           'width': '337',
-          'height': px(getVar('appHeight') * 2 + getVar('gridRowGap') - getVar('appNameHeight')) + '',
+          'height': px(getVariables('appHeight') * 2 + getVariables('gridRowGap') - getVariables('appNameHeight')) + '',
           'background': '1',
           'dataColor': 'FFFFFF',
           'modules': '10',

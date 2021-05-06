@@ -55,14 +55,14 @@ export default defineComponent({
   height: calc(100% - 80px);
   .swiper-slide{
     box-sizing: border-box;
-    padding: 19px 19px 24px;
+    padding: @gridColGap @gridColGap 24px;
     .grid-box{
       width: 100%;
       height: 100%;
       display: grid;
-      grid-gap: 8px 19px;
-      grid-template-columns: repeat(4, 70px);
-      grid-template-rows: repeat(auto-fill, 84px);
+      grid-gap: @gridRowGap @gridColGap;
+      grid-template-columns: repeat(4, @appWidth);
+      grid-template-rows: repeat(auto-fill, @appHeight);
       grid-auto-flow: dense;
     }
   }

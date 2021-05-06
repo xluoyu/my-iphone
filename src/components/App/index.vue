@@ -1,13 +1,15 @@
 <template>
-  <div class="app">
+  <div class="app" @click="open" :id="app.key">
     <img :src="app.photo" alt="">
-    <p>{{ name }}</p>
+    <p>{{ app.name }}</p>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { IApp } from '#/index'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 export default defineComponent({
   props: {
     app: {
@@ -15,12 +17,18 @@ export default defineComponent({
       default: () => { return {} }
     }
   },
-  setup() {
-    return {}
-  },
-  computed: {
-    name() {
-      return this.app.name?.substring(0, 5)
+  setup(props) {
+    const store = useStore()
+    const router = useRouter()
+    const open = ():void => {
+      if (props.app.key == 'clock') {
+        store.commit('changeClock', true)
+      } else {
+        router.push({ name: props.app.key })
+      }
+    }
+    return {
+      open
     }
   }
 })
@@ -31,7 +39,28 @@ export default defineComponent({
   font-size: 14px;
   color: #fff;
   text-align: center;
-  height: 84px;
+  height: fit-content;
+  width: 70px;
+  position: relative;
+  &::before{
+    content: '';
+    background: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    transition: background .3s;
+    width: @appPhotoHeight;
+    height: @appPhotoHeight;
+    margin: 0 auto;
+    border-radius: 14px;
+  }
+  &:active{
+    &::before{
+      background: rgba(0, 0, 0, .7);
+    }
+  }
   img{
     width: @appPhotoHeight;
     height: @appPhotoHeight;
@@ -42,7 +71,10 @@ export default defineComponent({
   p{
     margin: 0;
     white-space: nowrap;
+    word-wrap:break-word;
     line-height: 24px;
+    overflow: hidden;
+    text-overflow : clip;
   }
 }
 </style>

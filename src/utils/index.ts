@@ -17,3 +17,11 @@ export const getNumber = (str: string): number => {
   return Number(str)
 }
 
+export const GetVar = (variables: string) => {
+  return (key: string):number => {
+    let reg = new RegExp(`${key}: [^;]+`, 'g')
+    let regResult: string | null = (variables.match(reg) as RegExpMatchArray).toString()
+    let result = regResult.split(': ')
+    return Number(result[1])
+  }
+}
