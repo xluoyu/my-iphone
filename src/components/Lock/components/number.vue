@@ -77,6 +77,9 @@ export default defineComponent({
   backdrop-filter: blur(3px);
   color: #fff;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 .top{
   text-align: center;
@@ -138,8 +141,10 @@ export default defineComponent({
 }
 .handle{
   width: 300px;
+  height: 60px;
   margin: 0 auto;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   font-size: 16px;
 }

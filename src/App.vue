@@ -1,9 +1,7 @@
 <template>
   <div class="page">
+    <Lock v-if="lockStatus" />
     <Home />
-    <transition name="lock">
-      <Lock v-if="lockStatus" />
-    </transition>
     <transition name="app" @before-enter="beforeEnter">
       <app-layout v-if="routeStatus" />
     </transition>

@@ -13,6 +13,7 @@
       </div>
     </div>
     <NumberLock v-if="lockStep == LockType.Number" @openLock="openLock" @cancel="cancel" />
+    <SlideLock v-if="lockStep == LockType.Slide" @openLock="openLock" @cancel="cancel" />
   </div>
 </template>
 
@@ -20,17 +21,19 @@
 import { defineComponent, ref } from 'vue'
 import { hitokoto } from '@/api'
 import NumberLock from './components/number.vue'
+import SlideLock from './components/slide.vue'
 import { ILockType } from '#/index'
 const weekArr = ['日', '一', '二', '三', '四', '五', '六']
 
 export default defineComponent({
   components: {
-    NumberLock
+    NumberLock,
+    SlideLock
   },
   setup() {
     let time = ref<string>('')
     let date = ref<string>('')
-    setTimeout(() => {
+    let timeFn = () => {
       let curdate = new Date()
       let month:number|string = curdate.getMonth() + 1
       let day:number|string = curdate.getDate()
@@ -42,7 +45,9 @@ export default defineComponent({
 
       time.value = hour + ':' + min
       date.value = month + '月' + day + '日 周' + weekArr[week]
-    }, 1000)
+    }
+    timeFn()
+    setTimeout(timeFn, 1000)
     return {
       time,
       date
@@ -55,7 +60,7 @@ export default defineComponent({
       windowHeight: 667,
       blurNum: 0,
       transition: 0,
-      lockStep: 'number'
+      lockStep: 'slide'
     }
   },
   computed: {
