@@ -21,8 +21,15 @@ enum IColorType {
   black='#515151'
 }
 
+enum ILockType {
+  Normal='normal',
+  Number='number',
+  Slide='slide'
+}
+
 export {
   IApp,
   IItemKey,
-  IColorType
+  IColorType,
+  ILockType
 }

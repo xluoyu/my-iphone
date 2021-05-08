@@ -1,17 +1,21 @@
-import { IApp } from '#/index'
+import { IApp, ILockType } from '#/index'
 import { createStore } from 'vuex'
 import appStore from '@/api/app-store'
 
-interface state {
+export interface state {
   myAppIds: string[],
-  lockStatus: boolean
+  lockStatus: boolean,
+  lockType: ILockType,
+  lockNumberPwd: string
 }
 
 const store = createStore({
   state() {
     return {
       myAppIds: ['weather', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock'],
-      lockStatus: false
+      lockStatus: true,
+      lockType: ILockType.Number,
+      lockNumberPwd: '147258'
     }
   },
   getters: {
@@ -20,9 +24,11 @@ const store = createStore({
     }
   },
   mutations: {
-    changeClock(state, value:boolean):void {
-      console.log(value)
+    changeLock(state, value:boolean):void {
       state.lockStatus = value
+    },
+    changeLockType(state, value:ILockType):void {
+      state.lockType = value
     }
   }
 })

@@ -22,7 +22,7 @@ export default defineComponent({
     const router = useRouter()
     const open = ():void => {
       if (props.app.key == 'clock') {
-        store.commit('changeClock', true)
+        store.commit('changeLock', true)
       } else {
         router.push({ name: props.app.key })
       }
