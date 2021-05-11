@@ -83,7 +83,7 @@ export default defineComponent({
       }
       return res
     },
-    canvasMove(e) {
+    canvasMove(e: TouchEvent) {
       this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight) // 清空画布
       this.ctx.save()
     },
