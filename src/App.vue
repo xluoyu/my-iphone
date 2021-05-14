@@ -3,13 +3,13 @@
     <Lock v-if="lockStatus" />
     <Home />
     <transition name="app" @before-enter="beforeEnter">
-      <app-layout v-if="routeStatus" />
+      <app-layout v-show="routeStatus" @closeApp="closeApp" />
     </transition>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import Home from './views/home/index.vue'
 import { useRoute } from 'vue-router'
 import AppLayout from './layout/AppLayout.vue'
@@ -27,11 +27,23 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
+    const appRouteStatus = ref(false)
     const routeStatus = computed(() => {
       const route = useRoute()
-      return route.path != '/'
+      if (route.path != '/' && appRouteStatus.value) {
+        return false
+      } else {
+        return route.path != '/'
+      }
     })
+    const closeApp = () => {
+      appRouteStatus.value = true
+      setTimeout(() => {
+        appRouteStatus.value = false
+      }, 600)
+    }
     return {
+      closeApp,
       routeStatus,
       lockStatus: computed(() => store.state.lockStatus)
     }
@@ -39,7 +51,8 @@ export default defineComponent({
   methods: {
     beforeEnter(el: HTMLElement) {
       let getVariables = GetVar(variables)
-      let routeName = this.$route.matched[0].name
+      console.log(this.$route)
+      let routeName = this.$route.name || ''
       if (!routeName) return
       let appEl = document.querySelector(`#${String(routeName)}`) as HTMLElement
       let top = getVariables('appHeight') / 2 + appEl.getBoundingClientRect().top
@@ -54,6 +67,7 @@ export default defineComponent({
 .page{
   width: 100%;
   height: 100%;
+  overflow-y: hidden;
 }
 .app-enter-active {
   transition: all .3s ease;

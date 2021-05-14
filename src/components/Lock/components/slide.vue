@@ -14,9 +14,9 @@ import { defineComponent } from 'vue'
 
 const CanvasOptions = {
   pointWidth: 80,
-  pointColor: '#ccc',
+  pointColor: '#fff',
   pointCoreWidth: 10,
-  pointCoreColor: 'rgba(233, 233, 233, 0.8)',
+  pointCoreColor: '#fff',
   columnSpace: 30,
   rowSpace: 30
 }
@@ -44,28 +44,34 @@ export default defineComponent({
   methods: {
     init() {
       const canvas = this.$refs.lockCanvas as HTMLCanvasElement
-      console.log(canvas.height)
       const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
       this.ctx = ctx
       this.canvasWidth = canvas.width
       this.canvasHeight = canvas.height
+      if (this.pointList.length != 9) {
+        for (let i = 0; i < 9; i++) {
+          let { x, y } = this.getPointAxes(i)
+          let newPoint:IPointObj = {
+            x: x,
+            y: y,
+            status: false,
+            value: i
+          }
+          this.pointList.push(newPoint)
+        }
+      }
       this.initView(ctx)
     },
+    /**
+     * 创建底板
+     */
     initView(ctx:CanvasRenderingContext2D) {
       ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
-      for (let i = 0; i < 9; i++) {
-        let { x, y } = this.getPointAxes(i)
-        let newPoint:IPointObj = {
-          x: x,
-          y: y,
-          status: false,
-          value: i
-        }
-        this.pointList.push(newPoint)
-        this.createPoint(ctx, newPoint)
-      }
+      this.pointList.forEach(item => {
+        this.createPoint(ctx, item)
+      })
     },
-    createPoint(ctx: CanvasRenderingContext2D, obj: IPointObj) {
+    createPoint(ctx: CanvasRenderingContext2D, obj: IPointObj): void {
       ctx.beginPath()
       ctx.arc(obj.x, obj.y, CanvasOptions.pointWidth / 2 - 1, 0, Math.PI * 2, true)
       ctx.strokeStyle = CanvasOptions.pointColor
@@ -76,16 +82,20 @@ export default defineComponent({
       ctx.fillStyle = CanvasOptions.pointCoreColor
       ctx.fill()
     },
-    getPointAxes(index: number) {
+    getPointAxes(index: number): { x: number; y: number } {
       let res = {
         x: CanvasOptions.pointWidth * (index % 3) + CanvasOptions.columnSpace * (index % 3) + CanvasOptions.pointWidth / 2,
         y: CanvasOptions.pointWidth * Math.floor(index / 3) + CanvasOptions.rowSpace * Math.floor(index / 3) + CanvasOptions.pointWidth / 2
       }
       return res
     },
-    canvasMove(e: TouchEvent) {
+    /**
+     * 滑动
+     */
+    canvasMove(e: TouchEvent): void {
       this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight) // 清空画布
       this.ctx.save()
+      this.initView(this.ctx)
     },
     op() {
       this.$emit('openLock')

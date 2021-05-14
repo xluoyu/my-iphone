@@ -58,7 +58,7 @@ export default defineComponent({
     background-color: transparent;
   }
   p{
-    font-size: 14px;
+    font-size: 12px;
     color: #fff;
     text-align: center;
     line-height: @appNameHeight;

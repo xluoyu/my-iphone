@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 // import routerConfig from './config'
 // import Layout from '../layout/index.vue'
 
@@ -27,36 +27,38 @@ export const constantRoutes = [
   {
     path: '/alipay',
     component: ():Promise<typeof import('*.vue')> => import('@/views/alipay/layout.vue'),
-    redirect: '/alipay/index',
     name: 'alipay',
-    children: [
-      {
-        path: 'index',
-        component: ():Promise<typeof import('*.vue')> => import('@/views/alipay/children/home.vue')
-      }
-    ]
+    meta: {
+      type: 'app'
+    }
+    // children: [
+    //   {
+    //     path: 'index',
+    //     component: ():Promise<typeof import('*.vue')> => import('@/views/alipay/children/home.vue')
+    //   }
+    // ]
   },
   {
     path: '/settings',
     component: ():Promise<typeof import('*.vue')> => import('@/views/settings/layout.vue'),
-    redirect: '/settings/index',
+    // redirect: '/settings/index',
     name: 'settings',
     children: [
       {
-        path: 'index',
+        path: '',
         component: ():Promise<typeof import('*.vue')> => import('@/views/settings/children/home.vue'),
-        name: 'settings-Home'
+        name: 'settings'
       }
     ]
-  },
-  {
-    path: '/:w+',
-    redirect: '/'
   }
+  // {
+  //   path: '/:w+',
+  //   redirect: '/'
+  // }
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes: constantRoutes
 })
 

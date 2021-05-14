@@ -36,7 +36,7 @@ export default defineComponent({
 
 <style lang="less" scoped>
 .app{
-  font-size: 14px;
+  font-size: 12px;
   color: #fff;
   text-align: center;
   height: fit-content;

@@ -1,31 +1,27 @@
 <template>
-  <div>
-    <Close />
+  <div class="control">
+    <!-- <Close />
     <router-view></router-view>
     <div class="tarbar">
       asdasd
-    </div>
+    </div> -->
+    <!-- 这是顶层 -->
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Close from '@/components/Close/index.vue'
+// import Close from '@/components/Close/index.vue'
 export default defineComponent({
-  components: {
-    Close
-  },
-  setup() {
-    return {}
-  }
 })
 </script>
 
 <style scoped>
-.tarbar{
+.control{
   position: fixed;
   top: 0;
   left: 0;
-  background: skyblue
+  z-index: 99;
+  /* background: skyblue */
 }
 </style>

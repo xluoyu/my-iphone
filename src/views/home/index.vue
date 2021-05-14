@@ -49,7 +49,8 @@ export default defineComponent({
   height: 100%;
   background: url(https://z3.ax1x.com/2021/04/28/gPPUFx.jpg) no-repeat;
   background-size: cover;
-  overflow: auto;
+  overflow-y: hidden;
+  overflow-x: auto;
 }
 .my-swipe{
   height: calc(100% - 80px);

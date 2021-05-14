@@ -12,9 +12,9 @@ export interface state {
 const store = createStore({
   state() {
     return {
-      myAppIds: ['weather', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock'],
-      lockStatus: true,
-      lockType: ILockType.Slide,
+      myAppIds: ['weather', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock'],
+      lockStatus: false,
+      lockType: ILockType.Number,
       lockNumberPwd: '147258'
     }
   },

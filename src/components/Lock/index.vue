@@ -60,7 +60,7 @@ export default defineComponent({
       windowHeight: 667,
       blurNum: 0,
       transition: 0,
-      lockStep: 'slide'
+      lockStep: 'normal'
     }
   },
   computed: {
@@ -95,7 +95,7 @@ export default defineComponent({
       }
       let endFn = ():void => {
         this.transition = 0.3
-        if (diffY > this.windowHeight * 0.4) {
+        if (diffY > this.windowHeight * 0.2) {
           diffY = this.windowHeight
         } else {
           diffY = 0
@@ -152,17 +152,18 @@ export default defineComponent({
   height: 100%;
   overflow: hidden;
   .top{
-    font-size: 14px;
+    font-size: 16px;
     color: #fff;
     line-height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 10px auto 30px;
+    margin: 30px auto 30px;
   }
 }
 .time-box{
-  filter: drop-shadow(2px 4px 6px rgba(0,0,0,.5));
+  -webkit-filter: drop-shadow(2px 2px 10px rgba(0,0,0,.5));
+  filter: drop-shadow(2px 2px 10px rgba(0,0,0,.5));
   color: white;
   display: flex;
   flex-direction: column;
@@ -170,14 +171,14 @@ export default defineComponent({
   align-items: center;
   h2{
     font-weight: normal;
-    font-size: 48px;
+    font-size: 60px;
   }
   p{
     font-size: 20px;
   }
   .tips{
     width: 80%;
-    font-size: 14px;
+    font-size: 16px;
     text-align: center;
     margin-top: 70px;
   }
