@@ -60,7 +60,7 @@ export default defineComponent({
       windowHeight: 667,
       blurNum: 0,
       transition: 0,
-      lockStep: 'normal'
+      lockStep: 'slide'
     }
   },
   computed: {

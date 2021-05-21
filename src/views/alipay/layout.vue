@@ -1,11 +1,5 @@
 <template>
   <div class="control">
-    <!-- <Close />
-    <router-view></router-view>
-    <div class="tarbar">
-      asdasd
-    </div> -->
-    <!-- 这是顶层 -->
   </div>
 </template>
 

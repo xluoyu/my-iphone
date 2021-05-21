@@ -8,7 +8,9 @@
     </transition>
     <transition name="fade">
       <!-- 微前端组件 -->
-      <div id="routerView" v-show="fade">555</div>
+      <div id="routerView" v-show="fade">
+        系统加载中...
+      </div>
     </transition>
   </div>
 </template>

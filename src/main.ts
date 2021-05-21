@@ -11,7 +11,7 @@ import { registerMicroApps, start } from 'qiankun'
 registerMicroApps([
   {
     name: 'alipay',
-    entry: 'http://192.168.0.170:3001',
+    entry: 'http://192.168.0.170:1688',
     container: '#routerView',
     activeRule: '/alipay'
   }

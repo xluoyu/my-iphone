@@ -14,7 +14,7 @@ const store = createStore({
     return {
       myAppIds: ['weather', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock'],
       lockStatus: false,
-      lockType: ILockType.Number,
+      lockType: ILockType.Slide,
       lockNumberPwd: '147258'
     }
   },
