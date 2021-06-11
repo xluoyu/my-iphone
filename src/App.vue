@@ -51,13 +51,18 @@ export default defineComponent({
   methods: {
     beforeEnter(el: HTMLElement) {
       let getVariables = GetVar(variables)
-      console.log(this.$route)
-      let routeName = this.$route.name || ''
+      let routeName = this.$route.matched[0].name || ''
       if (!routeName) return
       let appEl = document.querySelector(`#${String(routeName)}`) as HTMLElement
       let top = getVariables('appHeight') / 2 + appEl.getBoundingClientRect().top
       let left = getVariables('appWidth') / 2 + appEl.getBoundingClientRect().left
       el.style.transformOrigin = `${left}px ${top}px`
+
+      // this.$store.commit('changeRouterHistory', {
+      //   type: 'add',
+      //   appName: routeName,
+      //   value: []
+      // })
     }
   }
 })
@@ -73,7 +78,7 @@ export default defineComponent({
   transition: all .3s ease;
 }
 .app-leave-active {
-  transition: all .5s ease;
+  transition: all .4s ease;
 }
 .app-enter-from {
   opacity: 0;

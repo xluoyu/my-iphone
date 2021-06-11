@@ -1,11 +1,22 @@
 import {
   Cell,
   CellGroup,
-  Icon
+  Icon,
+  Notify,
+  Popup,
+  Toast,
+  Picker
 } from 'vant'
 
-export default (app: any):void => {
-  app.use(Cell)
-    .use(CellGroup)
-    .use(Icon)
+export default {
+  install: (app: any):void => {
+    app.use(Cell)
+      .use(CellGroup)
+      .use(Icon)
+      .use(Notify)
+      .use(Popup)
+      .use(Picker)
+      .use(Toast)
+  }
 }
+

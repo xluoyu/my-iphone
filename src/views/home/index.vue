@@ -2,9 +2,11 @@
   <div class="container" :style="`background-position-x: ${containerBgX}%;transition: background ${containerBgDuration}s;`">
     <div class="swiper-container my-swipe">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="(item, index) in appsList" :key="index">
+        <div class="swiper-slide" v-for="(item, index) in appsList" :key="index" @dragover="(e) => e.preventDefault()">
           <div class="grid-box">
-            <component :is="app.component" :app="app" v-for="app in item" :key="app.id" :style="app.style" />
+            <Draggable v-for="app in item" :key="app.id" :style="app.style">
+              <component :is="app.component" :app="app" />
+            </Draggable>
           </div>
         </div>
       </div>
@@ -19,26 +21,22 @@ import { defineComponent } from 'vue'
 import Dock from '@/components/Dock/index.vue'
 import useAppList from './hooks/useAppList'
 import useSwiper from './hooks/useSwiper'
+import Draggable from './components/draggable.vue'
 
 export default defineComponent({
   components: {
-    Dock
+    Dock,
+    Draggable
   },
   setup() {
-    const { appsList } = useAppList()
-    const { containerBgX, containerBgDuration } = useSwiper()
+    let { appsList } = useAppList()
+    let { containerBgX, containerBgDuration } = useSwiper()
 
     return {
       appsList,
       containerBgX,
       containerBgDuration
     }
-  },
-  data() {
-    return {
-    }
-  },
-  methods: {
   }
 })
 </script>

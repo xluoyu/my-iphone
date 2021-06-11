@@ -11,9 +11,13 @@ import { registerMicroApps, start } from 'qiankun'
 registerMicroApps([
   {
     name: 'alipay',
-    entry: 'http://192.168.0.170:1688',
+    entry: 'http://192.168.0.172:1688',
     container: '#routerView',
-    activeRule: '/alipay'
+    activeRule: '/alipay',
+    props: {
+      slogan: 'Hello Qiankun',
+      store
+    }
   }
 ])
 
@@ -22,6 +26,6 @@ start()
 const app = createApp(App)
 app.use(router)
 app.use(store)
-initVant(app)
+app.use(initVant)
 
 app.mount('#app')

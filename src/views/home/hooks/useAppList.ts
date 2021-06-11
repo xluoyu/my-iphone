@@ -14,10 +14,11 @@ const useAppList = ():IUseAppList => {
   const list = computed(() => store.getters.myAppList as IApp[])
   const appsList = ref<IApp[][]>([[]])
 
-  onMounted(() => {
+  const init = () => {
     const swiperSlideEl = document.querySelector('.grid-box')
     if (!swiperSlideEl) return
-    const clientHeight = swiperSlideEl.clientHeight
+    const clientHeight = swiperSlideEl?.clientHeight || 0
+
     let lines = Math.floor(clientHeight / px(84 + 8)) // 最多有几行
     // 判断剩余空间是否可容纳一行不含加边距的元素
     let sur = clientHeight - lines * px(84 + 8)
@@ -27,7 +28,7 @@ const useAppList = ():IUseAppList => {
     const columns = 4
     let index = 0
     let curItemNumber = 0
-
+    appsList.value = [[]]
     list.value.forEach((item, i) => {
       switch (item.type) {
         case IItemKey.App:
@@ -54,6 +55,13 @@ const useAppList = ():IUseAppList => {
         }
       }
     })
+  }
+
+  onMounted(() => {
+    window.addEventListener('resize', () => {
+      init()
+    })
+    init()
   })
 
   return {

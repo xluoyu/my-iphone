@@ -1,21 +1,44 @@
 <template>
   <div class="container">
-    <div class="header">{{ title }}</div>
-    <router-view class="main"></router-view>
+    <div :class="`header ${style}`">
+      <div class="back" v-if="hasChild" @click="back"><van-icon name="arrow-left" /></div>
+      {{ title }}
+    </div>
+    <div class="main">
+      <router-view @changeTitle="changeTitle"></router-view>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { useRoute } from 'vue-router'
-import { computed, defineComponent } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { computed, defineComponent, ref, watch } from 'vue'
 
 export default defineComponent({
   setup() {
     const route = useRoute()
+    const router = useRouter()
+    const back = () => {
+      router.go(-1)
+    }
+    const title = ref(route.meta.title)
+
+    watch(() => route.meta.title, () => {
+      title.value = route.meta.title || ''
+    })
+    const changeTitle = (value:string) => {
+      title.value = value
+    }
 
     return {
-      title: computed(() => route.meta.title)
+      back,
+      changeTitle,
+      title,
+      hasChild: computed(() => route.meta.back),
+      style: computed(() => route.meta.style || 'white')
     }
+  },
+  methods: {
   }
 })
 </script>
@@ -33,7 +56,6 @@ export default defineComponent({
   box-sizing: border-box;
   font-size: 16px;
   line-height: 40px;
-  text-indent: 10px;
   background: rgba(255, 255, 255, .8);
   backdrop-filter: blur(4px);
   position: fixed;
@@ -41,6 +63,21 @@ export default defineComponent({
   left: 0;
   z-index: 50;
   text-align: center;
+  .back{
+    width: 40px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &.black{
+    background: rgb(61, 60, 60, .4);
+    color: #fff;
+    border-bottom: 1px solid #444;
+  }
 }
 .main{
   padding-top: 40px;

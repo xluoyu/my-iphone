@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="top">手势解锁</div>
-    <SlideLock :password="password" @cb="lockCb" />
+    <SlideLock :password="password" @callback="lockCb" />
     <div class="handle">
       <div @click="op">紧急操作</div>
       <div @click="cancel">取消</div>
@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import SlideLock from '@/components/SlideLock/index.vue'
+import SlideLock from './slideLock.vue'
 
 export default defineComponent({
   components: {

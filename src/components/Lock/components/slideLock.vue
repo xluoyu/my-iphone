@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent } from 'vue'
 
 const CanvasOptions = {
   pointWidth: 80,
@@ -25,16 +25,12 @@ interface IPointObj {
 
 export default defineComponent({
   props: {
-    type: {
-      type: String as PropType<'check' | 'set'>,
-      default: 'check'
-    },
     password: {
       type: String,
       default: ''
     }
   },
-  emits: ['cb'],
+  emits: ['callback'],
   data() {
     const pointList:IPointObj[] = []
     const moveArr:number[] = []
@@ -115,7 +111,7 @@ export default defineComponent({
           this.ctx.lineTo(this.pointList[v - 1].x, this.pointList[v - 1].y)
         }
       })
-      if (follow) {
+      if (follow && this.moveArr.length) {
         this.ctx.lineTo(x, y)
       }
       this.ctx.stroke()
@@ -148,16 +144,14 @@ export default defineComponent({
       this.drawLine(x, y, true)
     },
     canvasMoveEnd() {
-      let res = this.moveArr.join('') == this.password
-      if (this.type == 'set') {
-        res = true
-      }
+      let moveStr = this.moveArr.join('')
+      let res = this.password ? moveStr == this.password : true
       this.drawLine(0, 0, false, res)
+      this.$emit('callback', moveStr, res)
       this.moveArr = []
-      this.$emit('cb', this.moveArr.join(''), res)
       setTimeout(() => {
         this.init()
-      }, 1000)
+      }, 300)
     }
   }
 })

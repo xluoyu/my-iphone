@@ -17,8 +17,8 @@ enum IItemKey {
 }
 
 enum IColorType {
-  white='#fff',
-  black='#515151'
+  white='#515151',
+  black='#fff'
 }
 
 enum ILockType {

@@ -35,6 +35,7 @@ module.exports = {
     'vue/no-v-html': 'off',
     'vue/html-self-closing': 0,
     'vue/attributes-order': 0,
+    'vue/no-v-model-argument': 0,
     'accessor-pairs': 2,
     'arrow-spacing': [2, {
       'before': true,

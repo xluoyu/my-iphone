@@ -12,23 +12,23 @@
         <p class="tips">{{ tipsContent }}</p>
       </div>
     </div>
-    <NumberLock v-if="lockStep == LockType.Number" @openLock="openLock" @cancel="cancel" />
-    <SlideLock v-if="lockStep == LockType.Slide" @openLock="openLock" @cancel="cancel" />
+    <NumberView v-if="lockStep == LockType.Number" @openLock="openLock" @cancel="cancel" />
+    <SlideView v-if="lockStep == LockType.Slide" @openLock="openLock" @cancel="cancel" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { hitokoto } from '@/api'
-import NumberLock from './components/number.vue'
-import SlideLock from './components/slide.vue'
+import NumberView from './components/number.vue'
+import SlideView from './components/slide.vue'
 import { ILockType } from '#/index'
 const weekArr = ['日', '一', '二', '三', '四', '五', '六']
 
 export default defineComponent({
   components: {
-    NumberLock,
-    SlideLock
+    NumberView,
+    SlideView
   },
   setup() {
     let time = ref<string>('')
@@ -60,7 +60,7 @@ export default defineComponent({
       windowHeight: 667,
       blurNum: 0,
       transition: 0,
-      lockStep: 'slide'
+      lockStep: ILockType.Normal
     }
   },
   computed: {

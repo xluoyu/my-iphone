@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
 import { defineComponent, h } from 'vue'
 export default defineComponent({
 
   render() {
-    return h('template', this.$slots.default && this.$slots.default())
+    return h('div', this.$slots.default && this.$slots.default())
   }
 })
 </script>

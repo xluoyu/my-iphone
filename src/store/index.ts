@@ -6,16 +6,30 @@ export interface state {
   myAppIds: string[],
   lockStatus: boolean,
   lockType: ILockType,
-  lockNumberPwd: string
+  lockNumberPwd: string,
+  closeBeforeFn: any,
+  appDragStatus: boolean,
+  routerHistory: {
+    [propName: string]: string[] | undefined
+  }
+}
+
+interface IRouterHandle {
+  type?: string,
+  appName: string,
+  value?: string[] | string
 }
 
 const store = createStore({
   state() {
     return {
-      myAppIds: ['weather', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock'],
+      myAppIds: ['weather', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay'],
       lockStatus: false,
-      lockType: ILockType.Slide,
-      lockNumberPwd: '147258'
+      lockType: ILockType.Number,
+      lockNumberPwd: '147258',
+      closeBeforeFn: null,
+      appDragStatus: false,
+      routerHistory: {}
     }
   },
   getters: {
@@ -29,6 +43,32 @@ const store = createStore({
     },
     changeLockType(state, value:ILockType):void {
       state.lockType = value
+    },
+    changeCloseBeforeFn(state, fn):void {
+      state.closeBeforeFn = fn
+    },
+    changeRouterHistory(state, handle:IRouterHandle) {
+      let routerList = state.routerHistory[handle.appName]
+      switch (handle.type) {
+        case 'add':
+          state.routerHistory[handle.appName] = handle.value as string[]
+          break
+        case 'remove':
+          routerList = undefined
+          break
+        default:
+          routerList?.push(handle.value as string)
+          break
+      }
+    }
+  },
+  actions: {
+    async onCloseBrofreFn(vm) {
+      if (vm.state.closeBeforeFn) {
+        return await vm.state.closeBeforeFn()
+      } else {
+        return true
+      }
     }
   }
 })

@@ -1,5 +1,5 @@
 <template>
-  <div class="app" @click="open" :id="app.key">
+  <div class="app" :id="app.key" @click="open" @touchstart="gotouchstart" @touchend="gotouchend">
     <img :src="app.photo" alt="">
     <p>{{ app.name }}</p>
   </div>
@@ -8,8 +8,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { IApp } from '#/index'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+let timeOutEvent = 0
 export default defineComponent({
   props: {
     app: {
@@ -17,18 +16,33 @@ export default defineComponent({
       default: () => { return {} }
     }
   },
-  setup(props) {
-    const store = useStore()
-    const router = useRouter()
-    const open = ():void => {
-      if (props.app.key == 'clock') {
-        store.commit('changeLock', true)
+  methods: {
+    open() {
+      let appName = this.app.key
+      if (appName == 'clock') {
+        this.$store.commit('changeLock', true)
       } else {
-        router.push({ name: props.app.key })
+        let routeList = this.$store.state.routerHistory[appName]
+        if (routeList && routeList.length) {
+          routeList.forEach((item:string) => {
+            requestAnimationFrame(() => {
+              this.$router.push({ path: item })
+            })
+          })
+        } else {
+          this.$router.push({ name: appName })
+        }
       }
-    }
-    return {
-      open
+    },
+    gotouchstart() {
+      clearTimeout(timeOutEvent)
+      timeOutEvent = setTimeout(() => {
+        timeOutEvent = 0
+        console.log('长按事件')
+      }, 600)
+    },
+    gotouchend() {
+      clearTimeout(timeOutEvent)
     }
   }
 })
