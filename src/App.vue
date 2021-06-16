@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from 'vue'
+import { defineComponent, computed, ref, watch } from 'vue'
 import Home from './views/home/index.vue'
 import { useRoute } from 'vue-router'
 import AppLayout from './layout/AppLayout.vue'
@@ -36,6 +36,10 @@ export default defineComponent({
         return route.path != '/'
       }
     })
+
+    watch(store.state.testList, () => {
+      console.log('testList watch')
+    })
     const closeApp = () => {
       appRouteStatus.value = true
       setTimeout(() => {
@@ -45,24 +49,18 @@ export default defineComponent({
     return {
       closeApp,
       routeStatus,
-      lockStatus: computed(() => store.state.lockStatus)
+      lockStatus: computed(() => store.state.LockStore.lockStatus)
     }
   },
   methods: {
-    beforeEnter(el: HTMLElement) {
+    beforeEnter(el: Element) {
       let getVariables = GetVar(variables)
       let routeName = this.$route.matched[0].name || ''
       if (!routeName) return
-      let appEl = document.querySelector(`#${String(routeName)}`) as HTMLElement
+      let appEl = document.querySelector(`#${String(routeName)}`) as Element
       let top = getVariables('appHeight') / 2 + appEl.getBoundingClientRect().top
       let left = getVariables('appWidth') / 2 + appEl.getBoundingClientRect().left
-      el.style.transformOrigin = `${left}px ${top}px`
-
-      // this.$store.commit('changeRouterHistory', {
-      //   type: 'add',
-      //   appName: routeName,
-      //   value: []
-      // })
+      ;(el as HTMLElement).style.transformOrigin = `${left}px ${top}px`
     }
   }
 })
@@ -73,6 +71,7 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   overflow-y: hidden;
+  user-select: none;
 }
 .app-enter-active {
   transition: all .3s ease;

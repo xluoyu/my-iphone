@@ -1,6 +1,6 @@
 <template>
   <div class="dock">
-    <App v-for="item in appList" :key="item.id" :app="item" />
+    <App v-for="item in appList" :key="item.key" :app="item" />
   </div>
 </template>
 

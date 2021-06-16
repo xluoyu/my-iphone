@@ -1,13 +1,9 @@
-import { IApp, ILockType } from '#/index'
 import { createStore } from 'vuex'
-import appStore from '@/api/app-store'
+import LockStore from './modules/lockStore'
+import AppStore from './modules/appStore'
 
-export interface state {
-  myAppIds: string[],
-  lockStatus: boolean,
-  lockType: ILockType,
-  lockNumberPwd: string,
-  closeBeforeFn: any,
+export interface IState {
+  closeBeforeFn: null | (() => boolean),
   appDragStatus: boolean,
   routerHistory: {
     [propName: string]: string[] | undefined
@@ -21,32 +17,28 @@ interface IRouterHandle {
 }
 
 const store = createStore({
-  state() {
+  state():IState {
     return {
-      myAppIds: ['weather', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay', 'app-store', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay'],
-      lockStatus: false,
-      lockType: ILockType.Number,
-      lockNumberPwd: '147258',
+      // 用于关闭App时触发
       closeBeforeFn: null,
+      // app图标拖动状态
       appDragStatus: false,
+      // 记录每个app的路由
       routerHistory: {}
     }
   },
-  getters: {
-    myAppList({ myAppIds }: state):IApp[] {
-      return myAppIds.map(e => appStore.find(a => a.key == e) as IApp)
-    }
-  },
   mutations: {
-    changeLock(state, value:boolean):void {
-      state.lockStatus = value
-    },
-    changeLockType(state, value:ILockType):void {
-      state.lockType = value
-    },
-    changeCloseBeforeFn(state, fn):void {
+    changeCloseBeforeFn(state:IState, fn):void {
       state.closeBeforeFn = fn
     },
+    changeAppDragStatus(state, value):void {
+      state.appDragStatus = value
+    },
+    /**
+     *
+     * @param state
+     * @param handle
+     */
     changeRouterHistory(state, handle:IRouterHandle) {
       let routerList = state.routerHistory[handle.appName]
       switch (handle.type) {
@@ -63,6 +55,10 @@ const store = createStore({
     }
   },
   actions: {
+    /**
+     * 关闭app时的钩子，需在vuex中配置closeBeforeFn
+     * @return boolean
+     */
     async onCloseBrofreFn(vm) {
       if (vm.state.closeBeforeFn) {
         return await vm.state.closeBeforeFn()
@@ -70,6 +66,10 @@ const store = createStore({
         return true
       }
     }
+  },
+  modules: {
+    LockStore,
+    AppStore
   }
 })
 

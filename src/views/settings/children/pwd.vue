@@ -38,17 +38,17 @@ export default defineComponent({
       { value: ILockType.Number, text: '数字密码' },
       { value: ILockType.Slide, text: '滑动解锁' }
     ]
-    let curSelectType = reactive({ value: store.state.lockType, text: (columns.find(e => e.value == store.state.lockType) as IPwdType).text })
+    let curSelectType = reactive({ value: store.state.LockStore.lockType, text: (columns.find(e => e.value == store.state.LockStore.lockType) as IPwdType).text })
     const onConfirm = (obj:IPwdType) => {
       curSelectType.value = obj.value
       curSelectType.text = obj.text
-      store.commit('changeLockType', curSelectType.value)
+      store.commit('LockStore/changeLockType', curSelectType.value)
       store.commit('changeCloseBeforeFn', () => {
         if (curSelectType.value == ILockType.Normal) {
           return true
         } else {
           console.log('还没有设置密码')
-          return true
+          return false
         }
       })
       togglePopup()

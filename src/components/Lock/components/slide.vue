@@ -12,16 +12,23 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import SlideLock from './slideLock.vue'
+import { mapState } from 'vuex'
+import { IState } from '@/store/modules/lockStore'
 
 export default defineComponent({
   components: {
     SlideLock
   },
   emits: ['openLock', 'cancel'],
-  data() {
-    return {
-      password: '26845'
-    }
+  // data() {s
+  //   return {
+  //     password: '26845'
+  //   }
+  // },
+  computed: {
+    ...mapState('LockStore', {
+      password: (state) => (state as IState).lockNumberPwd
+    })
   },
   methods: {
     lockCb(pwd: string, res:boolean) {

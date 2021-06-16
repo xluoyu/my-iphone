@@ -3,7 +3,7 @@ import router from './routers/index'
 import store from './store/index'
 import App from './App.vue'
 import './styles/base.less'
-import 'amfe-flexible'
+// import 'amfe-flexible'
 import initVant from './plugins/vant'
 
 import { registerMicroApps, start } from 'qiankun'

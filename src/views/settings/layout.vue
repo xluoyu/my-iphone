@@ -10,37 +10,27 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { useRoute, useRouter } from 'vue-router'
-import { computed, defineComponent, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
-export default defineComponent({
-  setup() {
-    const route = useRoute()
-    const router = useRouter()
-    const back = () => {
-      router.go(-1)
-    }
-    const title = ref(route.meta.title)
+const route = useRoute()
+const router = useRouter()
+const back = () => {
+  router.go(-1)
+}
+const title = ref(route.meta.title)
 
-    watch(() => route.meta.title, () => {
-      title.value = route.meta.title || ''
-    })
-    const changeTitle = (value:string) => {
-      title.value = value
-    }
-
-    return {
-      back,
-      changeTitle,
-      title,
-      hasChild: computed(() => route.meta.back),
-      style: computed(() => route.meta.style || 'white')
-    }
-  },
-  methods: {
-  }
+watch(() => route.meta.title, () => {
+  title.value = route.meta.title || ''
 })
+const changeTitle = (value:string) => {
+  title.value = value
+}
+
+const hasChild = computed(() => route.meta.back)
+const style = computed(() => route.meta.style || 'white')
+
 </script>
 
 <style lang="less" scoped>

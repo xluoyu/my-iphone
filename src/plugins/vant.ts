@@ -5,7 +5,8 @@ import {
   Notify,
   Popup,
   Toast,
-  Picker
+  Picker,
+  Dialog
 } from 'vant'
 
 export default {
@@ -17,6 +18,7 @@ export default {
       .use(Popup)
       .use(Picker)
       .use(Toast)
+      .use(Dialog)
   }
 }
 

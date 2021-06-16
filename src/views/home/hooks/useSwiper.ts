@@ -6,16 +6,18 @@ Swiper.use([Pagination])
 
 interface IuseSwiper {
   containerBgX: Ref<number>,
-  containerBgDuration: Ref<number>
+  containerBgDuration: Ref<number>,
+  swiperMain: any
 }
 
 const useSwiper = ():IuseSwiper => {
   const containerBgX = ref<number>(0)
   const containerBgDuration = ref<number>(0)
+  let swiperMain = ref<any>(null)
 
   onMounted(() => {
     nextTick(() => {
-      new Swiper('.my-swipe', {
+      swiperMain.value = new Swiper('.my-swipe', {
         pagination: {
           el: '.swiper-pagination'
         },
@@ -33,12 +35,14 @@ const useSwiper = ():IuseSwiper => {
           }
         }
       })
+      console.log(swiperMain)
     })
   })
 
   return {
     containerBgX,
-    containerBgDuration
+    containerBgDuration,
+    swiperMain
   }
 }
 

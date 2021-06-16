@@ -1,12 +1,13 @@
 <template>
   <div class="container" :style="`background-position-x: ${containerBgX}%;transition: background ${containerBgDuration}s;`">
+    <div class="closeHandle" @touchend="closeDarg">完成</div>
     <div class="swiper-container my-swipe">
       <div class="swiper-wrapper">
         <div class="swiper-slide" v-for="(item, index) in appsList" :key="index" @dragover="(e) => e.preventDefault()">
           <div class="grid-box">
-            <Draggable v-for="app in item" :key="app.id" :style="app.style">
+            <HandleApp v-for="app in item" :key="app.key" :style="app.style" :app="app">
               <component :is="app.component" :app="app" />
-            </Draggable>
+            </HandleApp>
           </div>
         </div>
       </div>
@@ -16,29 +17,28 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
 import Dock from '@/components/Dock/index.vue'
+import { nextTick, watch } from 'vue'
+import HandleApp from './components/handleApp.vue'
 import useAppList from './hooks/useAppList'
 import useSwiper from './hooks/useSwiper'
-import Draggable from './components/draggable.vue'
+import { useStore } from 'vuex'
 
-export default defineComponent({
-  components: {
-    Dock,
-    Draggable
-  },
-  setup() {
-    let { appsList } = useAppList()
-    let { containerBgX, containerBgDuration } = useSwiper()
+const { appsList } = useAppList()
+const { containerBgX, containerBgDuration, swiperMain } = useSwiper()
 
-    return {
-      appsList,
-      containerBgX,
-      containerBgDuration
-    }
-  }
+watch(appsList, () => {
+  // 更新swiper
+  nextTick(() => {
+    swiperMain.value?.update()
+  })
 })
+
+const closeDarg = () => {
+  const store = useStore()
+  store.commit('changeAppDragStatus', false)
+}
 </script>
 
 <style lang="less" scoped>
@@ -49,6 +49,7 @@ export default defineComponent({
   background-size: cover;
   overflow-y: hidden;
   overflow-x: auto;
+  position: relative;
 }
 .my-swipe{
   height: calc(100% - 80px);
@@ -78,5 +79,13 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.closeHandle{
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  font-size: 14px;
+  background: #fff;
 }
 </style>

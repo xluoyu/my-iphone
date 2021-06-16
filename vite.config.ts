@@ -3,7 +3,7 @@ import styleImport from 'vite-plugin-style-import'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
 import autoprefixer from 'autoprefixer'
-import pxtorem from 'postcss-pxtorem'
+// import pxtorem from 'postcss-pxtorem'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -21,11 +21,11 @@ export default defineConfig({
     },
     postcss: {
       plugins: [
-        autoprefixer(),
-        pxtorem({
-          rootValue: 37.5,
-          propList: ['*']
-        })
+        autoprefixer()
+        // pxtorem({
+        //   rootValue: 37.5,
+        //   propList: ['*']
+        // })
       ]
     }
   },

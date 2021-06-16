@@ -19,7 +19,7 @@ export default defineComponent({
   setup() {
     const store = useStore()
     return {
-      password: computed(() => store.state.lockNumberPwd)
+      password: computed(() => store.state.LockStore.lockNumberPwd)
     }
   },
   methods: {

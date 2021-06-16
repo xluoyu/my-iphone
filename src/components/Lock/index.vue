@@ -105,9 +105,9 @@ export default defineComponent({
         if (this.diffY) {
           setTimeout(() => {
             if (this.$store.state.lockType == ILockType.Normal) {
-              this.$store.commit('changeLock', false)
+              this.$store.commit('LockStore/changeLock', false)
             } else {
-              this.lockStep = this.$store.state.lockType
+              this.lockStep = this.$store.state.LockStore.lockType
             }
           }, 100)
         }
@@ -119,7 +119,7 @@ export default defineComponent({
     },
     openLock() {
       setTimeout(() => {
-        this.$store.commit('changeLock', false)
+        this.$store.commit('LockStore/changeLock', false)
         this.lockStep = ILockType.Normal
       }, 100)
     },

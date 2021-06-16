@@ -4,9 +4,9 @@
       <div :class="{garden:true, fill:inputList.length >= item}" v-for="item in 6" :key="item"></div>
     </div>
     <div class="keyboard">
-      <div class="btn" v-for="item in keys" :key="item" @touchstart="ketDown(item)">{{ item }}</div>
+      <div class="btn" v-for="item in keys" :key="item" @touchend="ketDown(item)">{{ item }}</div>
       <div class="btn empty"></div>
-      <div class="btn" @touchstart="ketDown(0)">0</div>
+      <div class="btn" @touchend="ketDown(0)">0</div>
       <div class="btn empty"></div>
     </div>
     <div class="handle">

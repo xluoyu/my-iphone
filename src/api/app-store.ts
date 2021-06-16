@@ -37,7 +37,7 @@ const appStore:IApp[] = [
     name: 'phone'
   },
   {
-    key: 'app-store',
+    key: 'appStore',
     type: IItemKey.App,
     photo: 'https://z3.ax1x.com/2021/05/06/gQZQde.png',
     name: 'App Store'
@@ -68,6 +68,79 @@ const appStore:IApp[] = [
   },
   {
     key: 'clock',
+    type: IItemKey.App,
+    photo: 'https://z3.ax1x.com/2021/05/06/glUSTH.png',
+    name: '锁屏'
+  },
+  // 测试用
+  {
+    key: 'camera2',
+    type: IItemKey.App,
+    photo: 'https://z3.ax1x.com/2021/05/06/gQZuqO.png',
+    name: 'camera'
+  },
+  {
+    key: 'calculator2',
+    type: IItemKey.App,
+    photo: 'https://z3.ax1x.com/2021/05/06/gQZnsK.png',
+    name: 'calculator'
+  },
+  {
+    key: 'messages2',
+    type: IItemKey.App,
+    photo: 'https://z3.ax1x.com/2021/05/06/gQZmM6.png',
+    name: 'messages'
+  },
+  {
+    key: 'clock2',
+    type: IItemKey.App,
+    photo: 'https://z3.ax1x.com/2021/05/06/glUSTH.png',
+    name: '锁屏'
+  },
+  {
+    key: 'camera3',
+    type: IItemKey.App,
+    photo: 'https://z3.ax1x.com/2021/05/06/gQZuqO.png',
+    name: 'camera'
+  },
+  {
+    key: 'calculator3',
+    type: IItemKey.App,
+    photo: 'https://z3.ax1x.com/2021/05/06/gQZnsK.png',
+    name: 'calculator'
+  },
+  {
+    key: 'messages3',
+    type: IItemKey.App,
+    photo: 'https://z3.ax1x.com/2021/05/06/gQZmM6.png',
+    name: 'messages'
+  },
+  {
+    key: 'clock3',
+    type: IItemKey.App,
+    photo: 'https://z3.ax1x.com/2021/05/06/glUSTH.png',
+    name: '锁屏'
+  },
+  {
+    key: 'camera4',
+    type: IItemKey.App,
+    photo: 'https://z3.ax1x.com/2021/05/06/gQZuqO.png',
+    name: 'camera'
+  },
+  {
+    key: 'calculator4',
+    type: IItemKey.App,
+    photo: 'https://z3.ax1x.com/2021/05/06/gQZnsK.png',
+    name: 'calculator'
+  },
+  {
+    key: 'messages4',
+    type: IItemKey.App,
+    photo: 'https://z3.ax1x.com/2021/05/06/gQZmM6.png',
+    name: 'messages'
+  },
+  {
+    key: 'clock4',
     type: IItemKey.App,
     photo: 'https://z3.ax1x.com/2021/05/06/glUSTH.png',
     name: '锁屏'

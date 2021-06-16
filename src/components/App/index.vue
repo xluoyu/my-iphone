@@ -19,19 +19,33 @@ export default defineComponent({
   methods: {
     open() {
       let appName = this.app.key
-      if (appName == 'clock') {
-        this.$store.commit('changeLock', true)
-      } else {
-        let routeList = this.$store.state.routerHistory[appName]
-        if (routeList && routeList.length) {
-          routeList.forEach((item:string) => {
-            requestAnimationFrame(() => {
-              this.$router.push({ path: item })
+      switch (appName) {
+        case 'clock':
+          this.$store.commit('LockStore/changeLock', true)
+          break
+        case 'camera':
+          let input = document.createElement('input')
+          input.setAttribute('type', 'file')
+          input.setAttribute('accept', 'image/*')
+          input.setAttribute('capture', 'camera')
+          input.click()
+          break
+        default:
+          let routeList = this.$store.state.routerHistory[appName]
+          if (routeList && routeList.length) {
+            routeList.forEach((item:string) => {
+              requestAnimationFrame(() => {
+                this.$router.push({ path: item })
+              })
             })
-          })
-        } else {
-          this.$router.push({ name: appName })
-        }
+          } else {
+            try {
+              this.$router.push({ name: appName })
+            } catch (error) {
+              this.$toast('这个还没写/(ㄒoㄒ)/~~')
+            }
+          }
+          break
       }
     },
     gotouchstart() {

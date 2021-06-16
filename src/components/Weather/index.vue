@@ -8,7 +8,7 @@
 <script lang="ts">
 import { defineComponent, nextTick, onMounted } from 'vue'
 import { addScript } from '@/utils'
-import { px } from '@/utils/index'
+// import { px } from '@/utils/index'
 import variables from '@/styles/variables.less'
 import { GetVar } from '@/utils/index'
 declare global {
@@ -23,7 +23,8 @@ export default defineComponent({
         CONFIG: {
           'layout': '1',
           'width': '337',
-          'height': px(getVariables('appHeight') * 2 + getVariables('gridRowGap') - getVariables('appNameHeight')) + '',
+          'height': getVariables('appHeight') * 2 + getVariables('gridRowGap') - getVariables('appNameHeight') + '',
+          // 'height': '152',
           'background': '1',
           'dataColor': 'FFFFFF',
           'modules': '10',

@@ -42,6 +42,7 @@ export default defineComponent({
         this.curPassword = value
         this.$emit('changeTitle', '再次设置密码')
       } else if (res && this.curPassword) {
+        this.$store.commit('LockStore/changeLockPwd', this.curPassword)
         this.$toast.success('密码设置成功')
         setTimeout(() => {
           this.$router.go(-1)

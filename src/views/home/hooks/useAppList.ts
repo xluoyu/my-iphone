@@ -1,4 +1,4 @@
-import { onMounted, computed, ref, markRaw, Ref } from 'vue'
+import { onMounted, computed, ref, markRaw, Ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { IApp, IItemKey } from '#/index'
 import { px } from '@/utils/index'
@@ -11,7 +11,7 @@ interface IUseAppList {
 
 const useAppList = ():IUseAppList => {
   const store = useStore()
-  const list = computed(() => store.getters.myAppList as IApp[])
+  const list = computed(() => store.getters['AppStore/myAppList'] as IApp[])
   const appsList = ref<IApp[][]>([[]])
 
   const init = () => {
@@ -56,6 +56,13 @@ const useAppList = ():IUseAppList => {
       }
     })
   }
+
+  watch(
+    store.state.AppStore.myAppIds,
+    () => {
+      console.log('监听到改变')
+      init()
+    })
 
   onMounted(() => {
     window.addEventListener('resize', () => {
