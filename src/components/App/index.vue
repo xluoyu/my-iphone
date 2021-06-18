@@ -8,6 +8,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { IApp } from '#/index'
+import { mapState } from 'vuex'
 let timeOutEvent = 0
 export default defineComponent({
   props: {
@@ -16,8 +17,14 @@ export default defineComponent({
       default: () => { return {} }
     }
   },
+  computed: {
+    ...mapState({
+      appDragStatus: state => (state as any).appDragStatus
+    })
+  },
   methods: {
     open() {
+      if (this.appDragStatus) return
       let appName = this.app.key
       switch (appName) {
         case 'clock':
@@ -48,11 +55,14 @@ export default defineComponent({
           break
       }
     },
+    longTap() {
+      this.$store.commit('changeAppDragStatus', true)
+    },
     gotouchstart() {
       clearTimeout(timeOutEvent)
       timeOutEvent = setTimeout(() => {
         timeOutEvent = 0
-        console.log('长按事件')
+        this.longTap()
       }, 600)
     },
     gotouchend() {
