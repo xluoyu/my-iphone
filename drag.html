@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+#app{
+  border: 1px solid #eee;
+  width: 500px;
+  height: 800px;
+}
+.red{
+  width: 80px;
+  height: 80px;
+  background-color: red;
+}
+</style>
+<body>
+  <div id="app">
+    <div class="red" draggable="true" ></div>
+  </div>
+</body>
+<script>
+  // const app = document.querySelector('#app')
+  // app.addEventListener('drop', function(e) {
+  //   console.log(e)
+  // })
+  // app.addEventListener('dragover', function(e) {
+  //   e.preventDefault()
+  // })
+
+  const red = document.querySelector('.red')
+  // red.addEventListener('dragstart', function(e) {
+  //     e.dataTransfer.setData('component', '123')
+  //     console.log('拖拽开始')
+  // })
+</script>
+</html>

@@ -47,7 +47,6 @@ export default defineComponent({
   methods: {
     async closeApp() {
       let flag = await store.dispatch('onCloseBrofreFn')
-      console.log(flag)
       if (!flag) return
       if (this.$route.meta.type == 'app') {
         this.fade = false

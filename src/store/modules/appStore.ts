@@ -9,7 +9,7 @@ const LoakStore = {
   namespaced: true,
   state():IState {
     return {
-      myAppIds: ['weather', 'appStore', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay', 'camera2', 'calculator2', 'calculator3', 'messages3', 'clock3', 'camera4', 'calculator4', 'messages4', 'clock4', 'messages2', 'clock2', 'camera3']
+      myAppIds: ['weather', 'appStore', 'photos', 'music', 'camera', 'calculator', 'clock', 'alipay']
     }
   },
   getters: {

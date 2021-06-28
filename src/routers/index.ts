@@ -3,11 +3,11 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Empty from '@/layout/EmptyRouter.vue'
 
 export const constantRoutes = [
-  {
-    path: '/',
-    component: Empty,
-    name: 'home'
-  },
+  // {
+  //   path: '/',
+  //   component: Empty,
+  //   name: 'home'
+  // },
   {
     path: '/alipay',
     component: Empty,

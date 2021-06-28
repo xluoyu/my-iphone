@@ -1,5 +1,14 @@
 <template>
-  <div :class="`app-box ${appDragStatus ? 'shake' : ''} `">
+  <div
+    :class="`app-box ${appDragStatus ? 'shake' : ''} `"
+    draggable
+
+    @dragstart="dragstart"
+    @dragend="dragend"
+    @drag="drag"
+  >
+    <!-- @touchstart="gotouchstart"
+    @touchend="gotouchend" -->
     <van-icon name="clear" class="close" @touchend="clearApp" v-if="appDragStatus" />
     <slot></slot>
   </div>
@@ -10,6 +19,7 @@ import { IApp } from '#/index'
 import { IState } from '@/store/index'
 import { defineComponent, PropType } from 'vue'
 import { mapState } from 'vuex'
+let timeOutEvent = 0
 export default defineComponent({
   props: {
     app: {
@@ -30,6 +40,29 @@ export default defineComponent({
         console.log('开始卸载')
         this.$store.commit('AppStore/removeApp', this.app.key)
       })
+    },
+    longTap() {
+      this.$store.commit('changeAppDragStatus', true)
+    },
+    gotouchstart() {
+      clearTimeout(timeOutEvent)
+      timeOutEvent = setTimeout(() => {
+        timeOutEvent = 0
+        this.longTap()
+      }, 600)
+    },
+    gotouchend() {
+      clearTimeout(timeOutEvent)
+    },
+    dragstart(e) {
+      e.dataTransfer.setData('component', '123')
+      console.log('拖拽开始')
+    },
+    drag() {
+      console.log('拖拽')
+    },
+    dragend() {
+      console.log('拖拽结束')
     }
   }
 })

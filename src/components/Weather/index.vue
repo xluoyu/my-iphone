@@ -17,14 +17,17 @@ declare global {
 
 export default defineComponent({
   setup() {
+    let root = document.getElementsByTagName('html')[0]
+    let test = getComputedStyle(root).getPropertyValue('--appHeight')
+    console.log(test)
     let getVariables = GetVar(variables)
     onMounted(() => {
       window.WIDGET = {
         CONFIG: {
           'layout': '1',
           'width': '337',
-          'height': getVariables('appHeight') * 2 + getVariables('gridRowGap') - getVariables('appNameHeight') + '',
-          // 'height': '152',
+          // 'height': getVariables('appHeight') * 2 + getVariables('gridRowGap') - getVariables('appNameHeight') + '',
+          'height': '152',
           'background': '1',
           'dataColor': 'FFFFFF',
           'modules': '10',

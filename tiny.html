@@ -1,0 +1,71 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Tiny.js DEMO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
+<style>
+html, body, p, div {margin:0;padding:0;}
+</style>
+</head>
+<body>
+  <div id="app">
+    <canvas id="myCanvas"></canvas>
+  </div>
+<script src='https://gw.alipayobjects.com/os/lib/tinyjs/tiny/1.3.1/tiny.js'></script>
+<script>
+  const config = {
+    showFPS: true, // 显示帧频
+    dpi: 1.5, // 分辨率
+    renderOptions: {
+      backgroundColor: 0x2a3145 // 画布背景色
+    },
+    canvasId: 'myCanvas'
+  };
+
+  // 新建App
+  const app = new Tiny.Application(config);
+
+  // 新建场景
+  class StartLayer extends Tiny.Container {
+    constructor() {
+      super();
+
+      // 通过 fromImage 实例化精灵
+      var sprite = Tiny.Sprite.fromImage('https://gw.alipayobjects.com/as/g/tiny/resources/1.0.0/images/logo.png');
+      // 设置精灵的中心点
+      sprite.setAnchor(0.5);
+      // 设置精灵相对画布的位置，此处设置居中
+      sprite.setPosition(Tiny.WIN_SIZE.width / 2, Tiny.WIN_SIZE.height / 2);
+
+      const action = Tiny.MoveTo(2000, Tiny.point(100, 500))
+
+      sprite.runAction(action)
+      const action2 = Tiny.MoveTo(2000, Tiny.point(300, 500))
+
+      action.onComplete = () => {
+        sprite.runAction(action2)
+      }
+      
+      sprite.setEventEnabled(true)
+
+      sprite.on('pointertap', (e) => {
+        sprite.removeActions()
+
+        const scaleAction = Tiny.ScaleBy(150, {scaleX: 1.2, scaleY: 1.2})
+
+        sprite.runAction(scaleAction)
+
+        scaleAction.onComplete = () => {
+          this.removeChild(sprite)
+        }
+      })
+      // 将精灵添加到场景中
+      this.addChild(sprite);
+    }
+  }
+
+  // 启动
+  app.run(new StartLayer());
+</script>
+</body>
+</html>

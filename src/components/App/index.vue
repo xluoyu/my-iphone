@@ -1,15 +1,14 @@
 <template>
-  <div class="app" :id="app.key" @click="open" @touchstart="gotouchstart" @touchend="gotouchend">
+  <div class="app" :id="app.key" @click="open">
     <img :src="app.photo" alt="">
     <p>{{ app.name }}</p>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, h } from 'vue'
 import { IApp } from '#/index'
 import { mapState } from 'vuex'
-let timeOutEvent = 0
 export default defineComponent({
   props: {
     app: {
@@ -34,7 +33,34 @@ export default defineComponent({
           let input = document.createElement('input')
           input.setAttribute('type', 'file')
           input.setAttribute('accept', 'image/*')
-          input.setAttribute('capture', 'camera')
+          input.setAttribute('capture', 'environment')
+          input.addEventListener('change', () => {
+            const reads = new FileReader()
+            let fileDate = input.files ? input.files[0] : null
+            if (!fileDate) return
+            reads.readAsDataURL(fileDate)
+            reads.onload = e => {
+              const imgReander = () => h('img', {
+                src: e?.target?.result,
+                style: {
+                  width: '100%'
+                }
+              })
+              document.body.removeChild(input)
+              this.$dialog.confirm({
+                title: '图片预览',
+                message: imgReander,
+                confirmButtonText: '保存',
+                cancelButtonText: '取消'
+              }).then(() => {
+                console.log('确定')
+                this.$toast.success('保存成功')
+              }).catch(() => {
+                console.log('关闭')
+              })
+            }
+          })
+          document.body.append(input)
           input.click()
           break
         default:
@@ -54,19 +80,6 @@ export default defineComponent({
           }
           break
       }
-    },
-    longTap() {
-      this.$store.commit('changeAppDragStatus', true)
-    },
-    gotouchstart() {
-      clearTimeout(timeOutEvent)
-      timeOutEvent = setTimeout(() => {
-        timeOutEvent = 0
-        this.longTap()
-      }, 600)
-    },
-    gotouchend() {
-      clearTimeout(timeOutEvent)
     }
   }
 })
@@ -113,6 +126,15 @@ export default defineComponent({
     line-height: 24px;
     overflow: hidden;
     text-overflow : clip;
+  }
+  .camera{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    opacity: 0;
   }
 }
 </style>
