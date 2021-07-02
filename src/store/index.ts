@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import LockStore from './modules/lockStore'
 import AppStore from './modules/appStore'
+import router from '@/routers'
 
 export interface IState {
   closeBeforeFn: null | (() => boolean),
@@ -43,10 +44,17 @@ const store = createStore({
       let routerList = state.routerHistory[handle.appName]
       switch (handle.type) {
         case 'add':
-          state.routerHistory[handle.appName] = handle.value as string[]
+          if (state.routerHistory[handle.appName]) {
+            state.routerHistory[handle.appName]?.push(handle.value as string)
+          } else {
+            state.routerHistory[handle.appName] = [handle.value as string]
+          }
           break
         case 'remove':
           routerList = undefined
+          break
+        case 'replace':
+          state.routerHistory[handle.appName] = [handle.value as string]
           break
         default:
           routerList?.push(handle.value as string)

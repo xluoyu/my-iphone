@@ -11,3 +11,10 @@ export const hitokoto = ():Promise<IHttpRes> => {
   })
 }
 
+export const getBanner = ():Promise<IHttpRes> => {
+  return request({
+    url: 'http://192.168.0.184:3300/banner',
+    method: 'get'
+  })
+}
+

@@ -1,14 +1,9 @@
 <template>
   <div
     :class="`app-box ${appDragStatus ? 'shake' : ''} `"
-    draggable
-
-    @dragstart="dragstart"
-    @dragend="dragend"
-    @drag="drag"
+    @touchstart="gotouchstart"
+    @touchend="gotouchend"
   >
-    <!-- @touchstart="gotouchstart"
-    @touchend="gotouchend" -->
     <van-icon name="clear" class="close" @touchend="clearApp" v-if="appDragStatus" />
     <slot></slot>
   </div>
@@ -53,16 +48,6 @@ export default defineComponent({
     },
     gotouchend() {
       clearTimeout(timeOutEvent)
-    },
-    dragstart(e) {
-      e.dataTransfer.setData('component', '123')
-      console.log('拖拽开始')
-    },
-    drag() {
-      console.log('拖拽')
-    },
-    dragend() {
-      console.log('拖拽结束')
     }
   }
 })
@@ -82,7 +67,7 @@ export default defineComponent({
 }
 
 .shake{
-  transform-origin: 50% 50%;
+  transform-origin: 40% 50%;
   transform: translateZ(0);
   animation: shakeAnmiation .2s infinite;
 }

@@ -35,7 +35,6 @@ const useSwiper = ():IuseSwiper => {
           }
         }
       })
-      console.log(swiperMain)
     })
   })
 

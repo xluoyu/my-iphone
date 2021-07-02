@@ -19,7 +19,6 @@ export default defineComponent({
   setup() {
     let root = document.getElementsByTagName('html')[0]
     let test = getComputedStyle(root).getPropertyValue('--appHeight')
-    console.log(test)
     let getVariables = GetVar(variables)
     onMounted(() => {
       window.WIDGET = {

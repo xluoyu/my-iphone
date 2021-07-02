@@ -11,15 +11,35 @@
   border: 1px solid #eee;
   width: 500px;
   height: 800px;
+  overflow-x: auto;
+  display: flex;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 20px;
 }
 .red{
-  width: 80px;
+  width: 120px;
   height: 80px;
+  aspect-ratio: 2 / 1;
   background-color: red;
+  margin-right: 10px;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+.red:nth-child(2) ~ .red {
+  background-color: skyblue;
 }
 </style>
 <body>
   <div id="app">
+    <div class="red" draggable="true" ></div>
+    <div class="red" draggable="true" ></div>
+    <div class="red" draggable="true" ></div>
+    <div class="red" draggable="true" ></div>
+    <div class="red" draggable="true" ></div>
+    <div class="red" draggable="true" ></div>
+    <div class="red" draggable="true" ></div>
     <div class="red" draggable="true" ></div>
   </div>
 </body>
@@ -37,5 +57,15 @@
   //     e.dataTransfer.setData('component', '123')
   //     console.log('拖拽开始')
   // })
+
+const animals = {};
+let dog = { emoji: '🐶' }
+let cat = { emoji: '🐈' }
+
+animals[dog] = { ...dog, name: "Mara" }
+animals[cat] = { ...cat, name: "Sara" }
+console.log(animals)
+
+console.log(animals[dog])
 </script>
 </html>

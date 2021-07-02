@@ -8,9 +8,9 @@
         <component :is="Component" ref="component" />
       </transition>
     </router-view>
-    <transition name="fade" v-else>
+    <transition name="fade">
       <!-- 微前端组件 -->
-      <div id="routerView" v-show="fade">
+      <div id="routerView">
         系统加载中...
       </div>
     </transition>
@@ -40,7 +40,7 @@ export default defineComponent({
       this.$store.commit('changeRouterHistory', {
         type: 'add',
         appName: this.$route.matched[0].name,
-        value: [...new Set(this.$route.matched.map(e => e.path))]
+        value: this.$route.path
       })
     }
   },

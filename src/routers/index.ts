@@ -3,13 +3,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Empty from '@/layout/EmptyRouter.vue'
 
 export const constantRoutes = [
-  // {
-  //   path: '/',
-  //   component: Empty,
-  //   name: 'home'
-  // },
   {
-    path: '/alipay',
+    path: '/',
+    component: Empty,
+    name: 'home'
+  },
+  {
+    path: '/alipay/*',
     component: Empty,
     name: 'alipay',
     meta: {
@@ -17,12 +17,39 @@ export const constantRoutes = [
       style: 'black'
     }
   },
+  // {
+  //   path: '/music',
+  //   component: Empty,
+  //   name: 'music',
+  //   meta: {
+  //     type: 'app',
+  //     style: 'white'
+  //   }
+  // },
   {
-    path: '/music',
-    component: () => import('@/views/music/index.vue'),
+    path: '/music/:child*',
+    component: Empty,
     name: 'music',
     meta: {
-      type: 'iframe',
+      type: 'app',
+      style: 'white'
+    }
+  },
+  // {
+  //   path: '/calculator',
+  //   component: Empty,
+  //   name: 'calculator',
+  //   meta: {
+  //     type: 'app',
+  //     style: 'white'
+  //   }
+  // },
+  {
+    path: '/calculator/:child*',
+    component: Empty,
+    name: 'calculator',
+    meta: {
+      type: 'app',
       style: 'white'
     }
   },

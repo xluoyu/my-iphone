@@ -58,6 +58,7 @@ export default defineComponent({
       let routeName = this.$route.matched[0].name || ''
       if (!routeName) return
       let appEl = document.querySelector(`#${String(routeName)}`) as Element
+      if (!appEl) return
       let top = getVariables('appHeight') / 2 + appEl.getBoundingClientRect().top
       let left = getVariables('appWidth') / 2 + appEl.getBoundingClientRect().left
       ;(el as HTMLElement).style.transformOrigin = `${left}px ${top}px`

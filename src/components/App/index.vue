@@ -18,6 +18,7 @@ export default defineComponent({
   },
   computed: {
     ...mapState({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       appDragStatus: state => (state as any).appDragStatus
     })
   },
@@ -70,6 +71,11 @@ export default defineComponent({
               requestAnimationFrame(() => {
                 this.$router.push({ path: item })
               })
+            })
+            this.$store.commit('changeRouterHistory', {
+              type: 'replace',
+              appName: this.$route.matched[0].name,
+              value: this.$route.path
             })
           } else {
             try {

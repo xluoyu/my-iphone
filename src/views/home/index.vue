@@ -1,7 +1,7 @@
 <template>
   <div class="container" :style="`background-position-x: ${containerBgX}%;transition: background ${containerBgDuration}s;`">
     <div class="closeHandle" @click="closeDarg" v-if="appDragStatus">完成</div>
-    <div class="swiper-container my-swipe" @drop="drop" @dragover="(e) => e.preventDefault()">
+    <div class="swiper-container my-swipe">
       <div class="swiper-wrapper">
         <div class="swiper-slide" v-for="(item, index) in appsList" :key="index">
           <div class="grid-box" @click.self="closeDarg">
@@ -26,14 +26,14 @@ import useSwiper from './hooks/useSwiper'
 import { useStore } from 'vuex'
 
 const { appsList } = useAppList()
-// const { containerBgX, containerBgDuration, swiperMain } = useSwiper()
+const { containerBgX, containerBgDuration, swiperMain } = useSwiper()
 
-// watch(appsList, () => {
-//   // 更新swiper
-//   nextTick(() => {
-//     swiperMain.value?.update()
-//   })
-// })
+watch(appsList, () => {
+  // 更新swiper
+  nextTick(() => {
+    swiperMain.value?.update()
+  })
+})
 
 const store = useStore()
 
@@ -41,10 +41,6 @@ const appDragStatus = computed(() => store.state.appDragStatus)
 const closeDarg = () => {
   if (appDragStatus.value == false) return
   store.commit('changeAppDragStatus', false)
-}
-
-const drop = (e) => {
-  console.log(e)
 }
 </script>
 
