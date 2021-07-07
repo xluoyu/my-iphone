@@ -30,10 +30,10 @@ export default defineComponent({
     const appRouteStatus = ref(false)
     const routeStatus = computed(() => {
       const route = useRoute()
-      if (route.path != '/' && appRouteStatus.value) {
+      if (appRouteStatus.value || !route.matched.length) {
         return false
       } else {
-        return route.path != '/'
+        return route.name != 'home'
       }
     })
 

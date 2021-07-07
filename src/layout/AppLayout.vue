@@ -55,6 +55,7 @@ export default defineComponent({
   watch: {
     '$route.path'() {
       if (this.$route.name == 'home') return
+      if (!this.$route.matched.length) return
       this.$store.commit('changeRouterHistory', {
         type: 'add',
         appName: this.$route.matched[0].name,
