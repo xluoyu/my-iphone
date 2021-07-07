@@ -21,16 +21,18 @@ const back = () => {
 }
 const title = ref(route.meta.title)
 
-watch(() => route.meta.title, () => {
-  title.value = route.meta.title || ''
-})
-const changeTitle = (value:string) => {
+watch(
+  () => route.meta.title,
+  () => {
+    title.value = route.meta.title || ''
+  }
+)
+const changeTitle = (value: string) => {
   title.value = value
 }
 
 const hasChild = computed(() => route.meta.back)
 const style = computed(() => route.meta.style || 'white')
-
 </script>
 
 <style lang="less" scoped>
@@ -39,21 +41,21 @@ const style = computed(() => route.meta.style || 'white')
   height: 100%;
   background: #f7f8fa;
 }
-.header{
+.header {
   width: 100%;
   height: 40px;
   border-bottom: 1px solid #ccc;
   box-sizing: border-box;
   font-size: 16px;
   line-height: 40px;
-  background: rgba(255, 255, 255, .8);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(4px);
   position: fixed;
   top: 0;
   left: 0;
   z-index: 50;
   text-align: center;
-  .back{
+  .back {
     width: 40px;
     height: 100%;
     position: absolute;
@@ -63,13 +65,13 @@ const style = computed(() => route.meta.style || 'white')
     justify-content: center;
     align-items: center;
   }
-  &.black{
-    background: rgb(61, 60, 60, .4);
+  &.black {
+    background: rgb(61, 60, 60, 0.4);
     color: #fff;
     border-bottom: 1px solid #444;
   }
 }
-.main{
+.main {
   padding-top: 40px;
   height: 100%;
   overflow-x: auto;

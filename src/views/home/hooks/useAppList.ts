@@ -9,7 +9,7 @@ interface IUseAppList {
   appsList: Ref<IApp[][]>
 }
 
-const useAppList = ():IUseAppList => {
+const useAppList = (): IUseAppList => {
   const store = useStore()
   const list = computed(() => store.getters['AppStore/myAppList'] as IApp[])
   const appsList = ref<IApp[][]>([[]])
@@ -39,7 +39,9 @@ const useAppList = ():IUseAppList => {
           let curLine = Math.ceil(curItemNumber / 4)
           curItemNumber += 8
           item.component = markRaw(Weather)
-          item.style = `grid-column-start: 1;grid-column-end: 5;grid-row-start: ${curLine + 1};grid-row-end: ${curLine + 3};`
+          item.style = `grid-column-start: 1;grid-column-end: 5;grid-row-start: ${
+            curLine + 1
+          };grid-row-end: ${curLine + 3};`
           break
         default:
           curItemNumber += 1
@@ -57,12 +59,10 @@ const useAppList = ():IUseAppList => {
     })
   }
 
-  watch(
-    store.state.AppStore.myAppIds,
-    () => {
-      console.log('监听到改变')
-      init()
-    })
+  watch(store.state.AppStore.myAppIds, () => {
+    console.log('监听到改变')
+    init()
+  })
 
   onMounted(() => {
     window.addEventListener('resize', () => {

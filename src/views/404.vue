@@ -1,7 +1,5 @@
 <template>
-  <div>
-    404
-  </div>
+  <div>404</div>
 </template>
 
 <script lang="ts">
@@ -14,6 +12,4 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

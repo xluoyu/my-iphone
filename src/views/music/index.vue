@@ -1,6 +1,12 @@
 <template>
-  <div style="width: 100%;height:100vh;-webkit-overflow-scrolling: touch;background:#fff;">
-    <iframe src="https://y.music.163.com/m/" id="iframe" frameborder="0" width="100%" height="100%"></iframe>
+  <div style="width: 100%; height: 100vh; -webkit-overflow-scrolling: touch; background: #fff">
+    <iframe
+      src="https://y.music.163.com/m/"
+      id="iframe"
+      frameborder="0"
+      width="100%"
+      height="100%"
+    ></iframe>
   </div>
 </template>
 
@@ -10,15 +16,17 @@ import { defineComponent, nextTick } from 'vue'
 export default defineComponent({
   setup() {
     nextTick(() => {
-      document.body.addEventListener('touchmove', function(e) {
-        e.preventDefault()
-      }, { passive: false })
+      document.body.addEventListener(
+        'touchmove',
+        function (e) {
+          e.preventDefault()
+        },
+        { passive: false }
+      )
     })
     return {}
   }
 })
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

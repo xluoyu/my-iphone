@@ -68,24 +68,24 @@ export default defineComponent({
 </script>
 
 <style lang="less">
-.page{
+.page {
   width: 100%;
   height: 100%;
   overflow-y: hidden;
   user-select: none;
 }
 .app-enter-active {
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 .app-leave-active {
-  transition: all .4s ease;
+  transition: all 0.4s ease;
 }
 .app-enter-from {
   opacity: 0;
   transform: scale(0);
 }
 .app-leave-to {
-  opacity: .5;
+  opacity: 0.5;
   transform: translateY(100vh);
 }
 </style>

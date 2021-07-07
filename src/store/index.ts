@@ -4,21 +4,21 @@ import AppStore from './modules/appStore'
 import router from '@/routers'
 
 export interface IState {
-  closeBeforeFn: null | (() => boolean),
-  appDragStatus: boolean,
+  closeBeforeFn: null | (() => boolean)
+  appDragStatus: boolean
   routerHistory: {
     [propName: string]: string[] | undefined
   }
 }
 
 interface IRouterHandle {
-  type?: string,
-  appName: string,
+  type?: string
+  appName: string
   value?: string[] | string
 }
 
 const store = createStore({
-  state():IState {
+  state(): IState {
     return {
       // 用于关闭App时触发
       closeBeforeFn: null,
@@ -29,10 +29,10 @@ const store = createStore({
     }
   },
   mutations: {
-    changeCloseBeforeFn(state:IState, fn):void {
+    changeCloseBeforeFn(state: IState, fn): void {
       state.closeBeforeFn = fn
     },
-    changeAppDragStatus(state, value):void {
+    changeAppDragStatus(state, value): void {
       state.appDragStatus = value
     },
     /**
@@ -40,7 +40,7 @@ const store = createStore({
      * @param state
      * @param handle
      */
-    changeRouterHistory(state, handle:IRouterHandle) {
+    changeRouterHistory(state, handle: IRouterHandle) {
       let routerList = state.routerHistory[handle.appName]
       switch (handle.type) {
         case 'add':

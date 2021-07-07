@@ -5,9 +5,9 @@
  * @param {*} fn
  * @returns
  */
-const retry = async(fn) => {
+const retry = async (fn) => {
   let num = 1
-  const run = async() => {
+  const run = async () => {
     let res = await fn()
     console.log(res)
     if (res) {
@@ -27,7 +27,7 @@ const retry = async(fn) => {
   return res
 }
 
-const test = async() => {
+const test = async () => {
   let res = await retry(() => {
     let num = parseInt(Math.random() * 10)
     console.log(num)

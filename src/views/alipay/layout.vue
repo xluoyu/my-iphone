@@ -1,17 +1,15 @@
 <template>
-  <div class="control">
-  </div>
+  <div class="control"></div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 // import Close from '@/components/Close/index.vue'
-export default defineComponent({
-})
+export default defineComponent({})
 </script>
 
 <style scoped>
-.control{
+.control {
   position: fixed;
   top: 0;
   left: 0;

@@ -29,7 +29,7 @@ export default defineComponent({
     ILockType: () => ILockType
   },
   mounted() {
-    this.lockType = this.$route.query.type as string || ''
+    this.lockType = (this.$route.query.type as string) || ''
     if (this.$route.query.type == ILockType.Number) {
       this.$emit('changeTitle', '设置数字密码')
     } else if (this.$route.query.type == ILockType.Slide) {
@@ -37,7 +37,7 @@ export default defineComponent({
     }
   },
   methods: {
-    callback(value:string, res:boolean) {
+    callback(value: string, res: boolean) {
       if (res && !this.curPassword) {
         this.curPassword = value
         this.$emit('changeTitle', '再次设置密码')
@@ -54,7 +54,7 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.number-view{
+.number-view {
   background: #3d3c3c;
   padding-top: 40px;
   color: #fff;

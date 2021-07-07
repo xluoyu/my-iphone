@@ -1,7 +1,5 @@
 <template>
-  <div>
-    这里是支付宝
-  </div>
+  <div>这里是支付宝</div>
 </template>
 
 <script lang="ts">
@@ -14,6 +12,4 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

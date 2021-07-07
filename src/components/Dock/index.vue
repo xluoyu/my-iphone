@@ -16,7 +16,7 @@ export default defineComponent({
   },
   setup() {
     const defalutList = ['phone', 'messages', 'safari', 'settings']
-    const appList = defalutList.map(e => appStore.find(a => a.key == e) as IApp)
+    const appList = defalutList.map((e) => appStore.find((a) => a.key == e) as IApp)
     return {
       appList
     }
@@ -25,7 +25,7 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.dock{
+.dock {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -33,7 +33,7 @@ export default defineComponent({
   margin: auto;
   width: 100%;
   height: 80px;
-  background: rgba(0, 0, 0, .2);
+  background: rgba(0, 0, 0, 0.2);
   color: #fff;
   display: flex;
   justify-content: space-between;

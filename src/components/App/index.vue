@@ -1,6 +1,6 @@
 <template>
   <div class="app" :id="app.key" @click="open">
-    <img :src="app.photo" alt="">
+    <img :src="app.photo" alt="" />
     <p>{{ app.name }}</p>
   </div>
 </template>
@@ -13,13 +13,15 @@ export default defineComponent({
   props: {
     app: {
       type: Object as PropType<IApp>,
-      default: () => { return {} }
+      default: () => {
+        return {}
+      }
     }
   },
   computed: {
     ...mapState({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      appDragStatus: state => (state as any).appDragStatus
+      appDragStatus: (state) => (state as any).appDragStatus
     })
   },
   methods: {
@@ -40,25 +42,29 @@ export default defineComponent({
             let fileDate = input.files ? input.files[0] : null
             if (!fileDate) return
             reads.readAsDataURL(fileDate)
-            reads.onload = e => {
-              const imgReander = () => h('img', {
-                src: e?.target?.result,
-                style: {
-                  width: '100%'
-                }
-              })
+            reads.onload = (e) => {
+              const imgReander = () =>
+                h('img', {
+                  src: e?.target?.result,
+                  style: {
+                    width: '100%'
+                  }
+                })
               document.body.removeChild(input)
-              this.$dialog.confirm({
-                title: '图片预览',
-                message: imgReander,
-                confirmButtonText: '保存',
-                cancelButtonText: '取消'
-              }).then(() => {
-                console.log('确定')
-                this.$toast.success('保存成功')
-              }).catch(() => {
-                console.log('关闭')
-              })
+              this.$dialog
+                .confirm({
+                  title: '图片预览',
+                  message: imgReander,
+                  confirmButtonText: '保存',
+                  cancelButtonText: '取消'
+                })
+                .then(() => {
+                  console.log('确定')
+                  this.$toast.success('保存成功')
+                })
+                .catch(() => {
+                  console.log('关闭')
+                })
             }
           })
           document.body.append(input)
@@ -67,7 +73,7 @@ export default defineComponent({
         default:
           let routeList = this.$store.state.routerHistory[appName]
           if (routeList && routeList.length) {
-            routeList.forEach((item:string) => {
+            routeList.forEach((item: string) => {
               requestAnimationFrame(() => {
                 this.$router.push({ path: item })
               })
@@ -92,14 +98,14 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.app{
+.app {
   font-size: 12px;
   color: #fff;
   text-align: center;
   height: fit-content;
   width: 70px;
   position: relative;
-  &::before{
+  &::before {
     content: '';
     background: transparent;
     position: absolute;
@@ -107,33 +113,33 @@ export default defineComponent({
     left: 0;
     right: 0;
     z-index: 2;
-    transition: background .3s;
+    transition: background 0.3s;
     width: @appPhotoHeight;
     height: @appPhotoHeight;
     margin: 0 auto;
     border-radius: 14px;
   }
-  &:active{
-    &::before{
-      background: rgba(0, 0, 0, .7);
+  &:active {
+    &::before {
+      background: rgba(0, 0, 0, 0.7);
     }
   }
-  img{
+  img {
     width: @appPhotoHeight;
     height: @appPhotoHeight;
     display: block;
     margin: 0 auto;
     border-radius: 14px;
   }
-  p{
+  p {
     margin: 0;
     white-space: nowrap;
-    word-wrap:break-word;
+    word-wrap: break-word;
     line-height: 24px;
     overflow: hidden;
-    text-overflow : clip;
+    text-overflow: clip;
   }
-  .camera{
+  .camera {
     position: absolute;
     top: 0;
     left: 0;

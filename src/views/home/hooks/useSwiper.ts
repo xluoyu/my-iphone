@@ -5,12 +5,12 @@ import { onMounted, ref, nextTick, Ref } from 'vue'
 Swiper.use([Pagination])
 
 interface IuseSwiper {
-  containerBgX: Ref<number>,
-  containerBgDuration: Ref<number>,
+  containerBgX: Ref<number>
+  containerBgDuration: Ref<number>
   swiperMain: any
 }
 
-const useSwiper = ():IuseSwiper => {
+const useSwiper = (): IuseSwiper => {
   const containerBgX = ref<number>(0)
   const containerBgDuration = ref<number>(0)
   let swiperMain = ref<any>(null)

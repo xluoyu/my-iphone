@@ -19,22 +19,26 @@ export default defineComponent({
   props: {
     app: {
       type: Object as PropType<IApp>,
-      default: () => { return {} }
+      default: () => {
+        return {}
+      }
     }
   },
   computed: {
     ...mapState({
-      appDragStatus: state => (state as IState).appDragStatus
+      appDragStatus: (state) => (state as IState).appDragStatus
     })
   },
   methods: {
     clearApp() {
-      this.$dialog.confirm({
-        message: `确定要卸载${this.app.name}吗？`
-      }).then(() => {
-        console.log('开始卸载')
-        this.$store.commit('AppStore/removeApp', this.app.key)
-      })
+      this.$dialog
+        .confirm({
+          message: `确定要卸载${this.app.name}吗？`
+        })
+        .then(() => {
+          console.log('开始卸载')
+          this.$store.commit('AppStore/removeApp', this.app.key)
+        })
     },
     longTap() {
       this.$store.commit('changeAppDragStatus', true)
@@ -54,10 +58,10 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.app-box{
+.app-box {
   position: relative;
 }
-.close{
+.close {
   position: absolute;
   top: -5px;
   right: -5px;
@@ -66,10 +70,10 @@ export default defineComponent({
   font-size: 20px;
 }
 
-.shake{
+.shake {
   transform-origin: 40% 50%;
   transform: translateZ(0);
-  animation: shakeAnmiation .2s infinite;
+  animation: shakeAnmiation 0.2s infinite;
 }
 
 @keyframes shakeAnmiation {

@@ -1,6 +1,6 @@
 import { IApp, IItemKey } from '#/index'
 
-const appStore:IApp[] = [
+const appStore: IApp[] = [
   {
     key: 'alipay',
     type: IItemKey.App,

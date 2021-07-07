@@ -1,6 +1,4 @@
-<template>
-
-</template>
+<template></template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
@@ -19,7 +17,7 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.close{
+.close {
   position: fixed;
   top: 10px;
   right: 10px;
@@ -27,7 +25,7 @@ export default defineComponent({
   width: 20px;
   height: 20px;
   line-height: 0;
-  svg{
+  svg {
     width: 20px;
     height: 20px;
     color: #fff;

@@ -1,4 +1,4 @@
-export const addScript = (url: string, cb: ()=>void): void => {
+export const addScript = (url: string, cb: () => void): void => {
   const s = document.createElement('script')
   s.type = 'text/javascript'
   s.src = url
@@ -18,7 +18,7 @@ export const getNumber = (str: string): number => {
 }
 
 export const GetVar = (variables: string) => {
-  return (key: string):number => {
+  return (key: string): number => {
     let reg = new RegExp(`${key}: [^;]+`, 'g')
     let regResult: string | null = (variables.match(reg) as RegExpMatchArray).toString()
     let result = regResult.split(': ')

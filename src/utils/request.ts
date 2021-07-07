@@ -11,7 +11,7 @@ const service = axios.create({
 
 // request interceptor
 service.interceptors.request.use(
-  config => {
+  (config) => {
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 
     if (config.method === 'post' && config.data) {
@@ -23,7 +23,7 @@ service.interceptors.request.use(
 
     return config
   },
-  error => {
+  (error) => {
     // do something with request error
     console.log(error) // for debug
     return Promise.reject(error)
@@ -42,13 +42,13 @@ service.interceptors.response.use(
    * Here is just an example
    * You can also judge the status by HTTP Status Code
    */
-  response => {
+  (response) => {
     const res = response.data
 
     // if the custom code is not 20000, it is judged as an error.
     return res
   },
-  error => {
+  (error) => {
     console.log('err' + error) // for debug
     Notify(error.message)
     return Promise.reject(error)

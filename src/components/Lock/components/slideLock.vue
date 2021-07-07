@@ -1,5 +1,13 @@
 <template>
-  <canvas class="lock-canvas" ref="lockCanvas" width="300" height="300" @touchstart="canvasMoveStart" @touchmove="canvasMove" @touchend="canvasMoveEnd" />
+  <canvas
+    class="lock-canvas"
+    ref="lockCanvas"
+    width="300"
+    height="300"
+    @touchstart="canvasMoveStart"
+    @touchmove="canvasMove"
+    @touchend="canvasMoveEnd"
+  />
 </template>
 
 <script lang="ts">
@@ -17,9 +25,9 @@ const CanvasOptions = {
 }
 
 interface IPointObj {
-  x: number,
-  y: number,
-  status: boolean,
+  x: number
+  y: number
+  status: boolean
   value: number
 }
 
@@ -32,8 +40,8 @@ export default defineComponent({
   },
   emits: ['callback'],
   data() {
-    const pointList:IPointObj[] = []
-    const moveArr:number[] = []
+    const pointList: IPointObj[] = []
+    const moveArr: number[] = []
     return {
       canvasWidth: 0,
       canvasHeight: 0,
@@ -60,7 +68,7 @@ export default defineComponent({
       if (this.pointList.length != 9) {
         for (let i = 0; i < 9; i++) {
           let { x, y } = this.getPointAxes(i)
-          let newPoint:IPointObj = {
+          let newPoint: IPointObj = {
             x: x,
             y: y,
             status: false,
@@ -70,7 +78,7 @@ export default defineComponent({
         }
       }
       this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight) // 清空画布
-      this.pointList.forEach(item => {
+      this.pointList.forEach((item) => {
         this.createPoint(item)
       })
     },
@@ -91,12 +99,18 @@ export default defineComponent({
     },
     getPointAxes(index: number): { x: number; y: number } {
       let res = {
-        x: CanvasOptions.pointWidth * (index % 3) + CanvasOptions.columnSpace * (index % 3) + CanvasOptions.pointWidth / 2,
-        y: CanvasOptions.pointWidth * Math.floor(index / 3) + CanvasOptions.rowSpace * Math.floor(index / 3) + CanvasOptions.pointWidth / 2
+        x:
+          CanvasOptions.pointWidth * (index % 3) +
+          CanvasOptions.columnSpace * (index % 3) +
+          CanvasOptions.pointWidth / 2,
+        y:
+          CanvasOptions.pointWidth * Math.floor(index / 3) +
+          CanvasOptions.rowSpace * Math.floor(index / 3) +
+          CanvasOptions.pointWidth / 2
       }
       return res
     },
-    drawLine(x:number, y:number, follow:boolean, res = true) {
+    drawLine(x: number, y: number, follow: boolean, res = true) {
       this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight) // 清空画布
       this.ctx.save()
       this.ctx.beginPath()
@@ -116,7 +130,7 @@ export default defineComponent({
       }
       this.ctx.stroke()
       this.ctx.restore()
-      this.pointList.forEach(item => {
+      this.pointList.forEach((item) => {
         if (this.isInCircle(x, y, item) && !item.status) {
           this.moveArr.push(item.value + 1)
           item.status = true
@@ -124,8 +138,8 @@ export default defineComponent({
         this.createPoint(item, res)
       })
     },
-    isInCircle(x: number, y: number, obj: IPointObj):boolean {
-      let dis = Math.sqrt(Math.pow((obj.x - x), 2) + Math.pow((obj.y - y), 2))
+    isInCircle(x: number, y: number, obj: IPointObj): boolean {
+      let dis = Math.sqrt(Math.pow(obj.x - x, 2) + Math.pow(obj.y - y, 2))
       return dis <= CanvasOptions.pointWidth / 2
     },
     /**
@@ -158,7 +172,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.lock-canvas{
+.lock-canvas {
   width: 300px;
   height: 300px;
   margin: 0 auto;

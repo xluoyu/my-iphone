@@ -1,7 +1,11 @@
 <template>
   <div class="lock" @touchstart="touchstart">
-    <img src="https://z3.ax1x.com/2021/04/28/gPPUFx.jpg" alt="" class="bg">
-    <div class="notice-container" v-if="lockStep == LockType.Normal" :style="`-webkit-backdrop-filter: blur(${blurNum}px);transition: all ${transition}s;transform: translateY(-${diffY}px);`">
+    <img src="https://z3.ax1x.com/2021/04/28/gPPUFx.jpg" alt="" class="bg" />
+    <div
+      class="notice-container"
+      v-if="lockStep == LockType.Normal"
+      :style="`-webkit-backdrop-filter: blur(${blurNum}px);transition: all ${transition}s;transform: translateY(-${diffY}px);`"
+    >
       <div class="top">
         <van-icon name="lock" color="#fff" />
         <span>向上滑动解锁</span>
@@ -35,11 +39,11 @@ export default defineComponent({
     let date = ref<string>('')
     let timeFn = () => {
       let curdate = new Date()
-      let month:number|string = curdate.getMonth() + 1
-      let day:number|string = curdate.getDate()
-      let hour:number|string = curdate.getHours()
+      let month: number | string = curdate.getMonth() + 1
+      let day: number | string = curdate.getDate()
+      let hour: number | string = curdate.getHours()
       hour = hour < 10 ? '0' + hour : hour
-      let min:number|string = curdate.getMinutes()
+      let min: number | string = curdate.getMinutes()
       min = min < 10 ? '0' + min : min
       let week = curdate.getDay()
 
@@ -74,26 +78,26 @@ export default defineComponent({
   },
   methods: {
     getHitokoto() {
-      hitokoto().then(res => {
+      hitokoto().then((res) => {
         this.tipsContent = res.hitokoto
       })
     },
     /**
      * 上滑解锁
      */
-    touchstart(down:TouchEvent) {
+    touchstart(down: TouchEvent) {
       let oldY = down.touches[0].pageY
       let diffY = 0
       let blurNum = 0
-      let moveFn = (e: TouchEvent):void => {
+      let moveFn = (e: TouchEvent): void => {
         this.transition = 0
         let newY = e.touches[0].pageY
         diffY = oldY - newY
-        blurNum = Math.floor(diffY / (this.windowHeight * 0.8) * 100) / 10
+        blurNum = Math.floor((diffY / (this.windowHeight * 0.8)) * 100) / 10
         this.blurNum = Math.max(0, blurNum)
         this.diffY = Math.max(0, diffY)
       }
-      let endFn = ():void => {
+      let endFn = (): void => {
         this.transition = 0.3
         if (diffY > this.windowHeight * 0.2) {
           diffY = this.windowHeight
@@ -131,7 +135,7 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.lock{
+.lock {
   position: fixed;
   top: 0;
   left: 0;
@@ -139,7 +143,7 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   transition: all 0s;
-  .bg{
+  .bg {
     position: absolute;
     object-fit: cover;
     height: 100%;
@@ -147,11 +151,11 @@ export default defineComponent({
   }
 }
 
-.notice-container{
+.notice-container {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  .top{
+  .top {
     font-size: 16px;
     color: #fff;
     line-height: 30px;
@@ -161,22 +165,22 @@ export default defineComponent({
     margin: 30px auto 30px;
   }
 }
-.time-box{
-  -webkit-filter: drop-shadow(2px 2px 10px rgba(0,0,0,.5));
-  filter: drop-shadow(2px 2px 10px rgba(0,0,0,.5));
+.time-box {
+  -webkit-filter: drop-shadow(2px 2px 10px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(2px 2px 10px rgba(0, 0, 0, 0.5));
   color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  h2{
+  h2 {
     font-weight: normal;
     font-size: 60px;
   }
-  p{
+  p {
     font-size: 20px;
   }
-  .tips{
+  .tips {
     width: 80%;
     font-size: 16px;
     text-align: center;

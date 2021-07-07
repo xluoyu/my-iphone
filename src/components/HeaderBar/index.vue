@@ -21,15 +21,15 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.header-bar{
+.header-bar {
   width: 100%;
   height: 20px;
-  min-height: 10PX;
+  min-height: 10px;
   color: white;
   font-size: 14px;
   line-height: 20px;
-  backdrop-filter: blur(2PX);
-  background: rgba(000, 000, 000, .1);
+  backdrop-filter: blur(2px);
+  background: rgba(000, 000, 000, 0.1);
   display: flex;
   justify-content: space-between;
 }

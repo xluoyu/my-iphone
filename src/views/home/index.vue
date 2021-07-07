@@ -1,5 +1,8 @@
 <template>
-  <div class="container" :style="`background-position-x: ${containerBgX}%;transition: background ${containerBgDuration}s;`">
+  <div
+    class="container"
+    :style="`background-position-x: ${containerBgX}%;transition: background ${containerBgDuration}s;`"
+  >
     <div class="closeHandle" @click="closeDarg" v-if="appDragStatus">完成</div>
     <div class="swiper-container my-swipe">
       <div class="swiper-wrapper">
@@ -45,7 +48,7 @@ const closeDarg = () => {
 </script>
 
 <style lang="less" scoped>
-.container{
+.container {
   width: 100%;
   height: 100%;
   background: url(https://z3.ax1x.com/2021/04/28/gPPUFx.jpg) no-repeat;
@@ -54,12 +57,12 @@ const closeDarg = () => {
   overflow-x: auto;
   position: relative;
 }
-.my-swipe{
+.my-swipe {
   height: calc(100% - 80px);
-  .swiper-slide{
+  .swiper-slide {
     box-sizing: border-box;
     padding: @gridColGap @gridColGap 24px;
-    .grid-box{
+    .grid-box {
       width: 100%;
       height: 100%;
       display: grid;
@@ -70,13 +73,13 @@ const closeDarg = () => {
     }
   }
 }
-::v-deep(.swiper-pagination-bullet){
-  background: rgba(0, 0, 0, .6);
+::v-deep(.swiper-pagination-bullet) {
+  background: rgba(0, 0, 0, 0.6);
 }
-::v-deep(.swiper-pagination-bullet-active){
-  background: rgba(255, 255, 255, .8);
+::v-deep(.swiper-pagination-bullet-active) {
+  background: rgba(255, 255, 255, 0.8);
 }
-::v-deep(.swiper-pagination){
+::v-deep(.swiper-pagination) {
   height: 24px;
   bottom: 0;
   display: flex;
@@ -84,13 +87,13 @@ const closeDarg = () => {
   justify-content: center;
 }
 
-.closeHandle{
+.closeHandle {
   position: absolute;
   left: 10px;
   top: 10px;
   z-index: 10;
   font-size: 14px;
-  background: rgba(255, 255, 255, .3);
+  background: rgba(255, 255, 255, 0.3);
   color: #fff;
   width: 60px;
   height: 26px;

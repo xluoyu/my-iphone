@@ -4,7 +4,7 @@
       <!-- 使用 title 插槽来自定义标题 -->
       <template #title>
         <div class="userInfo">
-          <img :src="userInfo.photo" alt="" class="photo">
+          <img :src="userInfo.photo" alt="" class="photo" />
           <div class="info">
             <div>{{ userInfo.name }}</div>
           </div>
@@ -13,8 +13,19 @@
     </van-cell>
 
     <van-cell-group class="cellGroup">
-      <van-cell title="显示" is-link icon="https://z3.ax1x.com/2021/05/20/goXxnH.png" title-class="cell" />
-      <van-cell title="密码" is-link icon="https://z3.ax1x.com/2021/05/21/g7T7QJ.png" title-class="cell" to="/settings/pwd" />
+      <van-cell
+        title="显示"
+        is-link
+        icon="https://z3.ax1x.com/2021/05/20/goXxnH.png"
+        title-class="cell"
+      />
+      <van-cell
+        title="密码"
+        is-link
+        icon="https://z3.ax1x.com/2021/05/21/g7T7QJ.png"
+        title-class="cell"
+        to="/settings/pwd"
+      />
     </van-cell-group>
 
     <van-cell-group class="cellGroup">
@@ -30,7 +41,8 @@ export default defineComponent({
   data() {
     return {
       userInfo: {
-        photo: 'https://thirdwx.qlogo.cn/mmopen/vi_32/PgglHDjWo6EvMlyYHHuTaYALZ5TNib69HLaMaiaOOU9vwV0fgZAqQvw4sNy68ibwaPHZWVWytfB3wL6XN7LexPMFQ/132',
+        photo:
+          'https://thirdwx.qlogo.cn/mmopen/vi_32/PgglHDjWo6EvMlyYHHuTaYALZ5TNib69HLaMaiaOOU9vwV0fgZAqQvw4sNy68ibwaPHZWVWytfB3wL6XN7LexPMFQ/132',
         name: 'vivw'
       }
     }
@@ -45,28 +57,28 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.userInfo-box{
+.userInfo-box {
   margin-bottom: 20px;
   border-top: 1px solid #ebedf0;
   border-bottom: 1px solid #ebedf0;
 }
-.userInfo{
+.userInfo {
   width: 100%;
   display: flex;
   align-items: center;
-  .photo{
+  .photo {
     width: 60px;
     height: 60px;
     border-radius: 8px;
     margin-right: 10px;
   }
-  .info{
+  .info {
     font-size: 16px;
   }
 }
-.cellGroup{
+.cellGroup {
   margin-bottom: 20px;
-  .cell{
+  .cell {
     font-size: 28px;
   }
 }

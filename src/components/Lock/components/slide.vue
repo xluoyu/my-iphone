@@ -31,7 +31,7 @@ export default defineComponent({
     })
   },
   methods: {
-    lockCb(pwd: string, res:boolean) {
+    lockCb(pwd: string, res: boolean) {
       if (res) {
         this.op()
       }
@@ -47,10 +47,10 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.container{
+.container {
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, .3);
+  background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(3px);
   color: #fff;
   overflow: hidden;
@@ -58,13 +58,13 @@ export default defineComponent({
   flex-direction: column;
   justify-content: space-around;
 }
-.top{
+.top {
   text-align: center;
   line-height: 30px;
   margin: 20px auto;
   font-size: 28px;
 }
-.handle{
+.handle {
   width: 300px;
   height: 60px;
   margin: 0 auto;

@@ -1,7 +1,11 @@
 <template>
   <div>
-    <div :class="{input:true, dance:dance}">
-      <div :class="{garden:true, fill:inputList.length >= item}" v-for="item in 6" :key="item"></div>
+    <div :class="{ input: true, dance: dance }">
+      <div
+        :class="{ garden: true, fill: inputList.length >= item }"
+        v-for="item in 6"
+        :key="item"
+      ></div>
     </div>
     <div class="keyboard">
       <div class="btn" v-for="item in keys" :key="item" @touchend="ketDown(item)">{{ item }}</div>
@@ -20,9 +24,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-interface IData{
-  keys: number[],
-  inputList: number[],
+interface IData {
+  keys: number[]
+  inputList: number[]
   dance: boolean
 }
 
@@ -34,7 +38,7 @@ export default defineComponent({
     }
   },
   emits: ['callback', 'close'],
-  data():IData {
+  data(): IData {
     return {
       keys: [1, 2, 3, 4, 5, 6, 7, 8, 9],
       inputList: [],
@@ -42,7 +46,7 @@ export default defineComponent({
     }
   },
   methods: {
-    ketDown(num:number) {
+    ketDown(num: number) {
       if (this.inputList.length >= 6) return
       this.inputList.push(num)
       if (this.inputList.length == 6) {
@@ -78,59 +82,59 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  &.dance{
-    animation: dance .2s linear 0s 2;
-    .garden.fill{
+  &.dance {
+    animation: dance 0.2s linear 0s 2;
+    .garden.fill {
       background: #e93232;
     }
   }
-  .garden{
+  .garden {
     width: 16px;
     height: 16px;
     border: 2px solid #fff;
     border-radius: 50%;
     margin: 0 10px;
-    &.fill{
+    &.fill {
       border-color: transparent;
       background: #fff;
     }
   }
 }
 @keyframes dance {
-  0%{
+  0% {
     transform: translateX(0);
   }
-  25%{
+  25% {
     transform: translateX(-20px);
   }
-  70%{
+  70% {
     transform: translateX(20px);
   }
-  100%{
+  100% {
     transform: translateX(0px);
   }
 }
-.keyboard{
+.keyboard {
   width: 300px;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   margin: 40px auto 0;
-  .btn{
+  .btn {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background: rgba(3, 3, 3, .4);
+    background: rgba(3, 3, 3, 0.4);
     text-align: center;
     line-height: 80px;
     margin-bottom: 30px;
     font-size: 36px;
   }
-  .empty{
+  .empty {
     background: none;
   }
 }
-.handle{
+.handle {
   width: 300px;
   height: 60px;
   margin: 0 auto;
