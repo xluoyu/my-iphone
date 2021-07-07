@@ -8,7 +8,7 @@ import './styles/base.less'
 import initVant from './plugins/vant'
 
 import { registerMicroApps, start } from 'qiankun'
-
+// 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
 registerMicroApps([
   {
     name: 'alipay',

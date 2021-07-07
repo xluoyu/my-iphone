@@ -1,4 +1,4 @@
-name: iphone
+name: deploy
 
 on:
   push:
