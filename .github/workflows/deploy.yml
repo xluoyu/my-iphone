@@ -24,6 +24,7 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3 # 使用部署到 GitHub pages 的 action
         with:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: dist
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          external_repository: xluoyu/my-iphone.github.io
+          publish_branch: main
+          publish_dir: ./dist
