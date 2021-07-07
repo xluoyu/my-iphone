@@ -4,12 +4,12 @@ import Empty from '@/layout/EmptyRouter.vue'
 
 export const constantRoutes = [
   {
-    path: '/',
+    path: '',
     component: Empty,
     name: 'home'
   },
   {
-    path: '/alipay/*',
+    path: 'alipay/*',
     component: Empty,
     name: 'alipay',
     meta: {
@@ -17,17 +17,8 @@ export const constantRoutes = [
       style: 'black'
     }
   },
-  // {
-  //   path: '/music',
-  //   component: Empty,
-  //   name: 'music',
-  //   meta: {
-  //     type: 'app',
-  //     style: 'white'
-  //   }
-  // },
   {
-    path: '/music/:child*',
+    path: 'music/:child*',
     component: Empty,
     name: 'music',
     meta: {
@@ -35,17 +26,8 @@ export const constantRoutes = [
       style: 'white'
     }
   },
-  // {
-  //   path: '/calculator',
-  //   component: Empty,
-  //   name: 'calculator',
-  //   meta: {
-  //     type: 'app',
-  //     style: 'white'
-  //   }
-  // },
   {
-    path: '/calculator/:child*',
+    path: 'calculator/:child*',
     component: Empty,
     name: 'calculator',
     meta: {
@@ -54,7 +36,7 @@ export const constantRoutes = [
     }
   },
   {
-    path: '/settings',
+    path: 'settings',
     component: () => import('@/views/settings/layout.vue'),
     name: 'settings',
     children: [
@@ -68,7 +50,7 @@ export const constantRoutes = [
         }
       },
       {
-        path: '/settings/pwd',
+        path: 'pwd',
         component: () => import('@/views/settings/children/pwd.vue'),
         name: 'pwd',
         meta: {
@@ -77,7 +59,7 @@ export const constantRoutes = [
         }
       },
       {
-        path: '/settings/setPwd',
+        path: 'setPwd',
         component: () => import('@/views/settings/children/setPwd.vue'),
         name: 'setPwd',
         meta: {
@@ -92,7 +74,14 @@ export const constantRoutes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: constantRoutes
+  routes:
+  [
+    {
+      path: '/my-iphone',
+      component: Empty,
+      children: constantRoutes
+    }
+  ]
 })
 
 export default router
