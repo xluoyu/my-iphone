@@ -24,5 +24,5 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3 # 使用部署到 GitHub pages 的 action
         with:
-          publish_dir: ./dist # 部署打包后的 dist 目录
-          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
