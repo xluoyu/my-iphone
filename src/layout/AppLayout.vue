@@ -54,7 +54,7 @@ export default defineComponent({
   },
   watch: {
     '$route.path'() {
-      if (this.$route.path == '/') return
+      if (this.$route.name == 'home') return
       this.$store.commit('changeRouterHistory', {
         type: 'add',
         appName: this.$route.matched[0].name,
@@ -70,11 +70,11 @@ export default defineComponent({
         this.fade = false
         this.$emit('closeApp')
         setTimeout(() => {
-          this.$router.push('/')
+          this.$router.push({ name: 'home' })
           this.fade = true
         }, 500)
       } else {
-        this.$router.push('/')
+        this.$router.push({ name: 'home' })
       }
     },
     async sleep() {
