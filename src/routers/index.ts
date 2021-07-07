@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { createRouter, createWebHistory } from 'vue-router'
 import Empty from '@/layout/EmptyRouter.vue'
+import EmptyPage from '@/layout/EmptyPage.vue'
 
 export const constantRoutes = [
   {
     path: '',
-    component: Empty,
+    component: EmptyPage,
     name: 'home'
   },
   {
     path: 'alipay/*',
-    component: Empty,
+    component: EmptyPage,
     name: 'alipay',
     meta: {
       type: 'app',
@@ -28,7 +29,7 @@ export const constantRoutes = [
   },
   {
     path: 'calculator/:child*',
-    component: Empty,
+    component: EmptyPage,
     name: 'calculator',
     meta: {
       type: 'app',

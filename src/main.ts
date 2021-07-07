@@ -24,7 +24,7 @@ registerMicroApps([
     name: 'music',
     entry: 'http://192.168.0.184:1921',
     container: '#routerView',
-    activeRule: '/music',
+    activeRule: '/my-iphone/music',
     props: {
       slogan: 'Hello Qiankun',
       store

@@ -23,7 +23,7 @@
         ></path>
       </svg>
     </div>
-    <router-view v-slot="{ Component }" v-if="$route.meta.type != 'app'">
+    <router-view v-slot="{ Component }" v-if="!$route.meta || $route.meta.type != 'app'">
       <transition name="fade">
         <component :is="Component" ref="component" />
       </transition>
@@ -67,16 +67,16 @@ export default defineComponent({
     async closeApp() {
       let flag = await store.dispatch('onCloseBrofreFn')
       if (!flag) return
-      if (this.$route.meta.type == 'app') {
-        this.fade = false
-        this.$emit('closeApp')
-        setTimeout(() => {
-          this.$router.push({ name: 'home' })
-          this.fade = true
-        }, 500)
-      } else {
+      // if (this.$route.meta.type == 'app') {
+      this.fade = false
+      this.$emit('closeApp')
+      setTimeout(() => {
         this.$router.push({ name: 'home' })
-      }
+        this.fade = true
+      }, 500)
+      // } else {
+      //   this.$router.push({ name: 'home' })
+      // }
     },
     async sleep() {
       setTimeout(() => {
