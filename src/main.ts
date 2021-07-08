@@ -8,39 +8,41 @@ import './styles/base.less'
 import initVant from './plugins/vant'
 
 import { registerMicroApps, start } from 'qiankun'
+// import { baseRoute } from './utils'
 
-registerMicroApps([
-  {
-    name: 'alipay',
-    entry: 'http://192.168.0.184:1688',
-    container: '#routerView',
-    activeRule: '/alipay',
-    props: {
-      slogan: 'Hello Qiankun',
-      store
-    }
-  },
-  {
-    name: 'music',
-    entry: 'http://192.168.0.184:1921',
-    container: '#routerView',
-    activeRule: '/my-iphone/music',
-    props: {
-      slogan: 'Hello Qiankun',
-      store
-    }
-  },
-  {
-    name: 'calculator',
-    entry: 'http://192.168.0.184:8080',
-    container: '#routerView',
-    activeRule: '/calculator',
-    props: {
-      slogan: 'Hello Qiankun',
-      store
-    }
-  }
-])
+// registerMicroApps([
+//   {
+//     name: 'alipay',
+//     entry: 'http://192.168.0.184:1688',
+//     container: '#routerView',
+//     activeRule: '/alipay',
+//     props: {
+//       slogan: 'Hello Qiankun',
+//       store
+//     }
+//   },
+//   {
+//     name: 'music',
+//     entry: 'http://192.168.0.184:1921',
+//     container: '#routerView',
+//     activeRule: baseRoute + 'music',
+//     props: {
+//       slogan: 'Hello Qiankun',
+//       store,
+//       baseRoute: baseRoute
+//     }
+//   },
+//   {
+//     name: 'calculator',
+//     entry: 'http://192.168.0.184:8080',
+//     container: '#routerView',
+//     activeRule: '/calculator',
+//     props: {
+//       slogan: 'Hello Qiankun',
+//       store
+//     }
+//   }
+// ])
 
 start()
 

@@ -11,7 +11,7 @@
 <script lang="ts">
 import { defineComponent, computed, ref, watch } from 'vue'
 import Home from './views/home/index.vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import AppLayout from './layout/AppLayout.vue'
 import { GetVar } from './utils/index'
 import variables from '@/styles/variables.less'
@@ -37,12 +37,6 @@ export default defineComponent({
       }
     })
 
-    const router = useRouter()
-    console.log(router)
-
-    watch(store.state.testList, () => {
-      console.log('testList watch')
-    })
     const closeApp = () => {
       appRouteStatus.value = true
       setTimeout(() => {

@@ -59,7 +59,7 @@ export default defineComponent({
       this.$store.commit('changeRouterHistory', {
         type: 'add',
         appName: this.$route.matched[0].name,
-        value: this.$route.path
+        value: this.$route.fullPath
       })
     }
   },

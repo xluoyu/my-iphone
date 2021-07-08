@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { createRouter, createWebHistory } from 'vue-router'
 import Empty from '@/layout/EmptyRouter.vue'
-import EmptyPage from '@/layout/EmptyPage.vue'
+import { baseRoute } from '../utils'
+import { reactive } from '../../../readCode/vue3/vue-next-master/packages/reactivity/src/reactive'
 
 export const constantRoutes = [
   {
     path: '',
-    component: EmptyPage,
+    component: Empty,
     name: 'home'
   },
   {
-    path: 'alipay/*',
-    component: EmptyPage,
+    path: '/alipay/*',
+    component: Empty,
     name: 'alipay',
     meta: {
       type: 'app',
@@ -19,7 +20,7 @@ export const constantRoutes = [
     }
   },
   {
-    path: 'music/:child*',
+    path: '/music/:child*',
     component: Empty,
     name: 'music',
     meta: {
@@ -28,8 +29,8 @@ export const constantRoutes = [
     }
   },
   {
-    path: 'calculator/:child*',
-    component: EmptyPage,
+    path: '/calculator/:child*',
+    component: Empty,
     name: 'calculator',
     meta: {
       type: 'app',
@@ -37,14 +38,14 @@ export const constantRoutes = [
     }
   },
   {
-    path: 'settings',
+    path: '/settings',
     component: () => import('@/views/settings/layout.vue'),
     name: 'settings',
+    redirect: '/settings/index',
     children: [
       {
-        path: '',
+        path: 'index',
         component: () => import('@/views/settings/children/home.vue'),
-        name: 'settings',
         meta: {
           title: '设置',
           back: false
@@ -64,7 +65,6 @@ export const constantRoutes = [
         component: () => import('@/views/settings/children/setPwd.vue'),
         name: 'setPwd',
         meta: {
-          title: '',
           back: true,
           style: 'black'
         }
@@ -74,15 +74,8 @@ export const constantRoutes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes:
-  [
-    {
-      path: '/my-iphone',
-      component: Empty,
-      children: constantRoutes
-    }
-  ]
+  history: createWebHistory(baseRoute),
+  routes: constantRoutes
 })
 
 export default router

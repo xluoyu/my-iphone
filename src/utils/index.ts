@@ -25,3 +25,5 @@ export const GetVar = (variables: string) => {
     return Number(result[1])
   }
 }
+
+export const baseRoute = process.env.NODE_ENV == 'production' ? 'my-iphone' : '/'

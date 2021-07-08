@@ -7,8 +7,10 @@
 
 <script lang="ts">
 import { defineComponent, PropType, h } from 'vue'
-import { IApp } from '#/index'
+import { IApp, IUseType } from '#/index'
 import { mapState } from 'vuex'
+import { registerMicroApps } from 'qiankun'
+import { baseRoute } from '../../utils/index'
 export default defineComponent({
   props: {
     app: {
@@ -25,73 +27,98 @@ export default defineComponent({
     })
   },
   methods: {
-    open() {
+    async open() {
       if (this.appDragStatus) return
+      if (!this.app.status) {
+        this.$toast('这个还没写/(ㄒoㄒ)/~~')
+        return
+      }
+
       let appName = this.app.key
-      switch (appName) {
-        case 'clock':
+      switch (this.app.useType) {
+        case IUseType.clock:
           this.$store.commit('LockStore/changeLock', true)
           break
-        case 'camera':
-          let input = document.createElement('input')
-          input.setAttribute('type', 'file')
-          input.setAttribute('accept', 'image/*')
-          input.setAttribute('capture', 'environment')
-          input.addEventListener('change', () => {
-            const reads = new FileReader()
-            let fileDate = input.files ? input.files[0] : null
-            if (!fileDate) return
-            reads.readAsDataURL(fileDate)
-            reads.onload = (e) => {
-              const imgReander = () =>
-                h('img', {
-                  src: e?.target?.result,
-                  style: {
-                    width: '100%'
-                  }
-                })
-              document.body.removeChild(input)
-              this.$dialog
-                .confirm({
-                  title: '图片预览',
-                  message: imgReander,
-                  confirmButtonText: '保存',
-                  cancelButtonText: '取消'
-                })
-                .then(() => {
-                  console.log('确定')
-                  this.$toast.success('保存成功')
-                })
-                .catch(() => {
-                  console.log('关闭')
-                })
-            }
-          })
-          document.body.append(input)
-          input.click()
+        case IUseType.camera:
+          this.openCamera()
           break
         default:
-          let routeList = this.$store.state.routerHistory[appName]
+          if (this.app.useType == IUseType.customApp) {
+            await this.getCustomApp()
+          }
+          let routeList = this.$store.state.routerHistory[appName] ? [...this.$store.state.routerHistory[appName]] : []
           if (routeList && routeList.length) {
             routeList.forEach((item: string) => {
               requestAnimationFrame(() => {
-                this.$router.push({ path: item })
+                this.$router.push(item)
               })
             })
-            this.$store.commit('changeRouterHistory', {
-              type: 'replace',
-              appName: this.$route.matched[0].name,
-              value: this.$route.path
-            })
           } else {
-            try {
-              this.$router.push({ name: appName })
-            } catch (error) {
-              this.$toast('这个还没写/(ㄒoㄒ)/~~')
-            }
+            this.$router.push({ name: appName })
           }
           break
       }
+    },
+    /**
+     * 打开相机 + 拍照预览
+     */
+    openCamera() {
+      let input = document.createElement('input')
+      input.setAttribute('type', 'file')
+      input.setAttribute('accept', 'image/*')
+      input.setAttribute('capture', 'environment')
+      input.addEventListener('change', () => {
+        const reads = new FileReader()
+        let fileDate = input.files ? input.files[0] : null
+        if (!fileDate) return
+        reads.readAsDataURL(fileDate)
+        reads.onload = (e) => {
+          const imgReander = () =>
+            h('img', {
+              src: e?.target?.result,
+              style: {
+                width: '100%'
+              }
+            })
+          document.body.removeChild(input)
+          this.$dialog
+            .confirm({
+              title: '图片预览',
+              message: imgReander,
+              confirmButtonText: '保存',
+              cancelButtonText: '取消'
+            })
+            .then(() => {
+              console.log('确定')
+              this.$toast.success('保存成功')
+            })
+            .catch(() => {
+              console.log('关闭')
+            })
+        }
+      })
+      document.body.append(input)
+      input.click()
+    },
+    /**
+     * 微应用异步加载 (ノ｀Д)ノ
+     */
+    getCustomApp() {
+      return new Promise<void>((reslove) => {
+        registerMicroApps([
+          {
+            name: this.app.key,
+            entry: 'http://192.168.0.184:1921',
+            container: '#routerView',
+            activeRule: baseRoute + this.app.key,
+            props: {
+              slogan: 'Hello Qiankun',
+              baseRoute: baseRoute
+            }
+          }
+        ])
+        reslove()
+      })
     }
   }
 })

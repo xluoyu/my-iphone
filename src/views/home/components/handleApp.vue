@@ -45,7 +45,7 @@ export default defineComponent({
     },
     gotouchstart() {
       clearTimeout(timeOutEvent)
-      timeOutEvent = setTimeout(() => {
+      timeOutEvent = window.setTimeout(() => {
         timeOutEvent = 0
         this.longTap()
       }, 600)

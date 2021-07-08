@@ -12,7 +12,7 @@
     <van-cell
       title="设置密码"
       is-link
-      :to="`/settings/setPwd?type=${curSelectType.value}`"
+      :to="{name: 'setPwd', query: {type: curSelectType.value}}"
       style="margin-top: 20px"
       v-if="curSelectType.value != 'normal'"
     />
@@ -26,6 +26,7 @@
 import { ILockType } from '#/index'
 import { useStore } from 'vuex'
 import { defineComponent, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 interface IPwdType {
   value: ILockType
@@ -35,6 +36,7 @@ interface IPwdType {
 export default defineComponent({
   setup() {
     const store = useStore()
+    const router = useRouter()
 
     const show = ref<boolean>(false)
     const togglePopup = () => {
@@ -53,15 +55,18 @@ export default defineComponent({
     const onConfirm = (obj: IPwdType) => {
       curSelectType.value = obj.value
       curSelectType.text = obj.text
-      store.commit('LockStore/changeLockType', curSelectType.value)
-      store.commit('changeCloseBeforeFn', () => {
-        if (curSelectType.value == ILockType.Normal) {
-          return true
-        } else {
-          console.log('还没有设置密码')
-          return false
-        }
-      })
+      // store.commit('LockStore/changeLockType', curSelectType.value)
+      // store.commit('changeCloseBeforeFn', () => {
+      //   if (curSelectType.value == ILockType.Normal) {
+      //     return true
+      //   } else {
+      //     console.log('还没有设置密码')
+      //     return false
+      //   }
+      // })
+      if (curSelectType.value != ILockType.Normal) {
+        router.push({ name: 'setPwd', query: { type: curSelectType.value }})
+      }
       togglePopup()
     }
 
