@@ -3,11 +3,12 @@ import styleImport from 'vite-plugin-style-import'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
 import autoprefixer from 'autoprefixer'
+const base = process.env.NODE_ENV == 'production' ? '/my-iphone' : './'
 // import pxtorem from 'postcss-pxtorem'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './',
+  base: base,
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
