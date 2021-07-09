@@ -2,7 +2,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Empty from '@/layout/EmptyRouter.vue'
 import { baseRoute } from '../utils'
-import { reactive } from '../../../readCode/vue3/vue-next-master/packages/reactivity/src/reactive'
 
 export const constantRoutes = [
   {
