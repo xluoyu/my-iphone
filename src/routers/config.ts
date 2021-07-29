@@ -5,8 +5,6 @@ router.beforeEach((to, form, next) => {
   // 由于主应用与子应用的router版本不同，history的state格式也不同，当从子应用路由替换到主应用时会报异常
   // 统一state格式
   if (to.name == 'home' && form.name) {
-    console.log(to)
-    console.log(history)
     history.pushState(
       {
         back: form.path,

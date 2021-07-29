@@ -1,27 +1,38 @@
-# Vue 3 + Typescript + Vite
+## Free-Iphone
 
-This template should help get you started developing with Vue 3 and Typescript in Vite.
+[点击查看](https://xluoyu.github.io/my-iphone/)
 
-## Recommended IDE Setup
+刚开始这个项目只是为了测试`qiankun`，玩玩微前端应用。也算是给自己先挖的一个坑。
 
-[VSCode](https://code.visualstudio.com/) + [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur). Make sure to enable `vetur.experimental.templateInterpolationService` in settings!
+以常见的手机界面为基础而开发的DEMO，计划是完成常用的手机配置、交互，以及常用的App
 
-### If Using `<script setup>`
+## 项目架构
 
-[`<script setup>`](https://github.com/vuejs/rfcs/pull/227) is a feature that is currently in RFC stage. To get proper IDE support for the syntax, use [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) instead of Vetur (and disable Vetur).
+主项目 `Vue3` + `TS` + `Vite`
 
-## Type Support For `.vue` Imports in TS
+微前端 `qiankun`
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can use the following:
+子项目 `React`、`vue`、`vanilla`等看兴趣决定
+ 
 
-### If Using Volar
+## 目前的开发任务
 
-Run `Volar: Switch TS Plugin on/off` from VSCode command palette.
+1. 主系统篇
+- [-] 整体架构
+- [✔] 主页面整体交互
+- [✔] 锁屏
+- [ ] app拖拽排列
+- [ ] 更换背景、主题
+- [ ] 开机动画
+- [ ] 拍照、本地相册
+- [ ] appStore、下载/删除app
+- [ ] 模拟通话
+- [ ] 模拟短信
 
-### If Using Vetur
+2. app篇
+- [ ] 音乐(仿网易云)
+- [ ] 支付宝
+- [ ] 浏览器
 
-1. Install and add `@vuedx/typescript-plugin-vue` to the [plugins section](https://www.typescriptlang.org/tsconfig#plugins) in `tsconfig.json`
-2. Delete `src/shims-vue.d.ts` as it is no longer needed to provide module info to Typescript
-3. Open `src/main.ts` in VSCode
-4. Open the VSCode command palette
-5. Search and run "Select TypeScript version" -> "Use workspace version"
+
+

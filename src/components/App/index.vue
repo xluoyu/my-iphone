@@ -35,6 +35,7 @@ export default defineComponent({
       }
 
       let appName = this.app.key
+      console.log(this.app.useType)
       switch (this.app.useType) {
         case IUseType.clock:
           this.$store.commit('LockStore/changeLock', true)
