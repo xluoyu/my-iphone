@@ -68,7 +68,7 @@ const appStore: IApp[] = [
     type: IItemKey.App,
     photo: 'https://z3.ax1x.com/2021/05/06/gQZuqO.png',
     name: 'camera',
-    useType: IUseType.defaultApp,
+    useType: IUseType.camera,
     status: true
   },
   {

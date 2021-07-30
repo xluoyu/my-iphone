@@ -20,10 +20,10 @@ export const constantRoutes = [
   },
   {
     path: '/music/:child*',
-    component: Empty,
+    component: () => import('../views/music/index.vue'),
     name: 'music',
     meta: {
-      type: 'app',
+      // type: 'app',
       style: 'white'
     }
   },
