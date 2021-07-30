@@ -26,5 +26,9 @@ export const GetVar = (variables: string) => {
   }
 }
 
-// export const baseRoute = process.env.NODE_ENV == 'production' ? '/my-iphone/' : '/'
-export const baseRoute = '/my-iphone/'
+export const getVar = (key: string) => {
+  getComputedStyle(document.documentElement).getPropertyValue(key)
+}
+
+export const baseRoute = process.env.NODE_ENV == 'production' ? '/my-iphone/' : '/'
+// export const baseRoute = '/my-iphone/'

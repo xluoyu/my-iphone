@@ -71,7 +71,7 @@ export default defineComponent({
     font-size: 12px;
     color: #fff;
     text-align: center;
-    line-height: @appNameHeight;
+    line-height: var(--app-name-height);
   }
 }
 </style>

@@ -6,11 +6,72 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, h } from 'vue'
+import { defineComponent, PropType, h, computed } from 'vue'
 import { IApp, IUseType } from '#/index'
-import { mapState } from 'vuex'
 import { registerMicroApps } from 'qiankun'
 import { baseRoute } from '../../utils/index'
+import { useStore } from 'vuex'
+import { Toast, Dialog } from 'vant'
+import useLock from '../../hooks/useLock'
+import { useRouter } from 'vue-router'
+
+function openCamera() {
+  let input = document.createElement('input')
+  input.setAttribute('type', 'file')
+  input.setAttribute('accept', 'image/*')
+  input.setAttribute('capture', 'environment')
+  input.addEventListener('change', () => {
+    const reads = new FileReader()
+    let fileDate = input.files ? input.files[0] : null
+    if (!fileDate) return
+    reads.readAsDataURL(fileDate)
+    reads.onload = (e) => {
+      const imgReander = () =>
+        h('img', {
+          src: e?.target?.result,
+          style: {
+            width: '100%'
+          }
+        })
+      document.body.removeChild(input)
+      Dialog
+        .confirm({
+          title: '图片预览',
+          message: imgReander,
+          confirmButtonText: '保存',
+          cancelButtonText: '取消'
+        })
+        .then(() => {
+          console.log('确定')
+          Toast.success('保存成功')
+        })
+        .catch(() => {
+          console.log('关闭')
+        })
+    }
+  })
+  document.body.append(input)
+  input.click()
+}
+
+function getCustomApp(key:string) {
+  return new Promise<void>((reslove) => {
+    registerMicroApps([
+      {
+        name: key,
+        entry: 'http://192.168.0.184:1921',
+        container: '#routerView',
+        activeRule: baseRoute + key,
+        props: {
+          slogan: 'Hello Qiankun',
+          baseRoute: baseRoute
+        }
+      }
+    ])
+    reslove()
+  })
+}
+
 export default defineComponent({
   props: {
     app: {
@@ -20,106 +81,47 @@ export default defineComponent({
       }
     }
   },
-  computed: {
-    ...mapState({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      appDragStatus: (state) => (state as any).appDragStatus
-    })
-  },
-  methods: {
-    async open() {
-      if (this.appDragStatus) return
-      if (!this.app.status) {
-        this.$toast('这个还没写/(ㄒoㄒ)/~~')
+  setup(props) {
+    const store = useStore()
+    const router = useRouter()
+    const { changeLockState } = useLock()
+    const appDragStatus = computed(() => store.state.appDragStatus)
+    const open = async() => {
+      if (appDragStatus.value) return
+      if (!props.app.status) {
+        Toast('这个还没写/(ㄒoㄒ)/~~')
         return
       }
-
-      let appName = this.app.key
-      console.log(this.app.useType)
-      switch (this.app.useType) {
+      let appName = props.app.key
+      switch (props.app.useType) {
         case IUseType.clock:
-          this.$store.commit('LockStore/changeLock', true)
+          console.log('点击加锁')
+          changeLockState()
           break
         case IUseType.camera:
-          this.openCamera()
+          openCamera()
           break
         default:
-          if (this.app.useType == IUseType.customApp) {
-            await this.getCustomApp()
+          if (props.app.useType == IUseType.customApp) {
+            await getCustomApp(props.app.key)
           }
-          let routeList = this.$store.state.routerHistory[appName] ? [...this.$store.state.routerHistory[appName]] : []
+          let routeList = store.state.routerHistory[appName] ? [...store.state.routerHistory[appName]] : []
           if (routeList && routeList.length) {
             routeList.forEach((item: string) => {
               requestAnimationFrame(() => {
-                this.$router.push(item)
+                router.push(item)
               })
             })
           } else {
-            this.$router.push({ name: appName })
+            router.push({ name: appName })
           }
           break
       }
-    },
-    /**
-     * 打开相机 + 拍照预览
-     */
-    openCamera() {
-      let input = document.createElement('input')
-      input.setAttribute('type', 'file')
-      input.setAttribute('accept', 'image/*')
-      input.setAttribute('capture', 'environment')
-      input.addEventListener('change', () => {
-        const reads = new FileReader()
-        let fileDate = input.files ? input.files[0] : null
-        if (!fileDate) return
-        reads.readAsDataURL(fileDate)
-        reads.onload = (e) => {
-          const imgReander = () =>
-            h('img', {
-              src: e?.target?.result,
-              style: {
-                width: '100%'
-              }
-            })
-          document.body.removeChild(input)
-          this.$dialog
-            .confirm({
-              title: '图片预览',
-              message: imgReander,
-              confirmButtonText: '保存',
-              cancelButtonText: '取消'
-            })
-            .then(() => {
-              console.log('确定')
-              this.$toast.success('保存成功')
-            })
-            .catch(() => {
-              console.log('关闭')
-            })
-        }
-      })
-      document.body.append(input)
-      input.click()
-    },
-    /**
-     * 微应用异步加载 (ノ｀Д)ノ
-     */
-    getCustomApp() {
-      return new Promise<void>((reslove) => {
-        registerMicroApps([
-          {
-            name: this.app.key,
-            entry: 'http://192.168.0.184:1921',
-            container: '#routerView',
-            activeRule: baseRoute + this.app.key,
-            props: {
-              slogan: 'Hello Qiankun',
-              baseRoute: baseRoute
-            }
-          }
-        ])
-        reslove()
-      })
+    }
+
+    return {
+      appDragStatus,
+      open
     }
   }
 })
@@ -142,8 +144,8 @@ export default defineComponent({
     right: 0;
     z-index: 2;
     transition: background 0.3s;
-    width: @appPhotoHeight;
-    height: @appPhotoHeight;
+    width: var(--app-photo-height);
+    height: var(--app-photo-height);
     margin: 0 auto;
     border-radius: 14px;
   }
@@ -153,8 +155,8 @@ export default defineComponent({
     }
   }
   img {
-    width: @appPhotoHeight;
-    height: @appPhotoHeight;
+    width: var(--app-photo-height);
+    height: var(--app-photo-height);
     display: block;
     margin: 0 auto;
     border-radius: 14px;

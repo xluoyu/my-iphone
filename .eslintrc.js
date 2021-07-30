@@ -227,7 +227,7 @@ module.exports = {
       }
     ],
     'padded-blocks': [2, 'never'],
-    quotes: [
+    'quotes': [
       2,
       'single',
       {
@@ -235,7 +235,7 @@ module.exports = {
         allowTemplateLiterals: true
       }
     ],
-    semi: [2, 'never'],
+    'semi': [2, 'never'],
     'semi-spacing': [
       2,
       {
@@ -266,7 +266,7 @@ module.exports = {
     'valid-typeof': 2,
     'wrap-iife': [2, 'any'],
     'yield-star-spacing': [2, 'both'],
-    yoda: [2, 'never'],
+    'yoda': [2, 'never'],
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     'object-curly-spacing': [
       2,
@@ -277,6 +277,7 @@ module.exports = {
     ],
     'array-bracket-spacing': [2, 'never'],
     'prefer-const': 0,
-    eqeqeq: 0
+    'eqeqeq': 0,
+    '@typescript-eslint/explicit-module-boundary-types': 'off'
   }
 }

@@ -2,6 +2,7 @@
   <div
     :class="`app-box ${appDragStatus ? 'shake' : ''} `"
     @touchstart="gotouchstart"
+    @touchmove="gotouchmove"
     @touchend="gotouchend"
   >
     <van-icon name="clear" class="close" @touchend="clearApp" v-if="appDragStatus" />
@@ -49,6 +50,11 @@ export default defineComponent({
         timeOutEvent = 0
         this.longTap()
       }, 600)
+    },
+    gotouchmove(e) {
+      if (this.appDragStatus) {
+        console.log('拖拽', e)
+      }
     },
     gotouchend() {
       clearTimeout(timeOutEvent)

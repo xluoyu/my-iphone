@@ -92,7 +92,7 @@ const appStore: IApp[] = [
     type: IItemKey.App,
     photo: 'https://z3.ax1x.com/2021/05/06/glUSTH.png',
     name: '锁屏',
-    useType: IUseType.defaultApp,
+    useType: IUseType.clock,
     status: true
   }
 ]

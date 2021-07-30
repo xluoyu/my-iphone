@@ -20,31 +20,48 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 import Dock from '@/components/Dock/index.vue'
-import { computed, nextTick, watch } from 'vue'
+import { defineComponent, computed, nextTick, watch } from 'vue'
 import HandleApp from './components/handleApp.vue'
 import useAppList from './hooks/useAppList'
 import useSwiper from './hooks/useSwiper'
 import { useStore } from 'vuex'
 
-const { appsList } = useAppList()
-const { containerBgX, containerBgDuration, swiperMain } = useSwiper()
+export default defineComponent({
+  name: 'Home',
+  components: {
+    Dock,
+    HandleApp
+  },
+  setup() {
+    const store = useStore()
+    const appDragStatus = computed(() => store.state.appDragStatus)
 
-watch(appsList, () => {
-  // 更新swiper
-  nextTick(() => {
-    swiperMain.value?.update()
-  })
+    const { appsList } = useAppList()
+    const { containerBgX, containerBgDuration, swiperMain } = useSwiper()
+
+    const closeDarg = () => {
+      if (appDragStatus.value == false) return
+      store.commit('changeAppDragStatus', false)
+    }
+
+    watch(appsList, () => {
+      // 更新swiper
+      nextTick(() => {
+        swiperMain.value?.update()
+      })
+    })
+
+    return {
+      appsList,
+      containerBgX,
+      containerBgDuration,
+      closeDarg,
+      appDragStatus
+    }
+  }
 })
-
-const store = useStore()
-
-const appDragStatus = computed(() => store.state.appDragStatus)
-const closeDarg = () => {
-  if (appDragStatus.value == false) return
-  store.commit('changeAppDragStatus', false)
-}
 </script>
 
 <style lang="less" scoped>
@@ -61,14 +78,14 @@ const closeDarg = () => {
   height: calc(100% - 80px);
   .swiper-slide {
     box-sizing: border-box;
-    padding: @gridColGap @gridColGap 24px;
+    padding: var(--grid-col-gap) var(--grid-col-gap) 24px;
     .grid-box {
       width: 100%;
       height: 100%;
       display: grid;
-      grid-gap: @gridRowGap @gridColGap;
-      grid-template-columns: repeat(4, @appWidth);
-      grid-template-rows: repeat(auto-fill, @appHeight);
+      grid-gap: var(--grid-row-gap) var(--grid-col-gap);
+      grid-template-columns: repeat(4, var(--app-width));
+      grid-template-rows: repeat(auto-fill, var(--app-height));
       grid-auto-flow: dense;
     }
   }

@@ -9,14 +9,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, watch } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import Home from './views/home/index.vue'
 import { useRoute } from 'vue-router'
 import AppLayout from './layout/AppLayout.vue'
-import { GetVar } from './utils/index'
-import variables from '@/styles/variables.less'
 import Lock from '@/components/Lock/index.vue'
-import { useStore } from 'vuex'
+import useLock from './hooks/useLock'
 
 export default defineComponent({
   name: 'App',
@@ -26,10 +24,11 @@ export default defineComponent({
     AppLayout
   },
   setup() {
-    const store = useStore()
+    const { lockStatus } = useLock()
     const appRouteStatus = ref(false)
+    const route = useRoute()
+
     const routeStatus = computed(() => {
-      const route = useRoute()
       if (appRouteStatus.value || !route.matched.length) {
         return false
       } else {
@@ -43,22 +42,21 @@ export default defineComponent({
         appRouteStatus.value = false
       }, 600)
     }
-    return {
-      closeApp,
-      routeStatus,
-      lockStatus: computed(() => store.state.LockStore.lockStatus)
-    }
-  },
-  methods: {
-    beforeEnter(el: Element) {
-      let getVariables = GetVar(variables)
-      let routeName = this.$route.matched[0].name || ''
-      if (!routeName) return
+
+    const beforeEnter = (el: Element) => {
+      let routeName = route.matched[0].name || ''
       let appEl = document.querySelector(`#${String(routeName)}`) as Element
-      if (!appEl) return
-      let top = getVariables('appHeight') / 2 + appEl.getBoundingClientRect().top
-      let left = getVariables('appWidth') / 2 + appEl.getBoundingClientRect().left
-      ;(el as HTMLElement).style.transformOrigin = `${left}px ${top}px`
+      let { top, left, width, height } = appEl.getBoundingClientRect()
+      let transformTop = height / 2 + top
+      let transformLeft = width / 2 + left
+      ;(el as HTMLElement).style.transformOrigin = `${transformLeft}px ${transformTop}px`
+    }
+
+    return {
+      routeStatus,
+      lockStatus,
+      closeApp,
+      beforeEnter
     }
   }
 })
