@@ -1,4 +1,5 @@
 import router from './index'
+import { baseRoute } from '../utils'
 
 router.beforeEach((to, form, next) => {
   // qiankun的坑
@@ -6,18 +7,17 @@ router.beforeEach((to, form, next) => {
   // 统一state格式
   if (to.name == 'home' && form.name) {
     console.log(to)
-    console.log(history)
     history.pushState(
       {
         back: form.path,
-        current: location.pathname,
+        current: baseRoute,
         forward: null,
         position: null,
         replaced: false,
         scroll: null
       },
       '',
-      location.pathname
+      baseRoute
     )
   }
 

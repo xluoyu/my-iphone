@@ -10,7 +10,7 @@ export const constantRoutes = [
     name: 'home'
   },
   {
-    path: '/alipay/*',
+    path: '/alipay/:child*',
     component: Empty,
     name: 'alipay',
     meta: {
