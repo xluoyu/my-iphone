@@ -38,7 +38,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  data() {
+  setup() {
     return {
       userInfo: {
         photo:
@@ -46,12 +46,6 @@ export default defineComponent({
         name: 'vivw'
       }
     }
-  },
-  mounted() {
-    // console.log(this)
-    // setTimeout(() => {
-    //   this.$notify('测试')
-    // }, 1000)
   }
 })
 </script>

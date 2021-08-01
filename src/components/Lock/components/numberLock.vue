@@ -22,14 +22,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref, Ref } from 'vue'
 
-interface IData {
-  keys: number[]
-  inputList: number[]
-  dance: boolean
-}
-
+const keys = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 export default defineComponent({
   props: {
     password: {
@@ -38,40 +33,48 @@ export default defineComponent({
     }
   },
   emits: ['callback', 'close'],
-  data(): IData {
-    return {
-      keys: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      inputList: [],
-      dance: false
-    }
-  },
-  methods: {
-    ketDown(num: number) {
-      if (this.inputList.length >= 6) return
-      this.inputList.push(num)
-      if (this.inputList.length == 6) {
-        this.verification()
+  setup(props, ctx) {
+    const inputList:Ref<number[]> = ref([])
+    const dance = ref(false)
+
+    const ketDown = (num: number) => {
+      if (inputList.value.length >= 6) return
+      inputList.value.push(num)
+      if (inputList.value.length == 6) {
+        verification()
       }
-    },
-    verification() {
-      let inputNum = this.inputList.join('')
-      if (!this.password || this.password == inputNum) {
-        this.inputList = []
-        this.$emit('callback', inputNum, true)
+    }
+
+    const verification = () => {
+      let inputNum = inputList.value.join('')
+      if (!props.password || props.password == inputNum) {
+        inputList.value = []
+        ctx.emit('callback', inputNum, true)
       } else {
-        this.dance = true
+        dance.value = true
         setTimeout(() => {
-          this.dance = false
-          this.inputList = []
-          this.$emit('callback', inputNum, false)
+          dance.value = false
+          inputList.value = []
+          ctx.emit('callback', inputNum, false)
         }, 500)
       }
-    },
-    cancel() {
-      this.$emit('close')
-    },
-    remove() {
-      this.inputList.pop()
+    }
+
+    const cancel = () => {
+      ctx.emit('close')
+    }
+
+    const remove = () => {
+      inputList.value.pop()
+    }
+
+    return {
+      keys,
+      inputList,
+      dance,
+      ketDown,
+      cancel,
+      remove
     }
   }
 })

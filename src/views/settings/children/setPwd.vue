@@ -9,9 +9,12 @@
 
 <script lang="ts">
 import { ILockType } from '#/index'
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import NumberLock from '@/components/Lock/components/numberLock.vue'
 import SlideLock from '@/components/Lock/components/slideLock.vue'
+import { useRoute, useRouter } from 'vue-router'
+import useLock from '@/hooks/useLock'
+import { Toast } from 'vant'
 
 export default defineComponent({
   components: {
@@ -19,36 +22,41 @@ export default defineComponent({
     SlideLock
   },
   emits: ['changeTitle'],
-  data() {
-    return {
-      curPassword: '',
-      lockType: ''
-    }
-  },
-  computed: {
-    ILockType: () => ILockType
-  },
-  mounted() {
-    this.lockType = (this.$route.query.type as string) || ''
-    if (this.$route.query.type == ILockType.Number) {
-      this.$emit('changeTitle', '设置数字密码')
-    } else if (this.$route.query.type == ILockType.Slide) {
-      this.$emit('changeTitle', '设置滑动密码')
-    }
-  },
-  methods: {
-    callback(value: string, res: boolean) {
-      if (res && !this.curPassword) {
-        this.curPassword = value
-        this.$emit('changeTitle', '再次设置密码')
-      } else if (res && this.curPassword) {
-        this.$store.commit('LockStore/changeLockType', this.$route.query.type)
-        this.$store.commit('LockStore/changeLockPwd', this.curPassword)
-        this.$toast.success('密码设置成功')
+  setup(props, ctx) {
+    const route = useRoute()
+    const router = useRouter()
+    const { setLockType, setLockPwd } = useLock()
+
+    const curPassword = ref('')
+    const lockType = route.query.type
+
+    onMounted(() => {
+      if (lockType == ILockType.Normal) {
+        ctx.emit('changeTitle', '设置数字密码')
+      } else if (lockType == ILockType.Slide) {
+        ctx.emit('changeTitle', '设置滑动密码')
+      }
+    })
+
+    const callback = (value: string, res: boolean) => {
+      if (res && !curPassword.value) {
+        curPassword.value = value
+        ctx.emit('changeTitle', '再次设置密码')
+      } else if (res && curPassword) {
+        setLockType(lockType as ILockType)
+        setLockPwd(curPassword.value)
+        Toast.success('密码设置成功')
         setTimeout(() => {
-          this.$router.go(-1)
+          router.go(-1)
         }, 600)
       }
+    }
+
+    return {
+      curPassword,
+      lockType,
+      ILockType,
+      callback
     }
   }
 })

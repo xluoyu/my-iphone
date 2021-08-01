@@ -5,6 +5,21 @@ const lockStatus = ref(false)
 const lockType = ref(ILockType.Number)
 const lockPwd = ref('')
 
+/**
+ * 控制锁屏
+ * @return {
+ *  lockStatus -> 锁屏状态
+ *
+ *  lockType -> 锁屏类型
+ *
+ *  lockPwd -> 锁屏密码
+ *
+ *  changeLockState -> 修改状态 Fn()
+ *
+ *  setLockPwd -> 修改密码 Fn()
+ *
+ *  setLockType -> 修改类型 Fn()
+ */
 const useLock = () => {
   const changeLockState = (value?:boolean) => {
     lockStatus.value = typeof value == 'boolean' ? value : !lockStatus.value
@@ -19,12 +34,12 @@ const useLock = () => {
   }
 
   return {
-    lockStatus,
-    lockType,
-    lockPwd,
-    changeLockState,
-    setLockPwd,
-    setLockType
+    lockStatus, // 锁屏状态
+    lockType, // 锁屏类型
+    lockPwd, // 锁屏密码
+    changeLockState, // 修改状态
+    setLockPwd, // 修改密码
+    setLockType // 修改类型
   }
 }
 

@@ -8,30 +8,25 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { defineComponent } from 'vue'
 import numberLock from './numberLock.vue'
-import { useStore } from 'vuex'
+import useLock from '@/hooks/useLock'
 export default defineComponent({
   components: {
     numberLock
   },
   emits: ['openLock', 'cancel'],
-  setup() {
-    const store = useStore()
+  setup(props, ctx) {
+    const { lockPwd } = useLock()
+
     return {
-      password: computed(() => store.state.LockStore.lockNumberPwd)
-    }
-  },
-  methods: {
-    op() {
-      this.$emit('openLock')
-    },
-    cancel() {
-      this.$emit('cancel')
-    },
-    lockCallback(v: string, res: boolean) {
-      if (res) {
-        this.$emit('openLock')
+      password: lockPwd,
+      op: () => { ctx.emit('openLock') },
+      cancel: () => { ctx.emit('cancel') },
+      lockCallback: (v: string, res: boolean) => {
+        if (res) {
+          ctx.emit('openLock')
+        }
       }
     }
   }

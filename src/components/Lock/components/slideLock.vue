@@ -1,7 +1,7 @@
 <template>
   <canvas
     class="lock-canvas"
-    ref="lockCanvas"
+    ref="canvasEl"
     width="300"
     height="300"
     @touchstart="canvasMoveStart"
@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted, reactive, ref, Ref } from 'vue'
 
 const CanvasOptions = {
   pointWidth: 80,
@@ -31,6 +31,162 @@ interface IPointObj {
   value: number
 }
 
+function useHandleCanvas() {
+  const canvasData = reactive({
+    width: 0,
+    height: 0,
+    left: 0,
+    top: 0
+  })
+  const pointList:Ref<IPointObj[]> = ref([])
+  const moveArr: Ref<number[]> = ref([])
+
+  let canvasEl:Ref<null | HTMLCanvasElement> = ref(null)
+  let ctx: CanvasRenderingContext2D
+
+  /**
+   * 初始化canvas
+   */
+  const init = () => {
+    console.log('initCanvas')
+    const canvasRoot = canvasEl.value
+    console.log(canvasRoot)
+    if (!canvasRoot) return
+    ctx = canvasRoot.getContext('2d') as CanvasRenderingContext2D
+    canvasData.width = canvasRoot.width
+    canvasData.height = canvasRoot.height
+    canvasData.left = canvasRoot.offsetLeft
+    canvasData.top = canvasRoot.offsetTop
+    pointList.value = []
+    if (pointList.value.length != 9) {
+      for (let i = 0; i < 9; i++) {
+        let { x, y } = getPointAxes(i)
+        let newPoint: IPointObj = {
+          x: x,
+          y: y,
+          status: false,
+          value: i
+        }
+        pointList.value.push(newPoint)
+      }
+    }
+    ctx.clearRect(0, 0, canvasData.width, canvasData.height) // 清空画布
+    pointList.value.forEach((item) => {
+      createPoint(item)
+    })
+  }
+
+  /**
+   * 初始化点位
+   */
+  const getPointAxes = (index:number): { x: number; y: number } => {
+    let res = {
+      x:
+        CanvasOptions.pointWidth * (index % 3) +
+        CanvasOptions.columnSpace * (index % 3) +
+        CanvasOptions.pointWidth / 2,
+      y:
+        CanvasOptions.pointWidth * Math.floor(index / 3) +
+        CanvasOptions.rowSpace * Math.floor(index / 3) +
+        CanvasOptions.pointWidth / 2
+    }
+    return res
+  }
+
+  /**
+   * 创建点
+   */
+  const createPoint = (obj: IPointObj, res = true) => {
+    let color = CanvasOptions.pointColor
+    if (obj.status) {
+      color = res ? CanvasOptions.activeColor : CanvasOptions.errColor
+    }
+    ctx.beginPath()
+    ctx.arc(obj.x, obj.y, CanvasOptions.pointWidth / 2 - 1, 0, Math.PI * 2, true)
+    ctx.strokeStyle = color
+    ctx.lineWidth = 1
+    ctx.stroke()
+    ctx.beginPath()
+    ctx.arc(obj.x, obj.y, CanvasOptions.pointCoreWidth / 2, 0, Math.PI * 2, true)
+    ctx.fillStyle = color
+    ctx.fill()
+  }
+
+  const drawLine = (x: number, y: number, follow: boolean, res = true) => {
+    ctx.clearRect(0, 0, canvasData.width, canvasData.height) // 清空画布
+    ctx.save()
+    ctx.beginPath()
+    ctx.strokeStyle = res ? CanvasOptions.activeColor : CanvasOptions.errColor
+    ctx.lineWidth = 6
+    ctx.lineJoin = 'round'
+    ctx.lineCap = 'round'
+    moveArr.value.forEach((v, i) => {
+      if (i == 0) {
+        ctx.moveTo(pointList.value[v - 1].x, pointList.value[v - 1].y)
+      } else {
+        ctx.lineTo(pointList.value[v - 1].x, pointList.value[v - 1].y)
+      }
+    })
+    if (follow && moveArr.value.length) {
+      ctx.lineTo(x, y)
+    }
+    ctx.stroke()
+    ctx.restore()
+    pointList.value.forEach((item) => {
+      if (isInCircle(x, y, item) && !item.status) {
+        moveArr.value.push(item.value + 1)
+        item.status = true
+      }
+      createPoint(item, res)
+    })
+  }
+
+  /**
+   * 滑动
+   */
+  const canvasMoveStart = (e: TouchEvent): void => {
+    let { pageX: x, pageY: y } = e.targetTouches[0]
+    x = x - canvasData.left
+    y = y - canvasData.top
+    drawLine(x, y, true)
+  }
+  const canvasMove = (e: TouchEvent): void => {
+    let { pageX: x, pageY: y } = e.targetTouches[0]
+    x = x - canvasData.left
+    y = y - canvasData.top
+    drawLine(x, y, true)
+  }
+  const canvasMoveEnd = (password:string, context:any) => {
+    let moveStr = moveArr.value.join('')
+    let res = password ? moveStr == password : true
+    drawLine(0, 0, false, res)
+    context.emit('callback', moveStr, res)
+    moveArr.value = []
+    setTimeout(() => {
+      init()
+    }, 300)
+  }
+
+  onMounted(init)
+
+  return {
+    canvasEl,
+    canvasMoveStart,
+    canvasMove,
+    canvasMoveEnd
+  }
+}
+
+/**
+ * 坐标是否在圆内
+ *
+ * @return boolean
+ */
+const isInCircle = (x: number, y: number, obj: IPointObj): boolean => {
+  let dis = Math.sqrt(Math.pow(obj.x - x, 2) + Math.pow(obj.y - y, 2))
+  return dis <= CanvasOptions.pointWidth / 2
+}
+
 export default defineComponent({
   props: {
     password: {
@@ -39,133 +195,19 @@ export default defineComponent({
     }
   },
   emits: ['callback'],
-  data() {
-    const pointList: IPointObj[] = []
-    const moveArr: number[] = []
+  setup(props, context) {
+    const { canvasEl,
+      canvasMoveStart,
+      canvasMove,
+      canvasMoveEnd } = useHandleCanvas()
+
     return {
-      canvasWidth: 0,
-      canvasHeight: 0,
-      canvasLeft: 0,
-      canvasTop: 0,
-      pointList: pointList,
-      moveArr: moveArr
-    }
-  },
-  mounted() {
-    this.init()
-  },
-  methods: {
-    init() {
-      const canvas = this.$refs.lockCanvas as HTMLCanvasElement
-      if (!canvas) return
-      const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
-      this.ctx = ctx
-      this.canvasWidth = canvas.width
-      this.canvasHeight = canvas.height
-      this.canvasLeft = canvas.offsetLeft
-      this.canvasTop = canvas.offsetTop
-      this.pointList = []
-      if (this.pointList.length != 9) {
-        for (let i = 0; i < 9; i++) {
-          let { x, y } = this.getPointAxes(i)
-          let newPoint: IPointObj = {
-            x: x,
-            y: y,
-            status: false,
-            value: i
-          }
-          this.pointList.push(newPoint)
-        }
+      canvasEl,
+      canvasMoveStart,
+      canvasMove,
+      canvasMoveEnd: () => {
+        canvasMoveEnd(props.password, context)
       }
-      this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight) // 清空画布
-      this.pointList.forEach((item) => {
-        this.createPoint(item)
-      })
-    },
-    createPoint(obj: IPointObj, res = true): void {
-      let color = CanvasOptions.pointColor
-      if (obj.status) {
-        color = res ? CanvasOptions.activeColor : CanvasOptions.errColor
-      }
-      this.ctx.beginPath()
-      this.ctx.arc(obj.x, obj.y, CanvasOptions.pointWidth / 2 - 1, 0, Math.PI * 2, true)
-      this.ctx.strokeStyle = color
-      this.ctx.lineWidth = 1
-      this.ctx.stroke()
-      this.ctx.beginPath()
-      this.ctx.arc(obj.x, obj.y, CanvasOptions.pointCoreWidth / 2, 0, Math.PI * 2, true)
-      this.ctx.fillStyle = color
-      this.ctx.fill()
-    },
-    getPointAxes(index: number): { x: number; y: number } {
-      let res = {
-        x:
-          CanvasOptions.pointWidth * (index % 3) +
-          CanvasOptions.columnSpace * (index % 3) +
-          CanvasOptions.pointWidth / 2,
-        y:
-          CanvasOptions.pointWidth * Math.floor(index / 3) +
-          CanvasOptions.rowSpace * Math.floor(index / 3) +
-          CanvasOptions.pointWidth / 2
-      }
-      return res
-    },
-    drawLine(x: number, y: number, follow: boolean, res = true) {
-      this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight) // 清空画布
-      this.ctx.save()
-      this.ctx.beginPath()
-      this.ctx.strokeStyle = res ? CanvasOptions.activeColor : CanvasOptions.errColor
-      this.ctx.lineWidth = 6
-      this.ctx.lineJoin = 'round'
-      this.ctx.lineCap = 'round'
-      this.moveArr.forEach((v, i) => {
-        if (i == 0) {
-          this.ctx.moveTo(this.pointList[v - 1].x, this.pointList[v - 1].y)
-        } else {
-          this.ctx.lineTo(this.pointList[v - 1].x, this.pointList[v - 1].y)
-        }
-      })
-      if (follow && this.moveArr.length) {
-        this.ctx.lineTo(x, y)
-      }
-      this.ctx.stroke()
-      this.ctx.restore()
-      this.pointList.forEach((item) => {
-        if (this.isInCircle(x, y, item) && !item.status) {
-          this.moveArr.push(item.value + 1)
-          item.status = true
-        }
-        this.createPoint(item, res)
-      })
-    },
-    isInCircle(x: number, y: number, obj: IPointObj): boolean {
-      let dis = Math.sqrt(Math.pow(obj.x - x, 2) + Math.pow(obj.y - y, 2))
-      return dis <= CanvasOptions.pointWidth / 2
-    },
-    /**
-     * 滑动
-     */
-    canvasMoveStart(e: TouchEvent): void {
-      let { pageX: x, pageY: y } = e.targetTouches[0]
-      x = x - this.canvasLeft
-      y = y - this.canvasTop
-      this.drawLine(x, y, true)
-    },
-    canvasMove(e: TouchEvent): void {
-      let { pageX: x, pageY: y } = e.targetTouches[0]
-      x = x - this.canvasLeft
-      y = y - this.canvasTop
-      this.drawLine(x, y, true)
-    },
-    canvasMoveEnd() {
-      let moveStr = this.moveArr.join('')
-      let res = this.password ? moveStr == this.password : true
-      this.drawLine(0, 0, false, res)
-      this.$emit('callback', moveStr, res)
-      this.moveArr = []
-      setTimeout(() => {
-        this.init()
-      }, 300)
     }
   }
 })

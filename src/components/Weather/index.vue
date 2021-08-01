@@ -8,9 +8,6 @@
 <script lang="ts">
 import { defineComponent, nextTick, onMounted } from 'vue'
 import { addScript } from '@/utils'
-// import { px } from '@/utils/index'
-import variables from '@/styles/variables.less'
-import { GetVar } from '@/utils/index'
 declare global {
   interface Window {
     WIDGET: { CONFIG: { [propName: string]: string } }
@@ -19,9 +16,6 @@ declare global {
 
 export default defineComponent({
   setup() {
-    let root = document.getElementsByTagName('html')[0]
-    let test = getComputedStyle(root).getPropertyValue('--appHeight')
-    let getVariables = GetVar(variables)
     onMounted(() => {
       window.WIDGET = {
         CONFIG: {

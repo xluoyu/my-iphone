@@ -58,7 +58,7 @@ function useGetTime() {
 }
 
 // 滑动事件
-function useTouchStart(lockStep: Ref<ILockType>) {
+function useTouchStart(lockStep: Ref<ILockType>, password: Ref<string>) {
   const transition = ref(0)
   const curBlurNum = ref(0)
   const translateY = ref(0)
@@ -89,7 +89,8 @@ function useTouchStart(lockStep: Ref<ILockType>) {
       curBlurNum.value = diffY ? 1 : 0
       if (translateY.value) {
         setTimeout(() => {
-          if (lockType.value == ILockType.Normal) {
+          console.log(password)
+          if (!password.value || lockType.value == ILockType.Normal) {
             // this.$store.commit('LockStore/changeLock', false)
             changeLockState()
           } else {
@@ -130,7 +131,7 @@ export default defineComponent({
   },
   setup() {
     const lockStep = ref(ILockType.Normal)
-    const { changeLockState } = useLock()
+    const { lockPwd, changeLockState } = useLock()
     const { time, date } = useGetTime()
     const {
       transition,
@@ -138,7 +139,7 @@ export default defineComponent({
       translateY,
       windowHeight,
       touchStart
-    } = useTouchStart(lockStep)
+    } = useTouchStart(lockStep, lockPwd)
     const tipsContent = useGetTips()
 
     const cancel = () => {

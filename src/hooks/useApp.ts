@@ -2,6 +2,15 @@ import { ref, computed, reactive } from 'vue'
 import { IApp } from '#/index'
 import appStoreList from '@/api/app-store'
 
+/**
+ *
+ * @returns {
+ * localApp -> 本地当前appName[string]
+ *
+ * myApplist -> 本地当前app列表[IApp]
+ *
+ * removeApp -> 移除应用 Fn()
+ */
 export const useAppStore = () => {
   // 本机当前app组
   const localApp = ref([
@@ -35,34 +44,39 @@ interface IRouterHandle {
   value?: string[] | string
 }
 
-const useAppHistory = () => {
-  const appHistory = reactive({})
+export const useAppHistory = () => {
+  const appHistory:{[propName: string]: any} = reactive({})
 
   const changeRouterHistory = (handle: IRouterHandle) => {
-    let routerList = routerHistory[handle.appName]
+    let routerList = appHistory[handle.appName]
     switch (handle.type) {
       case 'add':
-        if (routerHistory[handle.appName]) {
-          let index = routerHistory[handle.appName]?.indexOf(handle.value as string)
+        if (appHistory[handle.appName]) {
+          let index = appHistory[handle.appName]?.indexOf(handle.value as string)
           if (index && index != -1) {
-            routerHistory[handle.appName] = routerHistory[handle.appName]?.slice(0, index + 1)
+            appHistory[handle.appName] = appHistory[handle.appName]?.slice(0, index + 1)
           } else {
-            routerHistory[handle.appName]?.push(handle.value as string)
+            appHistory[handle.appName]?.push(handle.value as string)
           }
         } else {
-          routerHistory[handle.appName] = [handle.value as string]
+          appHistory[handle.appName] = [handle.value as string]
         }
         break
       case 'remove':
         routerList = undefined
         break
       case 'replace':
-        routerHistory[handle.appName] = [handle.value as string]
-        console.log(routerHistory[handle.appName])
+        appHistory[handle.appName] = [handle.value as string]
+        console.log(appHistory[handle.appName])
         break
       default:
         routerList?.push(handle.value as string)
         break
     }
+  }
+
+  return {
+    appHistory,
+    changeRouterHistory
   }
 }

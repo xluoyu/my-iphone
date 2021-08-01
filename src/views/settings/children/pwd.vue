@@ -16,6 +16,7 @@
       style="margin-top: 20px"
       v-if="curSelectType.value != 'normal'"
     />
+
     <van-popup v-model:show="show" position="bottom">
       <van-picker title="解锁方式" :columns="columns" @cancel="togglePopup" @confirm="onConfirm" />
     </van-popup>
@@ -24,9 +25,9 @@
 
 <script lang="ts">
 import { ILockType } from '#/index'
-import { useStore } from 'vuex'
 import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import useLock from '@/hooks/useLock'
 
 interface IPwdType {
   value: ILockType
@@ -35,10 +36,11 @@ interface IPwdType {
 
 export default defineComponent({
   setup() {
-    const store = useStore()
     const router = useRouter()
 
     const show = ref<boolean>(false)
+    const { lockType } = useLock()
+
     const togglePopup = () => {
       show.value = !show.value
     }
@@ -49,21 +51,12 @@ export default defineComponent({
       { value: ILockType.Slide, text: '滑动解锁' }
     ]
     let curSelectType = reactive({
-      value: store.state.LockStore.lockType,
-      text: (columns.find((e) => e.value == store.state.LockStore.lockType) as IPwdType).text
+      value: lockType.value,
+      text: (columns.find((e) => e.value == lockType.value) as IPwdType).text
     })
     const onConfirm = (obj: IPwdType) => {
       curSelectType.value = obj.value
       curSelectType.text = obj.text
-      // store.commit('LockStore/changeLockType', curSelectType.value)
-      // store.commit('changeCloseBeforeFn', () => {
-      //   if (curSelectType.value == ILockType.Normal) {
-      //     return true
-      //   } else {
-      //     console.log('还没有设置密码')
-      //     return false
-      //   }
-      // })
       if (curSelectType.value != ILockType.Normal) {
         router.push({ name: 'setPwd', query: { type: curSelectType.value }})
       }

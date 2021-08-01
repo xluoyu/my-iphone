@@ -37,51 +37,46 @@
 
 <script lang="ts">
 import { IColorType } from '#/index'
-import store from '@/store'
-import { defineComponent } from 'vue'
+import { useAppHistory } from '@/hooks/useApp'
+import { computed, defineComponent, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
   emits: ['closeApp'],
-  data() {
-    return {
-      fade: true
-    }
-  },
-  computed: {
-    color(): string {
-      return IColorType[(this.$route.meta?.style as 'black' | 'white') || 'white']
-    }
-  },
-  watch: {
-    '$route.path'() {
-      if (this.$route.name == 'home') return
-      if (!this.$route.matched.length) return
-      this.$store.commit('changeRouterHistory', {
+  setup(props, ctx) {
+    const route = useRoute()
+    const router = useRouter()
+
+    const fade = ref(true)
+    const color = computed(() => IColorType[(route.meta?.style as 'black' | 'white') || 'white'])
+
+    const { changeRouterHistory } = useAppHistory()
+
+    watch(() => route.path, () => {
+      if (route.name == 'home') return
+      if (!route.matched.length || !route.matched[0].name) return
+      changeRouterHistory({
         type: 'add',
-        appName: this.$route.matched[0].name,
-        value: this.$route.fullPath
+        appName: route.matched[0].name as string,
+        value: route.fullPath
       })
-    }
-  },
-  methods: {
-    async closeApp() {
-      let flag = await store.dispatch('onCloseBrofreFn')
-      if (!flag) return
-      // if (this.$route.meta.type == 'app') {
-      this.fade = false
-      this.$emit('closeApp')
+    })
+
+    const closeApp = async() => {
+      // let flag = await store.dispatch('onCloseBrofreFn')
+      // if (!flag) return
+      fade.value = false
+      ctx.emit('closeApp')
       setTimeout(() => {
-        this.$router.push({ name: 'home' })
-        this.fade = true
+        router.push({ name: 'home' })
+        fade.value = true
       }, 500)
-      // } else {
-      //   this.$router.push({ name: 'home' })
-      // }
-    },
-    async sleep() {
-      setTimeout(() => {
-        Promise.resolve()
-      }, 300)
+    }
+
+    return {
+      fade,
+      color,
+      closeApp
     }
   }
 })
