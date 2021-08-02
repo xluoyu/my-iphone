@@ -3,12 +3,12 @@
     class="container"
     :style="`background-position-x: ${containerBgX}%;transition: background ${containerBgDuration}s;`"
   >
-    <div class="closeHandle" @click="closeDarg" v-if="appDragStatus">完成</div>
+    <div class="closeHandle" @click="closeDarg" v-if="dragStatus">完成</div>
     <div class="swiper-container my-swipe">
       <div class="swiper-wrapper">
         <div class="swiper-slide" v-for="(item, index) in appsList" :key="index">
           <div class="grid-box" @click.self="closeDarg">
-            <HandleApp v-for="app in item" :key="app.key" :style="app.style" :app="app">
+            <HandleApp v-for="app in item" :key="app.key" :style="app.style" :app="app" :data-id="app.key">
               <component :is="app.component" :app="app" />
             </HandleApp>
           </div>
@@ -22,11 +22,12 @@
 
 <script lang="ts">
 import Dock from '@/components/Dock/index.vue'
-import { defineComponent, computed, nextTick, watch } from 'vue'
+import { defineComponent, nextTick, watch, onMounted } from 'vue'
 import HandleApp from './components/handleApp.vue'
 import useAppList from './hooks/useAppList'
 import useSwiper from './hooks/useSwiper'
-import { useStore } from 'vuex'
+import { useAppDragStatus } from './hooks/useAppDragStatus'
+import useAppDrag from './hooks/useAppDrag'
 
 export default defineComponent({
   name: 'Home',
@@ -35,18 +36,27 @@ export default defineComponent({
     HandleApp
   },
   setup() {
-    const store = useStore()
-    const appDragStatus = computed(() => store.state.appDragStatus)
+    const { dragStatus, changeDragStatus } = useAppDragStatus()
 
     const { appsList } = useAppList()
     const { containerBgX, containerBgDuration, swiperMain } = useSwiper()
 
     const closeDarg = () => {
-      if (appDragStatus.value == false) return
-      store.commit('changeAppDragStatus', false)
+      if (dragStatus.value == false) return
+      changeDragStatus()
     }
 
-    watch(appsList, () => {
+    onMounted(() => {
+      useAppDrag('.grid-box')
+    })
+    // watch(dragStatus, () => {
+    //   if (dragStatus.value) useAppDrag('.grid-box')
+    // })
+
+    /**
+     * 监听applist变动
+     */
+    watch(appsList.value, () => {
       // 更新swiper
       nextTick(() => {
         swiperMain.value?.update()
@@ -58,7 +68,7 @@ export default defineComponent({
       containerBgX,
       containerBgDuration,
       closeDarg,
-      appDragStatus
+      dragStatus
     }
   }
 })
@@ -68,7 +78,7 @@ export default defineComponent({
 .container {
   width: 100%;
   height: 100%;
-  background: url(https://z3.ax1x.com/2021/04/28/gPPUFx.jpg) no-repeat;
+  background: url(https://xluoyu.github.io/image-riverbed/iphone/background/background.jpg) no-repeat;
   background-size: cover;
   overflow-y: hidden;
   overflow-x: auto;
@@ -118,5 +128,9 @@ export default defineComponent({
   line-height: 26px;
   border-radius: 20px;
   backdrop-filter: blur(5px);
+}
+
+.box-ghost{
+  opacity: .3
 }
 </style>

@@ -1,6 +1,19 @@
 import { ref, computed, reactive } from 'vue'
 import { IApp } from '#/index'
 import appStoreList from '@/api/app-store'
+import { Dialog } from 'vant'
+
+// 本机当前app组
+const localApp = ref([
+  'weather',
+  'appStore',
+  'photos',
+  'music',
+  'camera',
+  'calculator',
+  'clock',
+  'alipay'
+])
 
 /**
  *
@@ -12,18 +25,6 @@ import appStoreList from '@/api/app-store'
  * removeApp -> 移除应用 Fn()
  */
 export const useAppStore = () => {
-  // 本机当前app组
-  const localApp = ref([
-    'weather',
-    'appStore',
-    'photos',
-    'music',
-    'camera',
-    'calculator',
-    'clock',
-    'alipay'
-  ])
-
   const myApplist = computed(() => localApp.value.map(e => appStoreList.find((a) => a.key == e) as IApp))
 
   const removeApp = (appKey: string) => {
@@ -31,10 +32,20 @@ export const useAppStore = () => {
     localApp.value.splice(index, 1)
   }
 
+  const clearApp = (app:IApp) => {
+    Dialog.confirm({
+      message: `确定要卸载${app.name}吗？`
+    })
+      .then(() => {
+        console.log('开始卸载')
+        removeApp(app.key)
+      })
+  }
+
   return {
     localApp,
     myApplist,
-    removeApp
+    clearApp
   }
 }
 
@@ -44,9 +55,9 @@ interface IRouterHandle {
   value?: string[] | string
 }
 
-export const useAppHistory = () => {
-  const appHistory:{[propName: string]: any} = reactive({})
+const appHistory:{[propName: string]: any} = reactive({})
 
+export const useAppHistory = () => {
   const changeRouterHistory = (handle: IRouterHandle) => {
     let routerList = appHistory[handle.appName]
     switch (handle.type) {

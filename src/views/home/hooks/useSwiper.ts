@@ -1,16 +1,11 @@
 import Swiper, { Pagination } from 'swiper'
 import 'swiper/swiper-bundle.min.css'
 import 'swiper/swiper.less'
-import { onMounted, ref, nextTick, Ref } from 'vue'
+import { onMounted, ref, nextTick, Ref, watchEffect } from 'vue'
+import { useAppDragStatus } from './useAppDragStatus'
 Swiper.use([Pagination])
 
-interface IuseSwiper {
-  containerBgX: Ref<number>
-  containerBgDuration: Ref<number>
-  swiperMain: any
-}
-
-const useSwiper = (): IuseSwiper => {
+const useSwiper = () => {
   const containerBgX = ref<number>(0)
   const containerBgDuration = ref<number>(0)
   let swiperMain = ref<any>(null)
@@ -36,6 +31,12 @@ const useSwiper = (): IuseSwiper => {
         }
       })
     })
+  })
+
+  const { dragStatus } = useAppDragStatus()
+
+  watchEffect(() => {
+    if (swiperMain.value) swiperMain.value.allowTouchMove = !dragStatus.value
   })
 
   return {

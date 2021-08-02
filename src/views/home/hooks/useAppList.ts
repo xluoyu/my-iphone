@@ -1,17 +1,12 @@
-import { onMounted, computed, ref, markRaw, Ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import { onMounted, ref, markRaw, Ref, watch } from 'vue'
 import { IApp, IItemKey } from '#/index'
 import { px } from '@/utils/index'
 import Weather from '@/components/Weather/index.vue'
 import App from '@/components/App/index.vue'
+import { useAppStore } from '../../../hooks/useApp'
 
-interface IUseAppList {
-  appsList: Ref<IApp[][]>
-}
-
-const useAppList = (): IUseAppList => {
-  const store = useStore()
-  const list = computed(() => store.getters['AppStore/myAppList'] as IApp[])
+const useAppList = () => {
+  const { localApp, myApplist } = useAppStore()
   const appsList = ref<IApp[][]>([[]])
 
   const init = () => {
@@ -28,8 +23,8 @@ const useAppList = (): IUseAppList => {
     const columns = 4
     let index = 0
     let curItemNumber = 0
-    appsList.value = [[]]
-    list.value.forEach((item, i) => {
+    let list:IApp[][] = [[]]
+    myApplist.value.forEach((item, i) => {
       switch (item.type) {
         case IItemKey.App:
           curItemNumber += 1
@@ -48,19 +43,22 @@ const useAppList = (): IUseAppList => {
           item.component = markRaw(App)
           break
       }
-      appsList.value[index].push(item)
-      if (curItemNumber >= lines * columns || i == list.value.length - 1) {
+      list[index].push(item)
+      if (curItemNumber >= lines * columns || i == myApplist.value.length - 1) {
         curItemNumber = 0
-        if (i != list.value.length - 1) {
-          appsList.value.push([])
+        if (i != myApplist.value.length - 1) {
+          list.push([])
           index += 1
         }
       }
     })
+    appsList.value = list
   }
 
-  watch(store.state.AppStore.myAppIds, () => {
-    console.log('监听到改变')
+  /**
+   * 仅监听增/删app
+   */
+  watch(localApp.value, () => {
     init()
   })
 

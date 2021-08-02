@@ -6,14 +6,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, h, computed } from 'vue'
+import { defineComponent, PropType, h } from 'vue'
 import { IApp, IUseType } from '#/index'
 import { registerMicroApps } from 'qiankun'
 import { baseRoute } from '../../utils/index'
-import { useStore } from 'vuex'
 import { Toast, Dialog } from 'vant'
 import useLock from '../../hooks/useLock'
 import { useRouter } from 'vue-router'
+import { useAppDragStatus } from '@/views/home/hooks/useAppDragStatus'
+import { useAppStore, useAppHistory } from '@/hooks/useApp'
 
 function openCamera() {
   let input = document.createElement('input')
@@ -82,12 +83,17 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const store = useStore()
     const router = useRouter()
     const { changeLockState } = useLock()
-    const appDragStatus = computed(() => store.state.appDragStatus)
+    const { dragStatus } = useAppDragStatus()
+    const { clearApp } = useAppStore()
+    const { appHistory } = useAppHistory()
+
     const open = async() => {
-      if (appDragStatus.value) return
+      if (dragStatus.value) {
+        clearApp(props.app)
+        return
+      }
       if (!props.app.status) {
         Toast('这个还没写/(ㄒoㄒ)/~~')
         return
@@ -105,7 +111,7 @@ export default defineComponent({
           if (props.app.useType == IUseType.customApp) {
             await getCustomApp(props.app.key)
           }
-          let routeList = store.state.routerHistory[appName] ? [...store.state.routerHistory[appName]] : []
+          let routeList = appHistory[appName] ? [...appHistory[appName]] : []
           if (routeList && routeList.length) {
             routeList.forEach((item: string) => {
               requestAnimationFrame(() => {
@@ -120,7 +126,6 @@ export default defineComponent({
     }
 
     return {
-      appDragStatus,
       open
     }
   }
@@ -135,6 +140,8 @@ export default defineComponent({
   height: fit-content;
   width: 70px;
   position: relative;
+  background: transparent;
+  transition: background .3s;
   &::before {
     content: '';
     background: transparent;
@@ -160,6 +167,7 @@ export default defineComponent({
     display: block;
     margin: 0 auto;
     border-radius: 14px;
+    transition: transform .3s;
   }
   p {
     margin: 0;
@@ -178,5 +186,15 @@ export default defineComponent({
     z-index: 10;
     opacity: 0;
   }
+}
+
+.changeToBox{
+  .app {
+    border-radius: 10px;
+    height: 70px;
+    background: rgba(95, 95, 95, 0.74);
+  }
+  img{transform: translateY(5px);}
+  p{display: none;}
 }
 </style>

@@ -4,7 +4,7 @@ const appStore: IApp[] = [
   {
     key: 'alipay',
     type: IItemKey.App,
-    photo: 'https://imgsrc.baidu.com/forum/pic/item/203fb80e7bec54e78571908cb7389b504ec26a87.jpg',
+    photo: 'https://xluoyu.github.io/image-riverbed/iphone/alipay.jpg',
     name: '支付宝',
     useType: IUseType.customApp,
     status: true
@@ -19,14 +19,14 @@ const appStore: IApp[] = [
     key: 'settings',
     type: IItemKey.App,
     useType: IUseType.defaultApp,
-    photo: 'https://z3.ax1x.com/2021/05/06/gQZGRI.png',
+    photo: 'https://xluoyu.github.io/image-riverbed/iphone/settings.png',
     name: '设置',
     status: true
   },
   {
     key: 'safari',
     type: IItemKey.App,
-    photo: 'https://z3.ax1x.com/2021/05/06/gQZ8JA.png',
+    photo: 'https://xluoyu.github.io/image-riverbed/iphone/safari.png',
     name: 'Safari 浏览器',
     useType: IUseType.defaultApp,
     status: false
@@ -34,7 +34,7 @@ const appStore: IApp[] = [
   {
     key: 'photos',
     type: IItemKey.App,
-    photo: 'https://z3.ax1x.com/2021/05/06/gQZ3id.png',
+    photo: 'https://xluoyu.github.io/image-riverbed/iphone/photos.png',
     name: 'photos',
     useType: IUseType.defaultApp,
     status: false
@@ -42,7 +42,7 @@ const appStore: IApp[] = [
   {
     key: 'phone',
     type: IItemKey.App,
-    photo: 'https://z3.ax1x.com/2021/05/06/gQZlIH.png',
+    photo: 'https://xluoyu.github.io/image-riverbed/iphone/phone.png',
     name: 'phone',
     useType: IUseType.defaultApp,
     status: false
@@ -50,7 +50,7 @@ const appStore: IApp[] = [
   {
     key: 'appStore',
     type: IItemKey.App,
-    photo: 'https://z3.ax1x.com/2021/05/06/gQZQde.png',
+    photo: 'https://xluoyu.github.io/image-riverbed/iphone/appStore.png',
     name: 'App Store',
     useType: IUseType.defaultApp,
     status: false
@@ -58,7 +58,7 @@ const appStore: IApp[] = [
   {
     key: 'music',
     type: IItemKey.App,
-    photo: 'https://z3.ax1x.com/2021/05/06/gQZMZD.png',
+    photo: 'https://xluoyu.github.io/image-riverbed/iphone/music.png',
     name: '音乐',
     useType: IUseType.customApp,
     status: true
@@ -66,7 +66,7 @@ const appStore: IApp[] = [
   {
     key: 'camera',
     type: IItemKey.App,
-    photo: 'https://z3.ax1x.com/2021/05/06/gQZuqO.png',
+    photo: 'https://xluoyu.github.io/image-riverbed/iphone/camera.png',
     name: 'camera',
     useType: IUseType.camera,
     status: true
@@ -74,7 +74,7 @@ const appStore: IApp[] = [
   {
     key: 'calculator',
     type: IItemKey.App,
-    photo: 'https://z3.ax1x.com/2021/05/06/gQZnsK.png',
+    photo: 'https://xluoyu.github.io/image-riverbed/iphone/calculator.png',
     name: 'calculator',
     useType: IUseType.defaultApp,
     status: false
@@ -82,7 +82,7 @@ const appStore: IApp[] = [
   {
     key: 'messages',
     type: IItemKey.App,
-    photo: 'https://z3.ax1x.com/2021/05/06/gQZmM6.png',
+    photo: 'https://xluoyu.github.io/image-riverbed/iphone/messages.png',
     name: 'messages',
     useType: IUseType.defaultApp,
     status: false
@@ -90,7 +90,7 @@ const appStore: IApp[] = [
   {
     key: 'clock',
     type: IItemKey.App,
-    photo: 'https://z3.ax1x.com/2021/05/06/glUSTH.png',
+    photo: 'https://xluoyu.github.io/image-riverbed/iphone/clock.png',
     name: '锁屏',
     useType: IUseType.clock,
     status: true

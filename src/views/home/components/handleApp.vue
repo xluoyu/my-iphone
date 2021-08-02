@@ -1,21 +1,22 @@
 <template>
   <div
-    :class="`app-box ${appDragStatus ? 'shake' : ''} `"
+    class="app-box"
     @touchstart="gotouchstart"
-    @touchmove="gotouchmove"
     @touchend="gotouchend"
   >
-    <van-icon name="clear" class="close" @touchend="clearApp" v-if="appDragStatus" />
-    <slot></slot>
+    <div :class="`${dragStatus ? 'shake' : ''}`" style="width: 100%;height:100%">
+      <van-icon name="clear" class="close" @touchend="clearApp" v-if="dragStatus" />
+      <slot></slot>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { IApp } from '#/index'
-import { IState } from '@/store/index'
 import { defineComponent, PropType } from 'vue'
-import { mapState } from 'vuex'
-let timeOutEvent = 0
+import { useAppDragStatus } from '../hooks/useAppDragStatus'
+import { useAppStore } from '@/hooks/useApp'
+
 export default defineComponent({
   props: {
     app: {
@@ -25,39 +26,18 @@ export default defineComponent({
       }
     }
   },
-  computed: {
-    ...mapState({
-      appDragStatus: (state) => (state as IState).appDragStatus
-    })
-  },
-  methods: {
-    clearApp() {
-      this.$dialog
-        .confirm({
-          message: `确定要卸载${this.app.name}吗？`
-        })
-        .then(() => {
-          console.log('开始卸载')
-          this.$store.commit('AppStore/removeApp', this.app.key)
-        })
-    },
-    longTap() {
-      this.$store.commit('changeAppDragStatus', true)
-    },
-    gotouchstart() {
-      clearTimeout(timeOutEvent)
-      timeOutEvent = window.setTimeout(() => {
-        timeOutEvent = 0
-        this.longTap()
-      }, 600)
-    },
-    gotouchmove(e) {
-      if (this.appDragStatus) {
-        console.log('拖拽', e)
-      }
-    },
-    gotouchend() {
-      clearTimeout(timeOutEvent)
+  setup() {
+    const { dragStatus,
+      gotouchstart,
+      gotouchend
+    } = useAppDragStatus()
+    const { clearApp } = useAppStore()
+
+    return {
+      dragStatus,
+      clearApp,
+      gotouchstart,
+      gotouchend
     }
   }
 })
@@ -80,6 +60,10 @@ export default defineComponent({
   transform-origin: 40% 50%;
   transform: translateZ(0);
   animation: shakeAnmiation 0.2s infinite;
+}
+
+.changeToBox {
+  .close {display: none;}
 }
 
 @keyframes shakeAnmiation {
