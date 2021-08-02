@@ -8,8 +8,7 @@ const useAppDrag = (el:string) => {
     ghostClass: 'box-ghost',
     forceFallback: false,
     onStart: function(evt) {
-      toCenterDiff = evt.item.offsetWidth - evt.originalEvent.offsetX
-      console.log(evt)
+      toCenterDiff = evt.originalEvent.targetTouches[0].clientX - evt.item.offsetLeft
     },
     onMove: function(evt) {
       console.log('move', evt)
