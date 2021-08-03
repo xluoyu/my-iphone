@@ -1,4 +1,7 @@
 import Sortable from 'sortablejs'
+import useSwiper from './useSwiper'
+
+const { swiperMain } = useSwiper()
 
 const useAppDrag = (el:string) => {
   let box = document.querySelector(el)
@@ -9,12 +12,15 @@ const useAppDrag = (el:string) => {
     forceFallback: false,
     onStart: function(evt) {
       toCenterDiff = evt.originalEvent.targetTouches[0].clientX - evt.item.offsetLeft
+      toCenterDiff = evt.item.offsetWidth / 2 - toCenterDiff
+      swiperMain.value.allowTouchMove = false
     },
     onMove: function(evt) {
-      console.log('move', evt)
       const left1 = evt.relatedRect.left + evt.relatedRect.width / 3
       const right1 = evt.relatedRect.left + evt.relatedRect.width / 3 * 2
-      const clineX = evt.originalEvent.clientX
+      const top1 = evt.relatedRect.top + evt.relatedRect.height / 5
+      const bottom1 = evt.relatedRect.top + evt.relatedRect.height / 5 * 4
+      const clineX = evt.originalEvent.clientX + toCenterDiff
       const clineY = evt.originalEvent.clientY
       // 拖拽元素在目标元素前面
       if (evt.willInsertAfter) {
@@ -28,32 +34,23 @@ const useAppDrag = (el:string) => {
           evt.related.classList.remove('changeToBox')
           return true
         }
-        if (clineY > evt.relatedRect.top / 5) {
-          evt.related.classList.remove('changeToBox')
-        }
       }
       // 位于中间部分
-      if (left1 < clineX && clineX < right1) {
+      if (left1 < clineX && clineX < right1 && clineY > top1 && clineY < bottom1) {
         evt.related.classList.add('changeToBox')
-        console.log(clineY, evt.relatedRect.bottom)
-        if (evt.willInsertAfter && clineY > evt.relatedRect.bottom / 5 * 4) {
-          evt.related.classList.remove('changeToBox')
-        }
-        if (!evt.willInsertAfter && clineY < evt.relatedRect.top / 5) {
-          evt.related.classList.remove('changeToBox')
-        }
       } else {
         evt.related.classList.remove('changeToBox')
       }
-      if (evt.originalEvent.clientY > evt.relatedRect.top || evt.originalEvent.clientY > evt.relatedRect.top) { return false }
+
+      return false
     },
     // 拖动结束
     onEnd: function(evt) {
-      // console.log(evt)
       // 获取拖动后的排序
       let arr = sortable.toArray()
       // alert(JSON.stringify(arr))
-      // console.log(arr)
+      console.log(arr)
+      swiperMain.value.allowTouchMove = true
     } }
   // 初始化
   var sortable = Sortable.create(box, ops)

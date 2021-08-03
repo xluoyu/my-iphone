@@ -36,7 +36,7 @@ export default defineComponent({
   background: rgba(0, 0, 0, 0.2);
   color: #fff;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   box-sizing: border-box;
   padding: 0 19px;

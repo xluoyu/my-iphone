@@ -27,7 +27,9 @@ export const GetVar = (variables: string) => {
 }
 
 export const getVar = (key: string) => {
-  getComputedStyle(document.documentElement).getPropertyValue(key)
+  let value = getComputedStyle(document.documentElement).getPropertyValue(key)
+  value = value.replace('px', '')
+  return Number(value)
 }
 
 export const baseRoute = process.env.NODE_ENV == 'production' ? '/my-iphone/' : '/'

@@ -7,7 +7,7 @@
     <div class="swiper-container my-swipe">
       <div class="swiper-wrapper">
         <div class="swiper-slide" v-for="(item, index) in appsList" :key="index">
-          <div class="grid-box" @click.self="closeDarg">
+          <div class="grid-box" @click.self="closeDarg" :style="`grid-template-columns: repeat(${curColumn}, var(--app-width))`">
             <HandleApp v-for="app in item" :key="app.key" :style="app.style" :app="app" :data-id="app.key">
               <component :is="app.component" :app="app" />
             </HandleApp>
@@ -38,7 +38,7 @@ export default defineComponent({
   setup() {
     const { dragStatus, changeDragStatus } = useAppDragStatus()
 
-    const { appsList } = useAppList()
+    const { appsList, curColumn } = useAppList()
     const { containerBgX, containerBgDuration, swiperMain } = useSwiper()
 
     const closeDarg = () => {
@@ -49,9 +49,6 @@ export default defineComponent({
     onMounted(() => {
       useAppDrag('.grid-box')
     })
-    // watch(dragStatus, () => {
-    //   if (dragStatus.value) useAppDrag('.grid-box')
-    // })
 
     /**
      * 监听applist变动
@@ -64,6 +61,7 @@ export default defineComponent({
     })
 
     return {
+      curColumn,
       appsList,
       containerBgX,
       containerBgDuration,
@@ -94,9 +92,8 @@ export default defineComponent({
       height: 100%;
       display: grid;
       grid-gap: var(--grid-row-gap) var(--grid-col-gap);
-      grid-template-columns: repeat(4, var(--app-width));
       grid-template-rows: repeat(auto-fill, var(--app-height));
-      grid-auto-flow: dense;
+      grid-auto-flow: row dense;
     }
   }
 }
