@@ -107,7 +107,7 @@ export default defineComponent({
           if (props.app.useType == IUseType.customApp) {
             await getCustomApp(props.app.key)
           }
-          let routeList = appHistory[appName] ? [...appHistory[appName]] : []
+          let routeList = appHistory[appName] ? appHistory[appName] : []
           if (routeList && routeList.length) {
             routeList.forEach((item: string) => {
               requestAnimationFrame(() => {

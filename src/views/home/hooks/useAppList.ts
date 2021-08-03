@@ -30,7 +30,7 @@ const useAppList = () => {
     let index = 0
     let curItemNumber = 0
     let list:IApp[][] = [[]]
-    myApplist.value.forEach((item, i) => {
+    myApplist.value.forEach((item) => {
       switch (item.type) {
         case IItemKey.App:
           curItemNumber += 1
