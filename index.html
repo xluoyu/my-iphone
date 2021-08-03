@@ -10,10 +10,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="format-detection" content="telephone=no, email=no" />
     <title>Free-Iphone</title>
-  <script type="module" crossorigin src="/my-iphone/assets/index.e9adbf6b.js"></script>
-  <link rel="modulepreload" href="/my-iphone/assets/vendor.aa0c744b.js">
-  <link rel="stylesheet" href="/my-iphone/assets/vendor.d2a23fc6.css">
-  <link rel="stylesheet" href="/my-iphone/assets/index.3bc946c2.css">
+  <script type="module" crossorigin src="/my-iphone/assets/index.ea70ca09.js"></script>
+  <link rel="modulepreload" href="/my-iphone/assets/vendor.23d3c9f1.js">
+  <link rel="stylesheet" href="/my-iphone/assets/vendor.12f70452.css">
+  <link rel="stylesheet" href="/my-iphone/assets/index.6bd61839.css">
 </head>
   <script>
     //   document.body.addEventListener('touchmove', function (e) {
@@ -46,12 +46,12 @@
       var due_date = new Date('2021-06-07');
       var days_deadline = 60;
       /* stop changing here */
-      
+
       var current_date = new Date();
       var utc1 = Date.UTC(due_date.getFullYear(), due_date.getMonth(), due_date.getDate());
       var utc2 = Date.UTC(current_date.getFullYear(), current_date.getMonth(), current_date.getDate());
       var days = Math.floor((utc2 - utc1) / (1000 * 60 * 60 * 24));
-      
+
       if(days > 0) {
         var days_late = days_deadline-days;
         var opacity = (days_late*100/days_deadline)/100;
@@ -61,7 +61,7 @@
           document.getElementsByTagName("body")[0].style.opacity = opacity;
         }
       }
-      
+
     })()
   </script> -->
 </html>
