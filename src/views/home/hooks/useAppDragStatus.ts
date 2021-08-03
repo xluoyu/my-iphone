@@ -1,16 +1,16 @@
 import { ref } from 'vue'
-import { IApp } from '#/index'
 
 const dragStatus = ref(false)
 
 let timeOutEvent = 0
 
-export const useAppDragStatus = (app?:IApp) => {
+export const useAppDragStatus = () => {
   const changeDragStatus = () => {
     dragStatus.value = !dragStatus.value
   }
 
-  const gotouchstart = () => {
+  const gotouchstart = (e:TouchEvent) => {
+    e.stopPropagation()
     if (dragStatus.value) return
     clearTimeout(timeOutEvent)
     timeOutEvent = window.setTimeout(() => {

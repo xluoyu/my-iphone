@@ -37,9 +37,9 @@ export const useAppStore = () => {
       message: `确定要卸载${app.name}吗？`
     })
       .then(() => {
-        console.log('开始卸载')
         removeApp(app.key)
       })
+      .catch()
   }
 
   return {
@@ -55,7 +55,7 @@ interface IRouterHandle {
   value?: string[] | string
 }
 
-const appHistory:{[propName: string]: any} = reactive({})
+const appHistory:{[propName: string]: string[]|undefined} = reactive({})
 
 export const useAppHistory = () => {
   const changeRouterHistory = (handle: IRouterHandle) => {
@@ -78,7 +78,6 @@ export const useAppHistory = () => {
         break
       case 'replace':
         appHistory[handle.appName] = [handle.value as string]
-        console.log(appHistory[handle.appName])
         break
       default:
         routerList?.push(handle.value as string)

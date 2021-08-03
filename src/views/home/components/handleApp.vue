@@ -5,7 +5,7 @@
     @touchend="gotouchend"
   >
     <div :class="`${dragStatus ? 'shake' : ''}`" style="width: 100%;height:100%">
-      <van-icon name="clear" class="close" @touchend="clearApp" v-if="dragStatus" />
+      <van-icon name="clear" class="close" v-if="dragStatus" />
       <slot></slot>
     </div>
   </div>
@@ -15,7 +15,6 @@
 import { IApp } from '#/index'
 import { defineComponent, PropType } from 'vue'
 import { useAppDragStatus } from '../hooks/useAppDragStatus'
-import { useAppStore } from '@/hooks/useApp'
 
 export default defineComponent({
   props: {
@@ -31,11 +30,9 @@ export default defineComponent({
       gotouchstart,
       gotouchend
     } = useAppDragStatus()
-    const { clearApp } = useAppStore()
 
     return {
       dragStatus,
-      clearApp,
       gotouchstart,
       gotouchend
     }

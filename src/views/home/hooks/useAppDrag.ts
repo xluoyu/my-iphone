@@ -4,18 +4,18 @@ import useSwiper from './useSwiper'
 const { swiperMain } = useSwiper()
 
 const useAppDrag = (el:string) => {
-  let box = document.querySelector(el)
+  let box = document.querySelector(el) as HTMLElement
   let toCenterDiff = 0
   let ops = {
     animation: 500,
     ghostClass: 'box-ghost',
     forceFallback: false,
-    onStart: function(evt) {
+    onStart: function(evt:any) {
       toCenterDiff = evt.originalEvent.targetTouches[0].clientX - evt.item.offsetLeft
       toCenterDiff = evt.item.offsetWidth / 2 - toCenterDiff
       swiperMain.value.allowTouchMove = false
     },
-    onMove: function(evt) {
+    onMove: function(evt:any) {
       const left1 = evt.relatedRect.left + evt.relatedRect.width / 3
       const right1 = evt.relatedRect.left + evt.relatedRect.width / 3 * 2
       const top1 = evt.relatedRect.top + evt.relatedRect.height / 5
@@ -45,7 +45,7 @@ const useAppDrag = (el:string) => {
       return false
     },
     // 拖动结束
-    onEnd: function(evt) {
+    onEnd: function(evt:any) {
       // 获取拖动后的排序
       let arr = sortable.toArray()
       // alert(JSON.stringify(arr))
@@ -53,7 +53,10 @@ const useAppDrag = (el:string) => {
       swiperMain.value.allowTouchMove = true
     } }
   // 初始化
-  var sortable = Sortable.create(box, ops)
+  const sortable = Sortable.create(box, ops)
+  return {
+    sortable
+  }
 }
 
 export default useAppDrag

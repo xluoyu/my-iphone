@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref, Ref } from 'vue'
+import { defineComponent, onMounted, reactive, ref, Ref, SetupContext } from 'vue'
 
 const CanvasOptions = {
   pointWidth: 80,
@@ -48,9 +48,7 @@ function useHandleCanvas() {
    * 初始化canvas
    */
   const init = () => {
-    console.log('initCanvas')
     const canvasRoot = canvasEl.value
-    console.log(canvasRoot)
     if (!canvasRoot) return
     ctx = canvasRoot.getContext('2d') as CanvasRenderingContext2D
     canvasData.width = canvasRoot.width
@@ -156,7 +154,7 @@ function useHandleCanvas() {
     y = y - canvasData.top
     drawLine(x, y, true)
   }
-  const canvasMoveEnd = (password:string, context:any) => {
+  const canvasMoveEnd = (password:string, context:SetupContext<any>) => {
     let moveStr = moveArr.value.join('')
     let res = password ? moveStr == password : true
     drawLine(0, 0, false, res)

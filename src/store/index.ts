@@ -59,7 +59,6 @@ const store = createStore({
           break
         case 'replace':
           state.routerHistory[handle.appName] = [handle.value as string]
-          console.log(state.routerHistory[handle.appName])
           break
         default:
           routerList?.push(handle.value as string)

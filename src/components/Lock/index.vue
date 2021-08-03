@@ -1,6 +1,6 @@
 <template>
   <div class="lock" @touchstart="touchStart">
-    <img src="https://z3.ax1x.com/2021/04/28/gPPUFx.jpg" alt="" class="bg" />
+    <img src="https://xluoyu.github.io/image-riverbed/iphone/background/background.jpg" alt="" class="bg" />
     <div
       class="notice-container"
       v-if="lockStep == LockType.Normal"
@@ -89,7 +89,6 @@ function useTouchStart(lockStep: Ref<ILockType>, password: Ref<string>) {
       curBlurNum.value = diffY ? 1 : 0
       if (translateY.value) {
         setTimeout(() => {
-          console.log(password)
           if (!password.value || lockType.value == ILockType.Normal) {
             // this.$store.commit('LockStore/changeLock', false)
             changeLockState()

@@ -1,44 +1,32 @@
 import { onMounted, ref, markRaw, watch } from 'vue'
 import { IApp, IItemKey } from '#/index'
-import { px } from '@/utils/index'
 import Weather from '@/components/Weather/index.vue'
 import App from '@/components/App/index.vue'
 import { useAppStore } from '../../../hooks/useApp'
 import { getVar } from '@/utils'
 
-const curColumn = ref(0)
+const useAppList = () => {
+  const curColumn = ref(0)
 
-/**
- * 获取一行的app数
- */
-const getColumn = () => {
+  const rowGap = getVar('--grid-row-gap')
+  const appHeight = getVar('--app-height')
   const appWidth = getVar('--app-width')
   const colGap = getVar('--grid-col-gap')
-  let boxWidth = (document.querySelector('.grid-box') as Element).getBoundingClientRect().width
-  curColumn.value = Math.floor((boxWidth + colGap) / (appWidth + colGap))
-  let sur = (boxWidth + colGap) % (appWidth + colGap)
-  if (sur < appWidth) {
-    curColumn.value -= 1
-  }
-}
 
-const useAppList = () => {
   const { localApp, myApplist } = useAppStore()
   const appsList = ref<IApp[][]>([[]])
 
   const init = () => {
-    const swiperSlideEl = document.querySelector('.grid-box')
+    const swiperSlideEl = document.querySelector('.swiper-slide')
     if (!swiperSlideEl) return
-    const clientHeight = swiperSlideEl?.clientHeight || 0
+    const { width: boxWidth, height: boxHeight } = swiperSlideEl.getBoundingClientRect()
 
-    let lines = Math.floor(clientHeight / 84 + 8) // 最多有几行
-    // 判断剩余空间是否可容纳一行不含加边距的元素
-    let sur = clientHeight - lines * 84 + 8
+    const MaxLines = Math.floor((boxHeight + rowGap) / (appHeight + rowGap)) // 最多有几行
+    const MaxCol = Math.floor((boxWidth + colGap) / (appWidth + colGap)) // 一行有几个
+    curColumn.value = MaxCol
 
-    if (sur >= 84) {
-      lines += 1
-    }
-    const columns = 4
+    const viewMaxNum = MaxLines * MaxCol
+
     let index = 0
     let curItemNumber = 0
     let list:IApp[][] = [[]]
@@ -49,27 +37,28 @@ const useAppList = () => {
           item.component = markRaw(App)
           break
         case IItemKey.Weather:
-          let curLine = Math.ceil(curItemNumber / 4)
-          curItemNumber += 8
+          curItemNumber += MaxCol * 2
           item.component = markRaw(Weather)
-          item.style = `grid-column-start: 1;grid-column-end: span max;grid-row-start: ${
-            curLine + 1
-          };grid-row-end: ${curLine + 3};`
+          item.style = `grid-column-start: 1;grid-column-end: ${MaxCol + 1};grid-row-start:1;grid-row-end:3`
           break
         default:
           curItemNumber += 1
           item.component = markRaw(App)
           break
       }
-      list[index].push(item)
-      if (curItemNumber >= lines * columns || i == myApplist.value.length - 1) {
+      /**
+       * 当前界面的app数超了
+       * 添加一个新页面
+       */
+      if (curItemNumber > viewMaxNum) {
         curItemNumber = 0
-        if (i != myApplist.value.length - 1) {
-          list.push([])
-          index += 1
-        }
+        list.push([item])
+        index += 1
+      } else {
+        list[index].push(item)
       }
     })
+
     appsList.value = list
   }
 
@@ -81,12 +70,8 @@ const useAppList = () => {
   })
 
   onMounted(() => {
-    window.addEventListener('resize', () => {
-      init()
-      getColumn()
-    })
+    window.addEventListener('resize', init)
     init()
-    getColumn()
   })
 
   return {

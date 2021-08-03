@@ -43,12 +43,9 @@ function openCamera() {
           cancelButtonText: '取消'
         })
         .then(() => {
-          console.log('确定')
           Toast.success('保存成功')
         })
-        .catch(() => {
-          console.log('关闭')
-        })
+        .catch()
     }
   })
   document.body.append(input)
@@ -101,7 +98,6 @@ export default defineComponent({
       let appName = props.app.key
       switch (props.app.useType) {
         case IUseType.clock:
-          console.log('点击加锁')
           changeLockState()
           break
         case IUseType.camera:
