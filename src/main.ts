@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import router from './routers/index'
 import './routers/config'
-import store from './store/index'
+// import store from './store/index'
 import App from './App.vue'
 import './styles/base.less'
 // import 'amfe-flexible'
@@ -48,7 +48,7 @@ start()
 
 const app = createApp(App)
 app.use(router)
-app.use(store)
+// app.use(store)
 app.use(initVant)
 
 app.mount('#app')

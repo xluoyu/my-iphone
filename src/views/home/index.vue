@@ -24,10 +24,10 @@
 import Dock from '@/components/Dock/index.vue'
 import { defineComponent, nextTick, watch, onMounted } from 'vue'
 import HandleApp from './components/handleApp.vue'
-import useAppList from './hooks/useAppList'
-import useSwiper from './hooks/useSwiper'
-import { useAppDragStatus } from './hooks/useAppDragStatus'
-import useAppDrag from './hooks/useAppDrag'
+import useAppList from '@/hooks/useAppList'
+import { useSwiper } from '@/hooks/useSwiper'
+import { useAppDragStatus } from '@/hooks/useAppDragStatus'
+import useAppDrag from '@/hooks/useAppDrag'
 
 export default defineComponent({
   name: 'Home',

@@ -175,7 +175,7 @@ export default defineComponent({
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 10;
+  z-index: var(--lock-zIndex);
   width: 100%;
   height: 100%;
   transition: all 0s;

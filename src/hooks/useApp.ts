@@ -1,18 +1,80 @@
-import { ref, computed, reactive } from 'vue'
-import { IApp } from '#/index'
+import { ref, computed, reactive, Ref } from 'vue'
+import { IApp, IItemKey } from '#/index'
 import appStoreList from '@/api/app-store'
 import { Dialog } from 'vant'
 
 // 本机当前app组
-const localApp = ref([
-  'weather',
-  'appStore',
-  'photos',
-  'music',
-  'camera',
-  'calculator',
-  'clock',
-  'alipay'
+interface ILocalApp {
+  key: string,
+  type: IItemKey,
+  children?: ILocalApp[],
+  name?: string
+}
+
+const localApp:Ref<ILocalApp[]> = ref([
+  {
+    key: 'weather',
+    type: IItemKey.Weather
+  },
+  {
+    key: 'appStore',
+    type: IItemKey.App
+  },
+  {
+    key: 'photos',
+    type: IItemKey.App
+  },
+  {
+    key: 'camera',
+    type: IItemKey.App
+  },
+  {
+    key: 'clock',
+    type: IItemKey.App
+  },
+  {
+    name: '工具组',
+    key: 'array-0',
+    type: IItemKey.AppArray,
+    children: [
+      {
+        key: 'calculator',
+        type: IItemKey.App
+      },
+      {
+        key: 'alipay',
+        type: IItemKey.App
+      },
+      {
+        key: 'music',
+        type: IItemKey.App
+      },
+      {
+        key: 'calculator',
+        type: IItemKey.App
+      },
+      {
+        key: 'alipay',
+        type: IItemKey.App
+      },
+      {
+        key: 'music',
+        type: IItemKey.App
+      },
+      {
+        key: 'calculator',
+        type: IItemKey.App
+      },
+      {
+        key: 'alipay',
+        type: IItemKey.App
+      },
+      {
+        key: 'music',
+        type: IItemKey.App
+      }
+    ]
+  }
 ])
 
 /**
@@ -25,8 +87,27 @@ const localApp = ref([
  * removeApp -> 移除应用 Fn()
  */
 export const useAppStore = () => {
-  const myApplist = computed(() => localApp.value.map(e => appStoreList.find((a) => a.key == e) as IApp))
+  const myApplist = computed(() => {
+    return reduceApp(localApp.value)
+  })
+  const reduceApp = (list:ILocalApp[]) => {
+    return list.reduce((pre, cur) => {
+      if (cur.type != IItemKey.AppArray) {
+        let curApp = appStoreList.find(e => e.key == cur.key) as IApp
+        pre.push(curApp)
+      } else {
+        pre.push({
+          name: cur.name as string,
+          type: cur.type,
+          key: cur.key,
+          children: cur.children ? reduceApp(cur.children) : []
+        })
+      }
+      return pre
+    }, [] as IApp[])
+  }
 
+  // 需修改
   const removeApp = (appKey: string) => {
     let index = localApp.value.indexOf(appKey)
     localApp.value.splice(index, 1)
@@ -49,6 +130,11 @@ export const useAppStore = () => {
   }
 }
 
+/**
+ * 记录app的历史记录
+ * 在下次打开该app时，直接跳到上次关闭的页面
+ */
+
 interface IRouterHandle {
   type?: string
   appName: string
@@ -56,7 +142,6 @@ interface IRouterHandle {
 }
 
 const appHistory:{[propName: string]: string[]|undefined} = reactive({})
-
 export const useAppHistory = () => {
   const changeRouterHistory = (handle: IRouterHandle) => {
     let routerList = appHistory[handle.appName]
@@ -88,5 +173,19 @@ export const useAppHistory = () => {
   return {
     appHistory,
     changeRouterHistory
+  }
+}
+
+/**
+ * 用于打开app组
+ */
+const currentApp:Ref<IApp | null> = ref(null)
+export const useCurrentAppArray = () => {
+  const changeCurrentApp = (app:IApp | null) => {
+    currentApp.value = app
+  }
+  return {
+    currentApp,
+    changeCurrentApp
   }
 }

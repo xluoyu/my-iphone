@@ -63,8 +63,6 @@ export default defineComponent({
     })
 
     const closeApp = async() => {
-      // let flag = await store.dispatch('onCloseBrofreFn')
-      // if (!flag) return
       fade.value = false
       ctx.emit('closeApp')
       setTimeout(() => {

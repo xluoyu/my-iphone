@@ -35,7 +35,7 @@ const appStore: IApp[] = [
     key: 'photos',
     type: IItemKey.App,
     photo: 'https://xluoyu.github.io/image-riverbed/iphone/photos.png',
-    name: 'photos',
+    name: '图库',
     useType: IUseType.defaultApp,
     status: false
   },
@@ -67,7 +67,7 @@ const appStore: IApp[] = [
     key: 'camera',
     type: IItemKey.App,
     photo: 'https://xluoyu.github.io/image-riverbed/iphone/camera.png',
-    name: 'camera',
+    name: '相机',
     useType: IUseType.camera,
     status: true
   },
@@ -75,7 +75,7 @@ const appStore: IApp[] = [
     key: 'calculator',
     type: IItemKey.App,
     photo: 'https://xluoyu.github.io/image-riverbed/iphone/calculator.png',
-    name: 'calculator',
+    name: '计算器',
     useType: IUseType.defaultApp,
     status: false
   },

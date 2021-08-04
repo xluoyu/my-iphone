@@ -2,7 +2,7 @@ import { onMounted, ref, markRaw, watch } from 'vue'
 import { IApp, IItemKey } from '#/index'
 import Weather from '@/components/Weather/index.vue'
 import App from '@/components/App/index.vue'
-import { useAppStore } from '../../../hooks/useApp'
+import { useAppStore } from './useApp'
 import { getVar } from '@/utils'
 
 const useAppList = () => {

@@ -3,9 +3,9 @@ import 'swiper/swiper-bundle.min.css'
 import 'swiper/swiper.less'
 import { onMounted, ref, nextTick } from 'vue'
 Swiper.use([Pagination])
-let swiperMain = ref<any>(null)
+export let swiperMain = ref<any>(null)
 
-const useSwiper = () => {
+export const useSwiper = () => {
   const containerBgX = ref<number>(0)
   const containerBgDuration = ref<number>(0)
 
@@ -38,5 +38,3 @@ const useSwiper = () => {
     swiperMain
   }
 }
-
-export default useSwiper

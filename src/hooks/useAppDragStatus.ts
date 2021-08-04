@@ -8,9 +8,8 @@ export const useAppDragStatus = () => {
   const changeDragStatus = () => {
     dragStatus.value = !dragStatus.value
   }
-
-  const gotouchstart = (e:TouchEvent) => {
-    e.stopPropagation()
+  let longStatus = false // 触发长按事件
+  const gotouchstart = () => {
     if (dragStatus.value) return
     clearTimeout(timeOutEvent)
     timeOutEvent = window.setTimeout(() => {
@@ -21,10 +20,16 @@ export const useAppDragStatus = () => {
 
   const gotouchend = () => {
     clearTimeout(timeOutEvent)
+    if (longStatus) {
+      // 触发长安后不再执行点击事件
+      longStatus = false
+      return
+    }
   }
 
   // 长按事件
   const longTap = () => {
+    longStatus = true
     changeDragStatus()
   }
 

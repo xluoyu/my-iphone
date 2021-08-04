@@ -1,20 +1,27 @@
 <template>
-  <div class="app" :id="app.key" @click="open">
-    <img :src="app.photo" alt="" />
+  <div :class="['app', size]" :id="app.key" @click="open">
+    <template v-if="app.type == IItemKey.App">
+      <img :src="app.photo" alt="" />
+    </template>
+    <template v-if="app.type == IItemKey.AppArray">
+      <div class="app-array">
+        <App v-for="item in app.children" :key="item.key" :app="item" size="mini" />
+      </div>
+    </template>
     <p>{{ app.name }}</p>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, h } from 'vue'
-import { IApp, IUseType } from '#/index'
+import { IApp, IUseType, IItemKey } from '#/index'
 import { registerMicroApps } from 'qiankun'
 import { baseRoute } from '../../utils/index'
 import { Toast, Dialog } from 'vant'
-import useLock from '../../hooks/useLock'
+import useLock from '@/hooks/useLock'
 import { useRouter } from 'vue-router'
-import { useAppDragStatus } from '@/views/home/hooks/useAppDragStatus'
-import { useAppStore, useAppHistory } from '@/hooks/useApp'
+import { useAppDragStatus } from '@/hooks/useAppDragStatus'
+import { useAppStore, useAppHistory, useCurrentAppArray } from '@/hooks/useApp'
 
 function openCamera() {
   let input = document.createElement('input')
@@ -71,12 +78,17 @@ function getCustomApp(key:string) {
 }
 
 export default defineComponent({
+  name: 'App',
   props: {
     app: {
       type: Object as PropType<IApp>,
       default: () => {
         return {}
       }
+    },
+    size: {
+      type: String,
+      default: 'normal'
     }
   },
   setup(props) {
@@ -85,10 +97,19 @@ export default defineComponent({
     const { dragStatus } = useAppDragStatus()
     const { clearApp } = useAppStore()
     const { appHistory } = useAppHistory()
+    const { changeCurrentApp } = useCurrentAppArray()
 
     const open = async() => {
+      if (props.size == 'mini') return
       if (dragStatus.value) {
         clearApp(props.app)
+        return
+      }
+      /**
+       * 打开app组
+       */
+      if (props.app.type == IItemKey.AppArray) {
+        changeCurrentApp(props.app)
         return
       }
       if (!props.app.status) {
@@ -122,7 +143,8 @@ export default defineComponent({
     }
 
     return {
-      open
+      open,
+      IItemKey
     }
   }
 })
@@ -138,31 +160,31 @@ export default defineComponent({
   position: relative;
   background: transparent;
   transition: background .3s;
-  &::before {
-    content: '';
-    background: transparent;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 2;
-    transition: background 0.3s;
-    width: var(--app-photo-height);
-    height: var(--app-photo-height);
-    margin: 0 auto;
-    border-radius: 14px;
-  }
-  &:active {
-    &::before {
-      background: rgba(0, 0, 0, 0.7);
-    }
-  }
+  // &::before {
+  //   content: '';
+  //   background: transparent;
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   right: 0;
+  //   z-index: 2;
+  //   transition: background 0.3s;
+  //   width: var(--app-photo-height);
+  //   height: var(--app-photo-height);
+  //   margin: 0 auto;
+  //   border-radius: 14px;
+  // }
+  // &:active {
+  //   &::before {
+  //     background: rgba(0, 0, 0, 0.7);
+  //   }
+  // }
   img {
     width: var(--app-photo-height);
     height: var(--app-photo-height);
     display: block;
     margin: 0 auto;
-    border-radius: 14px;
+    border-radius: var(--app-radius);
     transition: transform .3s;
   }
   p {
@@ -181,6 +203,32 @@ export default defineComponent({
     height: 100%;
     z-index: 10;
     opacity: 0;
+  }
+  .app-array{
+    width: var(--app-photo-height);
+    height: var(--app-photo-height);
+    background: var(--transparent-background);
+    border-radius: var(--app-radius);
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 5px;
+    display: grid;
+    grid-gap: 4px;
+    grid-template-rows: repeat(3, 14px);
+    grid-template-columns: repeat(3, 14px);
+    grid-auto-flow: row dense;
+  }
+}
+.app.mini {
+  width: 25px;
+  img {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    margin: 0;
+  }
+  p{
+    display: none;
   }
 }
 

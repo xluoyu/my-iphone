@@ -1,8 +1,12 @@
 import Sortable from 'sortablejs'
-import useSwiper from './useSwiper'
+import { swiperMain } from './useSwiper'
 
-const { swiperMain } = useSwiper()
-
+/**
+ * 拖拽用的hook
+ *
+ * @param el -> 容器class/id
+ * @returns
+ */
 const useAppDrag = (el:string) => {
   let box = document.querySelector(el) as HTMLElement
   let toCenterDiff = 0
@@ -11,6 +15,7 @@ const useAppDrag = (el:string) => {
     ghostClass: 'box-ghost',
     forceFallback: false,
     onStart: function(evt:any) {
+      console.log('onStart')
       toCenterDiff = evt.originalEvent.targetTouches[0].clientX - evt.item.offsetLeft
       toCenterDiff = evt.item.offsetWidth / 2 - toCenterDiff
       swiperMain.value.allowTouchMove = false

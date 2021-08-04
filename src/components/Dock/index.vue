@@ -33,7 +33,7 @@ export default defineComponent({
   margin: auto;
   width: 100%;
   height: 80px;
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--transparent-background);
   color: #fff;
   display: flex;
   justify-content: space-evenly;

@@ -14,7 +14,7 @@
 <script lang="ts">
 import { IApp } from '#/index'
 import { defineComponent, PropType } from 'vue'
-import { useAppDragStatus } from '../hooks/useAppDragStatus'
+import { useAppDragStatus } from '../../../hooks/useAppDragStatus'
 
 export default defineComponent({
   props: {
@@ -33,6 +33,7 @@ export default defineComponent({
 
     return {
       dragStatus,
+      // remove,
       gotouchstart,
       gotouchend
     }
