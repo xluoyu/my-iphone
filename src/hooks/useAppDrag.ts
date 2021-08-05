@@ -15,7 +15,6 @@ const useAppDrag = (el:string) => {
     ghostClass: 'box-ghost',
     forceFallback: false,
     onStart: function(evt:any) {
-      console.log('onStart')
       toCenterDiff = evt.originalEvent.targetTouches[0].clientX - evt.item.offsetLeft
       toCenterDiff = evt.item.offsetWidth / 2 - toCenterDiff
       swiperMain.value.allowTouchMove = false
@@ -54,7 +53,6 @@ const useAppDrag = (el:string) => {
       // 获取拖动后的排序
       let arr = sortable.toArray()
       // alert(JSON.stringify(arr))
-      console.log(arr)
       swiperMain.value.allowTouchMove = true
     } }
   // 初始化

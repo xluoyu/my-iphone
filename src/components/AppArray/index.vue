@@ -1,5 +1,5 @@
 <template>
-  <div class="app-array" v-if="show" @click.self="closeArray">
+  <div class="app-array" v-if="show && currentApp" @click.self="closeArray">
     <input type="text" v-model="currentApp.name" class="box-title">
     <div class="app-box">
       <App v-for="item in currentApp.children" :key="item.key" :app="item" />
@@ -9,23 +9,12 @@
 
 <script lang="ts">
 import { useCurrentAppArray } from '@/hooks/useApp'
-import { defineComponent, PropType } from 'vue'
+import { computed, defineComponent } from 'vue'
 import App from '@/components/App/index.vue'
-import { IApp } from '#/index'
 
 export default defineComponent({
   components: {
     App
-  },
-  props: {
-    show: {
-      type: Boolean,
-      default: false
-    },
-    curApp: {
-      type: Object as PropType<IApp>,
-      default: () => { return {} }
-    }
   },
   setup() {
     const { currentApp, changeCurrentApp } = useCurrentAppArray()
@@ -34,7 +23,10 @@ export default defineComponent({
       changeCurrentApp(null)
     }
 
+    const show = computed(() => Boolean(currentApp))
+
     return {
+      show,
       currentApp,
       closeArray
     }

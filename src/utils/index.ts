@@ -7,27 +7,23 @@ export const addScript = (url: string, cb: () => void): void => {
 }
 
 export const px = (num: number): number => {
-  let clientWidth = document.body.clientWidth
-  let scale = clientWidth / 375
-  return scale * num
+  let rootFontSize: string|number = document.documentElement.style.fontSize
+  if (rootFontSize) {
+    rootFontSize = getNumber(rootFontSize)
+    return (num / rootFontSize)
+  }
+  return num
 }
 
 export const getNumber = (str: string): number => {
   str = str.replace('px', '')
+  str = str.replace('rem', '')
   return Number(str)
-}
-
-export const GetVar = (variables: string) => {
-  return (key: string): number => {
-    let reg = new RegExp(`${key}: [^;]+`, 'g')
-    let regResult: string | null = (variables.match(reg) as RegExpMatchArray).toString()
-    let result = regResult.split(': ')
-    return Number(result[1])
-  }
 }
 
 export const getVar = (key: string) => {
   let value = getComputedStyle(document.documentElement).getPropertyValue(key)
+  value = value.replace('rem', '')
   value = value.replace('px', '')
   return Number(value)
 }

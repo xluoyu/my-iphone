@@ -9,6 +9,7 @@ interface IApp {
   type: IItemKey // 展示模式
   useType?: IUseType, // 使用方式 - 用于区分本机app和微应用、特色功能
   component?: DefineComponent<{}, {}, any> | any
+  parent?: string,
   style?: string
   status?: boolean // 开发状态 true: 已开发, false: 未开发
   children?: IApp[]
@@ -24,7 +25,8 @@ enum IUseType {
   defaultApp = 'defaultApp', // 默认
   customApp = 'customApp', // 自定义
   clock = 'clock', // 锁屏
-  camera = 'camera' // 相机
+  camera = 'camera', // 相机
+  full = 'fullScreen'
 }
 
 enum IColorType {

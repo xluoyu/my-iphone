@@ -4,7 +4,7 @@ import vue from '@vitejs/plugin-vue'
 import path from 'path'
 import autoprefixer from 'autoprefixer'
 const base = process.env.NODE_ENV == 'production' ? '/my-iphone' : './'
-// import pxtorem from 'postcss-pxtorem'
+import pxtorem from 'postcss-pxtorem'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -18,11 +18,11 @@ export default defineConfig({
   css: {
     postcss: {
       plugins: [
-        autoprefixer()
-        // pxtorem({
-        //   rootValue: 37.5,
-        //   propList: ['*']
-        // })
+        autoprefixer(),
+        pxtorem({
+          rootValue: 37.5,
+          propList: ['*']
+        })
       ]
     }
   },

@@ -69,6 +69,11 @@ export const constantRoutes = [
         }
       }
     ]
+  },
+  {
+    path: '/safari',
+    component: () => import('@/views/safari/index.vue'),
+    name: 'safari'
   }
 ]
 

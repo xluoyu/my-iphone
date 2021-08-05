@@ -60,7 +60,12 @@ export default defineComponent({
       })
     })
 
+    const test = () => {
+      document.documentElement.requestFullscreen()
+    }
+
     return {
+      test,
       curColumn,
       appsList,
       containerBgX,
@@ -83,7 +88,7 @@ export default defineComponent({
   position: relative;
 }
 .my-swipe {
-  height: calc(100% - 80px);
+  height: calc(100% - var(--dock-height));
   .swiper-slide {
     box-sizing: border-box;
     padding: var(--grid-col-gap) var(--grid-col-gap) 24px;

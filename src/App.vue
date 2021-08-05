@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <Lock v-if="lockStatus" />
-    <AppArray :show="showAppArray" :cur-app="currentApp" />
+    <AppArray />
     <Home />
     <transition name="app" @before-enter="beforeEnter">
       <app-layout v-show="routeStatus" @closeApp="closeApp" />
@@ -17,7 +17,6 @@ import AppLayout from './layout/AppLayout.vue'
 import Lock from '@/components/Lock/index.vue'
 import useLock from './hooks/useLock'
 import AppArray from '@/components/AppArray/index.vue'
-import { useCurrentAppArray } from './hooks/useApp'
 
 export default defineComponent({
   name: 'App',
@@ -70,18 +69,9 @@ export default defineComponent({
       let transformLeft = width / 2 + left
       ;(el as HTMLElement).style.transformOrigin = `${transformLeft}px ${transformTop}px`
     }
-
-    /**
-     * 关于打开app组
-     */
-    const { currentApp } = useCurrentAppArray()
-    const showAppArray = computed(() => Boolean(currentApp.value))
-
     return {
       routeStatus,
       lockStatus,
-      showAppArray,
-      currentApp,
       closeApp,
       beforeEnter
     }

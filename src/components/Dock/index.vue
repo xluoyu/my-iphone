@@ -32,14 +32,14 @@ export default defineComponent({
   right: 0;
   margin: auto;
   width: 100%;
-  height: 80px;
+  height: var(--dock-height);
   background: var(--transparent-background);
   color: #fff;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   box-sizing: border-box;
-  padding: 0 19px;
+  padding: 0 var(--grid-col-gap);
   ::v-deep(.app p) {
     display: none;
   }

@@ -4,7 +4,7 @@ const appStore: IApp[] = [
   {
     key: 'alipay',
     type: IItemKey.App,
-    photo: 'https://xluoyu.github.io/image-riverbed/iphone/alipay.jpg',
+    photo: 'https://xluoyu.github.io/image-riverbed/iphone/alipay.png',
     name: '支付宝',
     useType: IUseType.customApp,
     status: true
@@ -29,7 +29,7 @@ const appStore: IApp[] = [
     photo: 'https://xluoyu.github.io/image-riverbed/iphone/safari.png',
     name: 'Safari 浏览器',
     useType: IUseType.defaultApp,
-    status: false
+    status: true
   },
   {
     key: 'photos',
@@ -69,6 +69,14 @@ const appStore: IApp[] = [
     photo: 'https://xluoyu.github.io/image-riverbed/iphone/camera.png',
     name: '相机',
     useType: IUseType.camera,
+    status: true
+  },
+  {
+    key: 'fullScreen',
+    type: IItemKey.App,
+    photo: 'https://xluoyu.github.io/image-riverbed/iphone/arrow.png',
+    name: '全屏',
+    useType: IUseType.full,
     status: true
   },
   {

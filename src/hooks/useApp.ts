@@ -33,6 +33,10 @@ const localApp:Ref<ILocalApp[]> = ref([
     type: IItemKey.App
   },
   {
+    key: 'fullScreen',
+    type: IItemKey.App
+  },
+  {
     name: '工具组',
     key: 'array-0',
     type: IItemKey.AppArray,
@@ -90,17 +94,20 @@ export const useAppStore = () => {
   const myApplist = computed(() => {
     return reduceApp(localApp.value)
   })
-  const reduceApp = (list:ILocalApp[]) => {
+  const reduceApp = (list:ILocalApp[], parent?:string) => {
     return list.reduce((pre, cur) => {
       if (cur.type != IItemKey.AppArray) {
         let curApp = appStoreList.find(e => e.key == cur.key) as IApp
+        if (parent) {
+          curApp.parent = parent
+        }
         pre.push(curApp)
       } else {
         pre.push({
           name: cur.name as string,
           type: cur.type,
           key: cur.key,
-          children: cur.children ? reduceApp(cur.children) : []
+          children: cur.children ? reduceApp(cur.children, cur.key) : []
         })
       }
       return pre
@@ -108,9 +115,13 @@ export const useAppStore = () => {
   }
 
   // 需修改
-  const removeApp = (appKey: string) => {
-    let index = localApp.value.indexOf(appKey)
-    localApp.value.splice(index, 1)
+  const removeApp = (app: IApp) => {
+    let appKey = app.key
+    let parentKey = app.parent
+    let curApps:ILocalApp[] = parentKey ? (localApp.value.find(e => e.key == parentKey) as IApp).children as IApp[] : localApp.value
+    let curAppIndex = curApps.findIndex(e => e.key == appKey)
+
+    curApps.splice(curAppIndex, 1)
   }
 
   const clearApp = (app:IApp) => {
@@ -118,7 +129,7 @@ export const useAppStore = () => {
       message: `确定要卸载${app.name}吗？`
     })
       .then(() => {
-        removeApp(app.key)
+        removeApp(app)
       })
       .catch()
   }

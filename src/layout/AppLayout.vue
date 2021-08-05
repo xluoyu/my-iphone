@@ -30,7 +30,7 @@
     </router-view>
     <transition name="fade">
       <!-- 微前端组件 -->
-      <div id="routerView">系统加载中...</div>
+      <div id="routerView" v-show="$route.meta.type == 'app'">系统加载中...</div>
     </transition>
   </div>
 </template>

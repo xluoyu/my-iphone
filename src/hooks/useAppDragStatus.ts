@@ -9,7 +9,8 @@ export const useAppDragStatus = () => {
     dragStatus.value = !dragStatus.value
   }
   let longStatus = false // 触发长按事件
-  const gotouchstart = () => {
+  const gotouchstart = (e: TouchEvent) => {
+    if (!dragStatus.value) e.stopPropagation()
     if (dragStatus.value) return
     clearTimeout(timeOutEvent)
     timeOutEvent = window.setTimeout(() => {

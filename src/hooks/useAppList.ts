@@ -4,6 +4,7 @@ import Weather from '@/components/Weather/index.vue'
 import App from '@/components/App/index.vue'
 import { useAppStore } from './useApp'
 import { getVar } from '@/utils'
+import { px } from '../utils/index'
 
 const useAppList = () => {
   const curColumn = ref(0)
@@ -19,12 +20,13 @@ const useAppList = () => {
   const init = () => {
     const swiperSlideEl = document.querySelector('.swiper-slide')
     if (!swiperSlideEl) return
-    const { width: boxWidth, height: boxHeight } = swiperSlideEl.getBoundingClientRect()
-
+    let { width: boxWidth, height: boxHeight } = swiperSlideEl.getBoundingClientRect()
+    boxWidth = px(boxWidth)
+    boxHeight = px(boxHeight)
     const MaxLines = Math.floor((boxHeight + rowGap) / (appHeight + rowGap)) // 最多有几行
     const MaxCol = Math.floor((boxWidth + colGap) / (appWidth + colGap)) // 一行有几个
     curColumn.value = MaxCol
-
+    console.log(colGap)
     const viewMaxNum = MaxLines * MaxCol
 
     let index = 0

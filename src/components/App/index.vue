@@ -124,6 +124,19 @@ export default defineComponent({
         case IUseType.camera:
           openCamera()
           break
+        case IUseType.full:
+          if (document.fullscreenElement) {
+            document.exitFullscreen()
+          } else {
+            try {
+              document.documentElement.requestFullscreen().catch(() => {
+                Toast('这个浏览器好像不支持/(ㄒoㄒ)/~~')
+              })
+            } catch {
+              Toast('这个浏览器好像不支持/(ㄒoㄒ)/~~')
+            }
+          }
+          break
         default:
           if (props.app.useType == IUseType.customApp) {
             await getCustomApp(props.app.key)
