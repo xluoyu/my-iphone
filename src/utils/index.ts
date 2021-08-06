@@ -15,6 +15,12 @@ export const px = (num: number): number => {
   return num
 }
 
+export const getRootFontSize = () => {
+  let rootFontSize: string|number = document.documentElement.style.fontSize
+  rootFontSize = getNumber(rootFontSize) || 1
+  return rootFontSize
+}
+
 export const getNumber = (str: string): number => {
   str = str.replace('px', '')
   str = str.replace('rem', '')
@@ -25,7 +31,7 @@ export const getVar = (key: string) => {
   let value = getComputedStyle(document.documentElement).getPropertyValue(key)
   value = value.replace('rem', '')
   value = value.replace('px', '')
-  return Number(value)
+  return Number(value) * getRootFontSize()
 }
 
 export const baseRoute = process.env.NODE_ENV == 'production' ? '/my-iphone/' : '/'

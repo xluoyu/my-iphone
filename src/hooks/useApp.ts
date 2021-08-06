@@ -2,7 +2,7 @@ import { ref, computed, reactive, Ref } from 'vue'
 import { IApp, IItemKey } from '#/index'
 import appStoreList from '@/api/app-store'
 import { Dialog } from 'vant'
-
+console.log('useApp')
 // 本机当前app组
 interface ILocalApp {
   key: string,
@@ -29,14 +29,6 @@ const localApp:Ref<ILocalApp[]> = ref([
     type: IItemKey.App
   },
   {
-    key: 'clock',
-    type: IItemKey.App
-  },
-  {
-    key: 'fullScreen',
-    type: IItemKey.App
-  },
-  {
     name: '工具组',
     key: 'array-0',
     type: IItemKey.AppArray,
@@ -60,25 +52,18 @@ const localApp:Ref<ILocalApp[]> = ref([
       {
         key: 'alipay',
         type: IItemKey.App
-      },
-      {
-        key: 'music',
-        type: IItemKey.App
-      },
-      {
-        key: 'calculator',
-        type: IItemKey.App
-      },
-      {
-        key: 'alipay',
-        type: IItemKey.App
-      },
-      {
-        key: 'music',
-        type: IItemKey.App
       }
     ]
+  },
+  {
+    key: 'clock',
+    type: IItemKey.App
+  },
+  {
+    key: 'fullScreen',
+    type: IItemKey.App
   }
+
 ])
 
 /**
@@ -134,10 +119,37 @@ export const useAppStore = () => {
       .catch()
   }
 
+  const composeApps = (targetKey:string, itemKey:string) => {
+    let appList = localApp.value
+    let targetApp = appList.find(e => e.key == targetKey) as ILocalApp
+    let itemApp = appList.find(e => e.key == itemKey) as ILocalApp
+    if (targetApp.type == IItemKey.App) {
+      // 如果目标是app，则组合成apps
+      let newAppArray:ILocalApp = {
+        name: '工具组',
+        type: IItemKey.AppArray,
+        key: 'appArray' + new Date().getTime(),
+        children: [
+          targetApp,
+          itemApp
+        ]
+      }
+      appList.splice(appList.indexOf(targetApp), 1, newAppArray)
+      appList.splice(appList.indexOf(itemApp), 1)
+    } else if (targetApp.type == IItemKey.AppArray) {
+      // 如果目标是apps，则添加当前app
+      targetApp.children?.push(itemApp)
+      appList.splice(appList.indexOf(itemApp), 1)
+    }
+
+    localApp.value = appList
+  }
+
   return {
     localApp,
     myApplist,
-    clearApp
+    clearApp,
+    composeApps
   }
 }
 

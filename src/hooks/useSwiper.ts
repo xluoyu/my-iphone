@@ -4,6 +4,7 @@ import 'swiper/swiper.less'
 import { onMounted, ref, nextTick } from 'vue'
 Swiper.use([Pagination])
 export let swiperMain = ref<any>(null)
+console.log('useSwiper')
 
 export const useSwiper = () => {
   const containerBgX = ref<number>(0)

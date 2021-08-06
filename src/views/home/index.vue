@@ -8,7 +8,7 @@
       <div class="swiper-wrapper">
         <div class="swiper-slide" v-for="(item, index) in appsList" :key="index">
           <div class="grid-box" @click.self="closeDarg" :style="`grid-template-columns: repeat(${curColumn}, var(--app-width))`">
-            <HandleApp v-for="app in item" :key="app.key" :style="app.style" :app="app" :data-id="app.key">
+            <HandleApp v-for="app in item" :key="app.key" :style="app.style" :app="app">
               <component :is="app.component" :app="app" />
             </HandleApp>
           </div>
@@ -99,6 +99,8 @@ export default defineComponent({
       grid-gap: var(--grid-row-gap) var(--grid-col-gap);
       grid-template-rows: repeat(auto-fill, var(--app-height));
       grid-auto-flow: row dense;
+      // justify-items: center;
+      // align-items: center;
     }
   }
 }

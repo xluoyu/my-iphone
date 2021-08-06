@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  *{margin: 0;padding: 0;}
+  .grid{
+    width: 400px;
+    height: 400px;
+    display: grid;
+    grid-gap: 20px 20px;
+    grid-template-columns: repeat(auto-fill, 50px);
+    grid-template-rows: repeat(auto-fill, 50px);
+    justify-items: center;
+    align-items: center;
+  }
+  .box{
+    width: 20px;
+    height: 20px;
+    background: skyblue;
+  }
+</style>
+<body>
+  <div class="grid">
+    <div class="box">22</div>
+    <div class="box">452</div>
+    <div class="box">11</div>
+    <div class="box">75</div>
+    <div class="box">53</div>
+    <div class="box">12</div>
+    <div class="box">758</div>
+    <div class="box">53</div>
+    <div class="box">12</div>
+    <div class="box">786</div>
+    <div class="box">125</div>
+  </div>
+</body>
+<script>
+  let box = document.querySelectorAll('.box')
+  box.forEach(item => {
+    item.addEventListener('click', (e) => {
+      console.log(e.target.innerText)
+    })
+  })
+</script>
+</html>

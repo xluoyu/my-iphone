@@ -102,6 +102,7 @@ export default defineComponent({
     const open = async() => {
       if (props.size == 'mini') return
       if (dragStatus.value) {
+        if (props.app.type == IItemKey.AppArray) return
         clearApp(props.app)
         return
       }
@@ -138,19 +139,19 @@ export default defineComponent({
           }
           break
         default:
-          if (props.app.useType == IUseType.customApp) {
-            await getCustomApp(props.app.key)
-          }
-          let routeList = appHistory[appName] ? appHistory[appName] : []
-          if (routeList && routeList.length) {
-            routeList.forEach((item: string) => {
-              requestAnimationFrame(() => {
-                router.push(item)
-              })
-            })
-          } else {
-            router.push({ name: appName })
-          }
+          // if (props.app.useType == IUseType.customApp) {
+          //   await getCustomApp(props.app.key)
+          // }
+          // let routeList = appHistory[appName] ? appHistory[appName] : []
+          // if (routeList && routeList.length) {
+          //   routeList.forEach((item: string) => {
+          //     requestAnimationFrame(() => {
+          //       router.push(item)
+          //     })
+          //   })
+          // } else {
+          router.push({ name: appName })
+          // }
           break
       }
     }
@@ -246,12 +247,12 @@ export default defineComponent({
 }
 
 .changeToBox{
-  .app {
-    border-radius: 10px;
+  >div >.app {
+    border-radius: var(--app-radius);
     height: 70px;
-    background: rgba(95, 95, 95, 0.74);
+    background: var(-transparent-background);
+    img, .app-array{transform: translateY(5px);}
+    p{display: none;}
   }
-  img{transform: translateY(5px);}
-  p{display: none;}
 }
 </style>

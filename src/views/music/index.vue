@@ -14,18 +14,18 @@
 import { defineComponent, nextTick } from 'vue'
 
 export default defineComponent({
-  setup() {
-    nextTick(() => {
-      document.body.addEventListener(
-        'touchmove',
-        function (e) {
-          e.preventDefault()
-        },
-        { passive: false }
-      )
-    })
-    return {}
-  }
+  // setup() {
+  //   nextTick(() => {
+  //     document.body.addEventListener(
+  //       'touchmove',
+  //       function (e) {
+  //         e.preventDefault()
+  //       },
+  //       { passive: false }
+  //     )
+  //   })
+  //   return {}
+  // }
 })
 </script>
 

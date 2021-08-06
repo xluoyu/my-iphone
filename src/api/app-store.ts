@@ -7,7 +7,7 @@ const appStore: IApp[] = [
     photo: 'https://xluoyu.github.io/image-riverbed/iphone/alipay.png',
     name: '支付宝',
     useType: IUseType.customApp,
-    status: true
+    status: false
   },
   {
     key: 'weather',

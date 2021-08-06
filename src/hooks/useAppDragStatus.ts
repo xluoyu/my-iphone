@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 
 const dragStatus = ref(false)
+console.log('useAppDragStatus')
 
 let timeOutEvent = 0
 

@@ -4,7 +4,7 @@ import Weather from '@/components/Weather/index.vue'
 import App from '@/components/App/index.vue'
 import { useAppStore } from './useApp'
 import { getVar } from '@/utils'
-import { px } from '../utils/index'
+console.log('useAppList')
 
 const useAppList = () => {
   const curColumn = ref(0)
@@ -21,12 +21,10 @@ const useAppList = () => {
     const swiperSlideEl = document.querySelector('.swiper-slide')
     if (!swiperSlideEl) return
     let { width: boxWidth, height: boxHeight } = swiperSlideEl.getBoundingClientRect()
-    boxWidth = px(boxWidth)
-    boxHeight = px(boxHeight)
     const MaxLines = Math.floor((boxHeight + rowGap) / (appHeight + rowGap)) // 最多有几行
     const MaxCol = Math.floor((boxWidth + colGap) / (appWidth + colGap)) // 一行有几个
-    curColumn.value = MaxCol
     console.log(colGap)
+    curColumn.value = MaxCol
     const viewMaxNum = MaxLines * MaxCol
 
     let index = 0
@@ -42,6 +40,7 @@ const useAppList = () => {
           curItemNumber += MaxCol * 2
           item.component = markRaw(Weather)
           item.style = `grid-column-start: 1;grid-column-end: ${MaxCol + 1};grid-row-start:1;grid-row-end:3`
+          // item.style = `grid-column-start: span ${MaxCol};grid-row-start:span 2`
           break
         default:
           curItemNumber += 1

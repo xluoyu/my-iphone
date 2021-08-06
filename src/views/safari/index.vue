@@ -10,7 +10,7 @@
           @blur="changeStatus(false)"
           @keyup.enter="search"
           placeholder="搜索或输入网站名称"
-        >
+        />
         <span class="cancel" @click="changeStatus(false)">取消</span>
       </div>
     </div>
@@ -78,6 +78,7 @@ export default defineComponent({
   white-space:nowrap;
   overflow: hidden;
   width: 100%;
+  font-size: 16px;
   .input{
     &.big{
       text-align: center;
