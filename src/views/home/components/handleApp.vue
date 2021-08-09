@@ -64,6 +64,15 @@ export default defineComponent({
 .changeToBox {
   .close {display: none;}
 }
+.changeToBox {
+  > :deep(div > .app) {
+    border-radius: var(--app-radius);
+    height: 70px;
+    background: var(--transparent-background);
+    img, .app-array{transform: translateY(5px);}
+    p{display: none;}
+  }
+}
 
 @keyframes shakeAnmiation {
   0% {

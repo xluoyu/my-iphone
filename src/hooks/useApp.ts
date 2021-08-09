@@ -1,4 +1,4 @@
-import { ref, computed, reactive, Ref } from 'vue'
+import { ref, computed, reactive, Ref, unref } from 'vue'
 import { IApp, IItemKey } from '#/index'
 import appStoreList from '@/api/app-store'
 import { Dialog } from 'vant'
@@ -30,7 +30,7 @@ const localApp:Ref<ILocalApp[]> = ref([
   },
   {
     name: '工具组',
-    key: 'array-0',
+    key: 'appArray5256165',
     type: IItemKey.AppArray,
     children: [
       {
@@ -65,6 +65,8 @@ const localApp:Ref<ILocalApp[]> = ref([
   }
 
 ])
+
+export type IUpdateAppList = (string|{key: string, children: string[]})[]
 
 /**
  *
@@ -145,10 +147,52 @@ export const useAppStore = () => {
     localApp.value = appList
   }
 
+  const updateAppList = (arr: IUpdateAppList) => {
+    console.log(arr)
+    const arrRetrieval = (list: IUpdateAppList):ILocalApp[] => {
+      return list.map(item => {
+        if (typeof item === 'string') {
+          return localApp.value.find(e => e.key == item) as ILocalApp
+        } else {
+          let apps = localApp.value.find(e => e.key == item.key)
+          if (apps) {
+            apps.children?.push(...arrRetrieval(item.children))
+          } else {
+            apps = {
+              name: '工具组',
+              type: IItemKey.AppArray,
+              key: item.key,
+              children: arrRetrieval(item.children)
+            }
+          }
+          return apps
+        }
+      }) || []
+    }
+    let newAppsList = arrRetrieval(arr)
+
+    console.log(newAppsList)
+    localApp.value = newAppsList
+    console.log(localApp.value)
+
+    // arr.map(item => {
+    //   if (typeof item === 'string') {
+    //     return localApp.value.find(e => e.key == item)
+    //   } else {
+    //     let apps = localApp.value.find(e => e.key == item.key)
+    //     if (apps) {
+    //       item.children
+    //       apps.children?.push()
+    //     }
+    //   }
+    // })
+  }
+
   return {
     localApp,
     myApplist,
     clearApp,
+    updateAppList,
     composeApps
   }
 }

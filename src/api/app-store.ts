@@ -45,7 +45,7 @@ const appStore: IApp[] = [
     photo: 'https://xluoyu.github.io/image-riverbed/iphone/phone.png',
     name: 'phone',
     useType: IUseType.defaultApp,
-    status: false
+    status: true
   },
   {
     key: 'appStore',

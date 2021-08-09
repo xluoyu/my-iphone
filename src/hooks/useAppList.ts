@@ -23,7 +23,7 @@ const useAppList = () => {
     let { width: boxWidth, height: boxHeight } = swiperSlideEl.getBoundingClientRect()
     const MaxLines = Math.floor((boxHeight + rowGap) / (appHeight + rowGap)) // 最多有几行
     const MaxCol = Math.floor((boxWidth + colGap) / (appWidth + colGap)) // 一行有几个
-    console.log(colGap)
+
     curColumn.value = MaxCol
     const viewMaxNum = MaxLines * MaxCol
 
@@ -66,7 +66,8 @@ const useAppList = () => {
   /**
    * 仅监听增/删app
    */
-  watch(localApp.value, () => {
+  watch(localApp, () => {
+    console.log('变动了')
     init()
   })
 
