@@ -76,10 +76,20 @@ div:focus {
   padding: 20px;
 }
 
-// .changeToBox > div > .app {
-//   border-radius: var(--app-radius);
-//   height: 70px;
-//   background: var(--transparent-background);
-//   img, .app-array{transform: translateY(5px);}
-//   p{display: none;}
-// }
+.box-ghost {
+  opacity: .3
+}
+
+.swiper-pagination-bullet {
+  background: rgba(0, 0, 0, 0.6);
+}
+.swiper-pagination-bullet-active {
+  background: rgba(255, 255, 255, 0.8);
+}
+.swiper-pagination {
+  height: 24px;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

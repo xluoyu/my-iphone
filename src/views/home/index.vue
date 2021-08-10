@@ -104,19 +104,6 @@ export default defineComponent({
     }
   }
 }
-::v-deep(.swiper-pagination-bullet) {
-  background: rgba(0, 0, 0, 0.6);
-}
-::v-deep(.swiper-pagination-bullet-active) {
-  background: rgba(255, 255, 255, 0.8);
-}
-::v-deep(.swiper-pagination) {
-  height: 24px;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 .closeHandle {
   position: absolute;
@@ -134,7 +121,4 @@ export default defineComponent({
   backdrop-filter: blur(5px);
 }
 
-.box-ghost{
-  opacity: .3
-}
 </style>

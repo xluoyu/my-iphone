@@ -1,25 +1,30 @@
 <template>
   <transition name="appArray" @before-enter="beforeEnter" @after-leave="afterLeave">
-    <div class="app-array" v-if="show && currentApp">
+    <div class="app-array" v-show="show && currentApp">
       <!-- <div class="app-array-bg" @click.self="closeArray"></div> -->
-      <input type="text" v-model="currentApp.name" class="box-title">
-      <div class="app-box">
-        <App v-for="item in currentApp.children" :key="item.key" :app="item" />
+      <input type="text" v-model="currentApp.name" class="box-title" v-if="currentApp">
+      <div id="appArray-box">
+        <HandleApp v-for="app in currentApp ? currentApp.children : []" :key="app.key" :style="app.style" :app="app">
+          <App :app="app" />
+        </HandleApp>
+        <!-- <App v-for="item in currentApp.children" :key="item.key" :app="item" /> -->
       </div>
     </div>
   </transition>
-  <div class="app-array-bg" v-if="show && currentApp" @click.self="closeArray"></div>
+  <div class="app-array-bg" v-show="show && currentApp" @click.self="closeArray"></div>
 </template>
 
 <script lang="ts">
 import { useCurrentAppArray } from '@/hooks/useApp'
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, nextTick, watch } from 'vue'
 import App from '@/components/App/index.vue'
-import { getVar } from '@/utils'
+import HandleApp from '@/views/home/components/handleApp.vue'
+import useAppDrag from '@/hooks/useAppDrag'
 
 export default defineComponent({
   components: {
-    App
+    App,
+    HandleApp
   },
   setup() {
     const { currentApp, changeCurrentApp } = useCurrentAppArray()
@@ -39,7 +44,6 @@ export default defineComponent({
       let appKey = currentApp.value?.key
       appEl = document.querySelector('#' + appKey) as Element
       let { top, left, width, height } = appEl.getBoundingClientRect()
-      console.log(appKey, { top, left, width, height })
       // 偏移量，存在原因： 最后消失时为scale(0.2)，导致不同位置的box缩小后位置不同，会有差异
       let deviationX = (left - rootWidth / 2) * 0.15
       let deviationY = (top - rootHeight / 2) * 0.15
@@ -56,6 +60,15 @@ export default defineComponent({
     const afterLeave = () => {
       (appEl as HTMLElement).style.opacity = '1'
     }
+
+    watch(currentApp, () => {
+      if (currentApp.value) {
+        nextTick(() => {
+          console.log('注册？')
+          useAppDrag('#appArray-box')
+        })
+      }
+    })
 
     return {
       show,
@@ -98,12 +111,12 @@ export default defineComponent({
   color: #fff;
   text-align: center;
   font-weight: normal;
+  margin-bottom: 20px;
 }
-.app-box{
+#appArray-box{
   width: 100%;
   height: calc(var(--app-height) * 3 + var(--grid-row-gap) * 6);
   background: var(--transparent-background);
-  margin-top: 20px;
   box-sizing: border-box;
   padding: calc(var(--grid-row-gap) * 2) 0;
   display: grid;
@@ -131,4 +144,5 @@ export default defineComponent({
   opacity: 0.5;
   transform: scale(0.15);
 }
+
 </style>

@@ -121,6 +121,7 @@ export const useAppStore = () => {
       .catch()
   }
 
+  // 弃用
   const composeApps = (targetKey:string, itemKey:string) => {
     let appList = localApp.value
     let targetApp = appList.find(e => e.key == targetKey) as ILocalApp
@@ -171,21 +172,7 @@ export const useAppStore = () => {
     }
     let newAppsList = arrRetrieval(arr)
 
-    console.log(newAppsList)
     localApp.value = newAppsList
-    console.log(localApp.value)
-
-    // arr.map(item => {
-    //   if (typeof item === 'string') {
-    //     return localApp.value.find(e => e.key == item)
-    //   } else {
-    //     let apps = localApp.value.find(e => e.key == item.key)
-    //     if (apps) {
-    //       item.children
-    //       apps.children?.push()
-    //     }
-    //   }
-    // })
   }
 
   return {

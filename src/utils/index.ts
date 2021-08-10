@@ -34,5 +34,18 @@ export const getVar = (key: string) => {
   return Number(value) * getRootFontSize()
 }
 
-export const baseRoute = process.env.NODE_ENV == 'production' ? '/my-iphone/' : '/'
-// export const baseRoute = '/my-iphone/'
+// 节流
+export const throttle = (fn:(...args: any[]) => void, delay:number) => {
+  let timer = 0
+  return (...args: any[]) => {
+    if (timer) return
+    timer = window.setTimeout(() => {
+      fn(...args)
+      clearTimeout(timer)
+      timer = 0
+    }, delay)
+  }
+}
+
+// export const baseRoute = process.env.NODE_ENV == 'production' ? '/my-iphone/' : '/'
+export const baseRoute = '/'

@@ -1,11 +1,12 @@
-import Sortable from 'sortablejs'
+import Sortable from '@/utils/sortable.esm.js'
 import { swiperMain } from './useSwiper'
 import { ref, Ref } from 'vue'
-import { IUpdateAppList, useAppStore } from './useApp'
+import { IUpdateAppList, useAppStore, useCurrentAppArray } from './useApp'
+import { throttle } from '../utils/index'
+import { style } from '../../../readCode/fre/fre-master/test/update'
 
 const targetApp:Ref<HTMLElement | null> = ref(null)
 let isInBox = false
-console.log('useAppDrag')
 
 /**
  * 拖拽用的hook
@@ -15,13 +16,37 @@ console.log('useAppDrag')
  */
 const useAppDrag = (el:string) => {
   const { updateAppList } = useAppStore()
+  const { changeCurrentApp } = useCurrentAppArray()
+
   let box = document.querySelector(el) as HTMLElement
   let toCenterDiff = 0
 
+  // app组弹框的元素信息
+  let appArrayBoxInfo:DOMRect
+  if (el == '#appArray-box') {
+    let appArrayBox = document.querySelector(el) as HTMLElement
+    setTimeout(() => {
+      appArrayBoxInfo = appArrayBox.getBoundingClientRect()
+    }, 500)
+  }
+
   let ops = {
+    group: 'app-group',
     animation: 500,
     ghostClass: 'box-ghost',
-    forceFallback: false,
+    forceFallback: true,
+    fallbackOnBody: true,
+    onEventMove: throttle(function(evt:TouchEvent) {
+      if (el != '#appArray-box') return
+      const clientX = evt.changedTouches[0].clientX
+      const clientY = evt.changedTouches[0].clientY
+      // 表示当前坐标在box外
+      if (appArrayBoxInfo.left > clientX || appArrayBoxInfo.right < clientX || appArrayBoxInfo.top > clientY || appArrayBoxInfo.bottom < clientY) {
+        console.log('在外侧')
+        ;(document.querySelector('.app-array')).style.zIndex = -2
+        ;(document.querySelector('.app-array-bg')).style.zIndex = -2
+      }
+    }, 50),
     onStart: function(evt:any) {
       toCenterDiff = evt.originalEvent.targetTouches[0].clientX - evt.item.offsetLeft
       toCenterDiff = evt.item.offsetWidth / 2 - toCenterDiff
@@ -61,6 +86,7 @@ const useAppDrag = (el:string) => {
     },
     // 拖动结束
     onEnd: function(evt:any) {
+      return
       // 获取拖动后的排序
       let arr:IUpdateAppList = sortable.toArray()
       // alert(JSON.stringify(arr))
@@ -96,6 +122,10 @@ const useAppDrag = (el:string) => {
   }
   // 初始化
   const sortable = Sortable.create(box, ops)
+  // console.log(sortable)
+  // sortable._onTouchMove = (e) => {
+  //   console.log(e)
+  // }
   return {
     sortable
   }

@@ -101,16 +101,16 @@ export default defineComponent({
 
     const open = async() => {
       if (props.size == 'mini') return
-      if (dragStatus.value) {
-        if (props.app.type == IItemKey.AppArray) return
-        clearApp(props.app)
-        return
-      }
       /**
        * 打开app组
        */
       if (props.app.type == IItemKey.AppArray) {
         changeCurrentApp(props.app)
+      }
+
+      if (dragStatus.value) {
+        if (props.app.type == IItemKey.AppArray) return
+        clearApp(props.app)
         return
       }
       if (!props.app.status) {
