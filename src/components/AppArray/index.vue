@@ -1,22 +1,20 @@
 <template>
-  <transition name="appArray" @before-enter="beforeEnter" @after-leave="afterLeave">
-    <div class="app-array" v-show="show && currentApp">
-      <!-- <div class="app-array-bg" @click.self="closeArray"></div> -->
-      <input type="text" v-model="currentApp.name" class="box-title" v-if="currentApp">
+  <transition name="appArray" @before-enter="beforeEnter" @after-leave="afterLeave" :css="isUseCssTransition">
+    <div id="app-array-toast" v-if="currentApp">
+      <input type="text" v-model="currentApp.name" class="box-title">
       <div id="appArray-box">
-        <HandleApp v-for="app in currentApp ? currentApp.children : []" :key="app.key" :style="app.style" :app="app">
+        <HandleApp v-for="app in currentApp.children" :key="app.key" :style="app.style" :app="app">
           <App :app="app" />
         </HandleApp>
-        <!-- <App v-for="item in currentApp.children" :key="item.key" :app="item" /> -->
       </div>
     </div>
   </transition>
-  <div class="app-array-bg" v-show="show && currentApp" @click.self="closeArray"></div>
+  <div class="app-array-bg" v-show="currentApp" @click.self="closeArray"></div>
 </template>
 
 <script lang="ts">
 import { useCurrentAppArray } from '@/hooks/useApp'
-import { computed, defineComponent, nextTick, watch } from 'vue'
+import { defineComponent, nextTick, watch } from 'vue'
 import App from '@/components/App/index.vue'
 import HandleApp from '@/views/home/components/handleApp.vue'
 import useAppDrag from '@/hooks/useAppDrag'
@@ -27,7 +25,7 @@ export default defineComponent({
     HandleApp
   },
   setup() {
-    const { currentApp, changeCurrentApp } = useCurrentAppArray()
+    const { isUseCssTransition, currentApp, changeCurrentApp } = useCurrentAppArray()
 
     const closeArray = () => {
       changeCurrentApp(null)
@@ -36,15 +34,13 @@ export default defineComponent({
     let rootWidth = document.documentElement.offsetWidth
     let rootHeight = document.documentElement.offsetHeight
 
-    const show = computed(() => Boolean(currentApp))
-
     let appEl:Element | null = null
 
     const beforeEnter = (el: Element) => {
       let appKey = currentApp.value?.key
       appEl = document.querySelector('#' + appKey) as Element
       let { top, left, width, height } = appEl.getBoundingClientRect()
-      // 偏移量，存在原因： 最后消失时为scale(0.2)，导致不同位置的box缩小后位置不同，会有差异
+      // 偏移量，存在原因： 最后消失时为scale(0.15)，导致不同位置的box缩小后位置不同，会有差异
       let deviationX = (left - rootWidth / 2) * 0.15
       let deviationY = (top - rootHeight / 2) * 0.15
       let transformTop = top + height / 2 - rootHeight * 0.16 + deviationY
@@ -64,14 +60,13 @@ export default defineComponent({
     watch(currentApp, () => {
       if (currentApp.value) {
         nextTick(() => {
-          console.log('注册？')
           useAppDrag('#appArray-box')
         })
       }
     })
 
     return {
-      show,
+      isUseCssTransition,
       currentApp,
       beforeEnter,
       afterLeave,
@@ -82,7 +77,7 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.app-array{
+#app-array-toast{
   width: 80%;
   height: fit-content;
   position: fixed;

@@ -1,0 +1,26 @@
+<script>
+const myReverse = (head, tail) => {
+  let prev = tail.next
+  let p = head
+  while (prev !== tail) {
+    // console.log(prev)
+    if (!p.next) break
+    const nex = p.next // 2, 3
+    p.next = prev // end,
+    prev = p // 1 -> end
+    p = nex // 2 -> 3
+  }
+  return [prev, head]
+}
+function ListNode(val, next) {
+  this.val = (val === undefined ? 0 : val)
+  this.next = (next === undefined ? null : next)
+}
+
+let nodeList = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5, 'end')))))
+// console.log(nodeList)
+let [start, end] = myReverse(nodeList, new ListNode(4, new ListNode(5, 'end')))
+
+console.log(start)
+console.log(end)
+</script>

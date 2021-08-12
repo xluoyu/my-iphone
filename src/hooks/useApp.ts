@@ -1,4 +1,4 @@
-import { ref, computed, reactive, Ref, unref } from 'vue'
+import { ref, computed, reactive, Ref } from 'vue'
 import { IApp, IItemKey } from '#/index'
 import appStoreList from '@/api/app-store'
 import { Dialog } from 'vant'
@@ -34,14 +34,6 @@ const localApp:Ref<ILocalApp[]> = ref([
     type: IItemKey.AppArray,
     children: [
       {
-        key: 'calculator',
-        type: IItemKey.App
-      },
-      {
-        key: 'alipay',
-        type: IItemKey.App
-      },
-      {
         key: 'music',
         type: IItemKey.App
       },
@@ -66,7 +58,8 @@ const localApp:Ref<ILocalApp[]> = ref([
 
 ])
 
-export type IUpdateAppList = (string|{key: string, children: string[]})[]
+export type IUpdateAppListArray = {key: string, children: string[]}
+export type IUpdateAppList = (string|IUpdateAppListArray)[]
 
 /**
  *
@@ -149,15 +142,40 @@ export const useAppStore = () => {
   }
 
   const updateAppList = (arr: IUpdateAppList) => {
-    console.log(arr)
-    const arrRetrieval = (list: IUpdateAppList):ILocalApp[] => {
+    /**
+     * list记录最新的app所在位置
+     * 通过对list做遍历，从当前的localApp中找出对应app
+     * 按照最新位置排列
+     *
+     * 对于子组的情况，将再次循环
+     *
+     * @param list 更新用的key组
+     * @param findList 检索对象
+     * @returns 展示用的applist
+     */
+    const arrRetrieval = (list: IUpdateAppList, findList?:ILocalApp[]):ILocalApp[] => {
       return list.map(item => {
         if (typeof item === 'string') {
-          return localApp.value.find(e => e.key == item) as ILocalApp
+          // 可做优化
+
+          // 查照app
+          let findItem = findList ? findList.find(e => e.key == item) as ILocalApp : localApp.value.find(e => e.key == item) as ILocalApp
+
+          // 当上述没有查到，则从appStore中查找
+          // 主要针对从主表移入子组的app
+          if (!findItem) {
+            let originalApp = appStoreList.find(e => e.key == item) as IApp
+            findItem = {
+              key: originalApp.key,
+              type: originalApp.type
+            }
+          }
+
+          return findItem
         } else {
           let apps = localApp.value.find(e => e.key == item.key)
           if (apps) {
-            apps.children?.push(...arrRetrieval(item.children))
+            apps.children = arrRetrieval(item.children, apps.children)
           } else {
             apps = {
               name: '工具组',
@@ -170,9 +188,14 @@ export const useAppStore = () => {
         }
       }) || []
     }
-    let newAppsList = arrRetrieval(arr)
 
+    let newAppsList = arrRetrieval(arr)
+    console.log(newAppsList)
     localApp.value = newAppsList
+  }
+
+  const findAppArrayChildren = (key:string):string[] => {
+    return localApp.value.find(e => e.key == key)?.children?.map(e => e.key) as string[]
   }
 
   return {
@@ -180,7 +203,8 @@ export const useAppStore = () => {
     myApplist,
     clearApp,
     updateAppList,
-    composeApps
+    composeApps,
+    findAppArrayChildren
   }
 }
 
@@ -234,12 +258,42 @@ export const useAppHistory = () => {
  * 用于打开app组
  */
 const currentApp:Ref<IApp | null> = ref(null)
+const isUseCssTransition:Ref<boolean> = ref(true)
 export const useCurrentAppArray = () => {
   const changeCurrentApp = (app:IApp | null) => {
     currentApp.value = app
   }
+
+  /**
+   * 将app移除子组时
+   *
+   * 手动触发vue动画
+   * 动画结束后层级置为底层
+   *
+   * 显示app组
+   */
+  const dragingCloseToast = () => {
+    const toastEl = document.querySelector('#app-array-toast') as HTMLElement
+    const bgEl = document.querySelector('.app-array-bg') as HTMLElement
+
+    toastEl.classList.add('appArray-leave-active')
+    toastEl.classList.add('appArray-leave-to')
+    bgEl.style.display = 'none'
+
+    setTimeout(() => {
+      toastEl.classList.remove('appArray-leave-active')
+      toastEl.classList.remove('appArray-leave-to')
+      toastEl.style.zIndex = '-10'
+
+      let appEl = document.querySelector('#' + currentApp.value?.key) as HTMLElement
+      appEl.style.opacity = '1'
+    }, 300)
+  }
+
   return {
+    isUseCssTransition,
     currentApp,
-    changeCurrentApp
+    changeCurrentApp,
+    dragingCloseToast
   }
 }

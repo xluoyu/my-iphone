@@ -100,20 +100,21 @@ export default defineComponent({
     const { changeCurrentApp } = useCurrentAppArray()
 
     const open = async() => {
+      // console.log(props)
       if (props.size == 'mini') return
       /**
        * 打开app组
        */
       if (props.app.type == IItemKey.AppArray) {
         changeCurrentApp(props.app)
+        return
       }
 
       if (dragStatus.value) {
-        if (props.app.type == IItemKey.AppArray) return
         clearApp(props.app)
         return
       }
-      if (!props.app.status) {
+      if (props.app.type == IItemKey.App && !props.app.status) {
         Toast('这个还没写/(ㄒoㄒ)/~~')
         return
       }
@@ -142,16 +143,16 @@ export default defineComponent({
           // if (props.app.useType == IUseType.customApp) {
           //   await getCustomApp(props.app.key)
           // }
-          // let routeList = appHistory[appName] ? appHistory[appName] : []
-          // if (routeList && routeList.length) {
-          //   routeList.forEach((item: string) => {
-          //     requestAnimationFrame(() => {
-          //       router.push(item)
-          //     })
-          //   })
-          // } else {
-          router.push({ name: appName })
-          // }
+          let routeList = appHistory[appName] ? appHistory[appName] : []
+          if (routeList && routeList.length) {
+            routeList.forEach((item: string) => {
+              requestAnimationFrame(() => {
+                router.push(item)
+              })
+            })
+          } else {
+            router.push({ name: appName })
+          }
           break
       }
     }

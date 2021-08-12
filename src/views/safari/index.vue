@@ -35,14 +35,13 @@ export default defineComponent({
       if (value != '') {
         changeStatus(false)
         let reg = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z][-a-zA-Z]{0,62})+\.?/
-        if (!reg.test(searchValue.value)) {
-          searchUrl.value = `https://www.baidu.com/s?ie=UTF-8&wd=${value}`
+
+        if (value.indexOf('https://') != -1 || value.indexOf('http://') != -1) {
+          searchUrl.value = value
+        } else if (reg.test(searchValue.value)) {
+          searchUrl.value = 'https://' + value
         } else {
-          if (value.indexOf('https://') == -1 || value.indexOf('http://') == -1) {
-            searchUrl.value = 'https://' + value
-          } else {
-            searchUrl.value = value
-          }
+          searchUrl.value = `https://www.baidu.com/s?ie=UTF-8&wd=${value}`
         }
       }
     }

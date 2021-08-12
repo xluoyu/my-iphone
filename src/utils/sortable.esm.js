@@ -1643,6 +1643,8 @@ Sortable.prototype =
   _onTouchMove: function _onTouchMove(
   /** TouchEvent*/
     evt) {
+    evt.stopPropagation()
+
     if (tapEvt) {
       var options = this.options
       var fallbackTolerance = options.fallbackTolerance
@@ -1687,8 +1689,8 @@ Sortable.prototype =
         lastDy = dy
         touchEvt = touch
       }
-      this.options.onEventMove && this.options.onEventMove(evt)
       evt.cancelable && evt.preventDefault()
+      this.options.onEventMove && this.options.onEventMove(evt)
     }
   },
   _appendGhost: function _appendGhost() {

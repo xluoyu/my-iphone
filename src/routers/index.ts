@@ -78,7 +78,22 @@ export const constantRoutes = [
   {
     path: '/phone',
     component: () => import('@/views/phone/index.vue'),
-    name: 'phone'
+    name: 'phone',
+    redirect: '/phone/call',
+    children: [
+      {
+        path: 'call',
+        component: () => import('@/views/phone/pages/call.vue')
+      },
+      {
+        path: 'address',
+        component: () => import('@/views/phone/pages/addressList.vue')
+      },
+      {
+        path: 'recent',
+        component: () => import('@/views/phone/pages/recentCalls.vue')
+      }
+    ]
   }
 ]
 
