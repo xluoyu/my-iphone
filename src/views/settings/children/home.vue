@@ -29,7 +29,7 @@
     </van-cell-group>
 
     <van-cell-group class="cellGroup">
-      <van-cell title="关于本机" is-link icon="graphic" title-class="cell" />
+      <van-cell title="关于本机" is-link icon="graphic" title-class="cell" :to="{name: 'about'}" />
     </van-cell-group>
   </div>
 </template>

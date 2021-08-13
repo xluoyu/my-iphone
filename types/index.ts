@@ -12,7 +12,8 @@ interface IApp {
   parent?: string,
   style?: string
   status?: boolean // 开发状态 true: 已开发, false: 未开发
-  children?: IApp[]
+  children?: IApp[],
+  pageUrl?: string
 }
 
 enum IItemKey {

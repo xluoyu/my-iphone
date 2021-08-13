@@ -52,7 +52,7 @@ export const constantRoutes = [
       },
       {
         path: 'pwd',
-        component: () => import('@/views/settings/children/pwd.vue'),
+        component: () => import('@/views/settings/children/safe/pwd.vue'),
         name: 'pwd',
         meta: {
           title: '安全设置',
@@ -61,11 +61,20 @@ export const constantRoutes = [
       },
       {
         path: 'setPwd',
-        component: () => import('@/views/settings/children/setPwd.vue'),
+        component: () => import('@/views/settings/children/safe/setPwd.vue'),
         name: 'setPwd',
         meta: {
           back: true,
           style: 'black'
+        }
+      },
+      {
+        path: 'about',
+        component: () => import('@/views/settings/children/about.vue'),
+        name: 'about',
+        meta: {
+          title: '关于本机',
+          back: true
         }
       }
     ]

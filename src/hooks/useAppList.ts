@@ -4,7 +4,6 @@ import Weather from '@/components/Weather/index.vue'
 import App from '@/components/App/index.vue'
 import { useAppStore } from './useApp'
 import { getVar } from '@/utils'
-console.log('useAppList')
 
 const useAppList = () => {
   const curColumn = ref(0)

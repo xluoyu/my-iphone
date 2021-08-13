@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <router-view></router-view>
-    <div class="tarbar">
+    <!-- <div class="tarbar">
       <router-link to="/phone/recent">
         <i class="iconfont icon-lishijilu"></i>
         <span>最近通话</span>
@@ -14,7 +14,7 @@
         <i class="iconfont icon-addressbook"></i>
         <span>通讯录</span>
       </router-link>
-    </div>
+    </div> -->
   </div>
 </template>
 

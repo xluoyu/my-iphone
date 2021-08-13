@@ -31,7 +31,7 @@ export default defineComponent({
     const lockType = route.query.type
 
     onMounted(() => {
-      if (lockType == ILockType.Normal) {
+      if (lockType == ILockType.Number) {
         ctx.emit('changeTitle', '设置数字密码')
       } else if (lockType == ILockType.Slide) {
         ctx.emit('changeTitle', '设置滑动密码')

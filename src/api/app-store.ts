@@ -7,8 +7,8 @@ const appStore: IApp[] = [
     photo: 'https://xluoyu.github.io/image-riverbed/iphone/alipay.png',
     name: '支付宝',
     useType: IUseType.customApp,
-    status: false,
-    pageUrl: 'http://192.168.0.184:1688',
+    status: true,
+    pageUrl: 'https://xluoyu.github.io/clound-music/'
   },
   {
     key: 'weather',

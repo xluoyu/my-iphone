@@ -59,14 +59,14 @@ function openCamera() {
   input.click()
 }
 
-function getCustomApp(key:string) {
+function getCustomApp(app: IApp) {
   return new Promise<void>((reslove) => {
     registerMicroApps([
       {
-        name: key,
-        entry: 'http://192.168.0.184:1921',
+        name: app.key,
+        entry: app.pageUrl as string,
         container: '#routerView',
-        activeRule: baseRoute + key,
+        activeRule: baseRoute + app.key,
         props: {
           slogan: 'Hello Qiankun',
           baseRoute: baseRoute
@@ -140,9 +140,9 @@ export default defineComponent({
           }
           break
         default:
-          // if (props.app.useType == IUseType.customApp) {
-          //   await getCustomApp(props.app.key)
-          // }
+          if (props.app.useType == IUseType.customApp) {
+            await getCustomApp(props.app)
+          }
           let routeList = appHistory[appName] ? appHistory[appName] : []
           if (routeList && routeList.length) {
             routeList.forEach((item: string) => {

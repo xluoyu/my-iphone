@@ -1,8 +1,7 @@
-import { ref, computed, reactive, Ref } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import { IApp, IItemKey } from '#/index'
 import appStoreList from '@/api/app-store'
 import { Dialog } from 'vant'
-console.log('useApp')
 // 本机当前app组
 interface ILocalApp {
   key: string,
@@ -11,7 +10,7 @@ interface ILocalApp {
   name?: string
 }
 
-const localApp:Ref<ILocalApp[]> = ref([
+const localApp = ref<ILocalApp[]>([
   {
     key: 'weather',
     type: IItemKey.Weather
@@ -257,8 +256,8 @@ export const useAppHistory = () => {
 /**
  * 用于打开app组
  */
-const currentApp:Ref<IApp | null> = ref(null)
-const isUseCssTransition:Ref<boolean> = ref(true)
+const currentApp = ref<IApp | null>(null)
+const isUseCssTransition = ref<boolean>(true)
 export const useCurrentAppArray = () => {
   const changeCurrentApp = (app:IApp | null) => {
     currentApp.value = app

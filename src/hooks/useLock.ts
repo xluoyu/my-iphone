@@ -3,7 +3,7 @@ import { ILockType } from '#/index'
 console.log('useLock')
 
 const lockStatus = ref(false)
-const lockType = ref(ILockType.Number)
+const lockType = ref(ILockType.Normal)
 const lockPwd = ref('')
 
 /**

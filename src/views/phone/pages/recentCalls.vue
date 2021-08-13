@@ -1,6 +1,6 @@
 <template>
-  <div>
-    最近童话
+  <div class="recent">
+
   </div>
 </template>
 
