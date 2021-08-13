@@ -1,0 +1,1 @@
+import{g as r,o as e,c as t,l as o}from"./vendor.cb05010f.js";var i=r({});const f={style:{width:"100%",height:"100vh","-webkit-overflow-scrolling":"touch",background:"#fff"}},s=o("iframe",{src:"https://y.music.163.com/m/",id:"iframe",frameborder:"0",width:"100%",height:"100%"},null,-1);i.render=function(r,o,i,a,c,d){return e(),t("div",f,[s])};export default i;

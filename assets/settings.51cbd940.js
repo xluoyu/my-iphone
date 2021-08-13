@@ -1,1 +1,1 @@
-export default"/my-iphone/assets/settings.391eddb2.png";
+export default"./assets/settings.391eddb2.png";

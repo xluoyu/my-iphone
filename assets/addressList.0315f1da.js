@@ -1,0 +1,1 @@
+import{g as e,o as a,c as s,w as o}from"./vendor.cb05010f.js";var r=e({setup:()=>({})});const d=o()(((e,o,r,d,t,c)=>(a(),s("div",null," 通讯录 "))));r.render=d,r.__scopeId="data-v-e479ee92";export default r;

@@ -1,0 +1,1 @@
+import{g as a,p as s,m as d,o as t,c as e,w as o}from"./vendor.cb05010f.js";var c=a({setup:()=>({})});const r=o();s("data-v-0a2da44d");const n={class:"recent"};d();const p=r(((a,s,d,o,c,r)=>(t(),e("div",n))));c.render=p,c.__scopeId="data-v-0a2da44d";export default c;
