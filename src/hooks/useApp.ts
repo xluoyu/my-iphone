@@ -83,7 +83,7 @@ export const useAppStore = () => {
         pre.push(curApp)
       } else {
         pre.push({
-          name: cur.name as string,
+          name: cur.name!,
           type: cur.type,
           key: cur.key,
           children: cur.children ? reduceApp(cur.children, cur.key) : []

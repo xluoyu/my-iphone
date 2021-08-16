@@ -278,6 +278,7 @@ module.exports = {
     'array-bracket-spacing': [2, 'never'],
     'prefer-const': 0,
     'eqeqeq': 0,
-    '@typescript-eslint/explicit-module-boundary-types': 'off'
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off'
   }
 }

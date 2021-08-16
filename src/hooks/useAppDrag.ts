@@ -97,7 +97,7 @@ const useAppDrag = (el:string) => {
       // 如果拖拽停留点有目标
       if (targetApp.value) {
         targetApp.value.classList.remove('changeToBox')
-        let targetKey = targetApp.value.dataset.id as string
+        let targetKey = targetApp.value.dataset.id!
         let itemKey = evt.item.dataset.id
         if (targetKey.indexOf('appArray') == -1) {
           // 目标是app
